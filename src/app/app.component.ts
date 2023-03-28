@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {GitlabService} from "./gitlab.service";
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ProjectArtsofte';
+
+  constructor(private gitlab: GitlabService) {
+  }
+
+  click(){
+    this.gitlab.getSomething();
+  }
 }
