@@ -10,7 +10,7 @@ export class GitlabService {
   constructor(private _apiClient: HttpClientModule) {
   }
 
-  GetData<T>(url: string) {
-    
+  GetData<T>(url: string) o {
+
   }
 }
