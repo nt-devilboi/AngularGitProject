@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {GitlabService} from "./gitlab.service";
+import {Component} from '@angular/core';
+import {HttpRequestService} from "./http-request.service";
 
 @Component({
   selector: 'app-root',
@@ -8,11 +8,12 @@ import {GitlabService} from "./gitlab.service";
 })
 export class AppComponent {
   title = 'ProjectArtsofte';
-
-  constructor(private gitlab: GitlabService) {
+  data = []
+  constructor(private gitlab: HttpRequestService) {
   }
 
-  click(){
-    this.gitlab.getSomething();
+  click() {
+    this.gitlab.GetData('https://gitlab.com/api/v4/users/927908/projects').subscribe(x => data = x);
+    console.log(data)
   }
 }

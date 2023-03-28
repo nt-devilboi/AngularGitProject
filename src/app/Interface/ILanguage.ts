@@ -1,4 +1,4 @@
-class Language {
+interface ILanguage {
 
 }
 /*
