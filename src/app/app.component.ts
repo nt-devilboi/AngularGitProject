@@ -9,11 +9,12 @@ import {HttpRequestService} from "./http-request.service";
 export class AppComponent {
   title = 'ProjectArtsofte';
   data = []
+
   constructor(private gitlab: HttpRequestService) {
   }
 
   click() {
-    this.gitlab.GetData('https://gitlab.com/api/v4/users/927908/projects').subscribe(x => data = x);
-    console.log(data)
+    this.gitlab.GetData('https://gitlab.com/api/v4/users/927908/projects').subscribe();
+
   }
 }
