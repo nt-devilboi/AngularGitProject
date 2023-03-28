@@ -9,10 +9,11 @@ import {GitlabService} from "./gitlab.service";
 export class AppComponent {
   title = 'ProjectArtsofte';
 
-  constructor(private gitlab: GitlabService) {
+  constructor(
+    private gitlab: GitlabService
+  ) {
   }
 
   click(){
-    this.gitlab.getSomething();
   }
 }
