@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {HttpRequestService} from "./http-request.service";
+import {DataUsers} from "./shared/Services/data-Users";
 
 @Component({
   selector: 'app-root',
@@ -10,10 +10,10 @@ export class AppComponent {
   title = 'ProjectArtsofte';
   data = []
 
-  constructor(private gitlab: HttpRequestService) {
+  constructor(private gitlab: DataUsers) {
   }
 
-  click() {
+  Click() {
     this.gitlab.GetData('https://gitlab.com/api/v4/users/927908/projects').subscribe();
 
   }
