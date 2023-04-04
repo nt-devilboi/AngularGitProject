@@ -13,7 +13,7 @@ export class HttpRequestService {
 
   //TODO написать хендлер
   GetData<TGet>(url: string): Observable<TGet> {
-    return this._http.get<TGet>("https://gitlab.com/api/v4/users/927908/projects")
+    return this._http.get<TGet>(url);
   }
 
   // TODO написать норм все

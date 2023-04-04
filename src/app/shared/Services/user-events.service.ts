@@ -10,7 +10,6 @@ export class UserEventsService {
   constructor(private _api: HttpRequestService) {
   }
 
-  // может написат обший метод GetData
   /** писать либо id либо имя*/
   GetCountApproves(userId: string): number {
     let resp = this.EvetsRequest<ApprovedEvent[]>(userId, "Approved")

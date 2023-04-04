@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {DataUsers} from "./shared/Services/data-Users.service";
+import {DataUsersService} from "./shared/Services/data-Users.service";
 
 @Component({
   selector: 'app-root',
@@ -9,12 +9,11 @@ import {DataUsers} from "./shared/Services/data-Users.service";
 export class AppComponent {
   title = 'ProjectArtsofte';
   data = []
-
-  constructor(private gitlab: DataUsers) {
+  user:
+  constructor(private _userData: DataUsersService) {
   }
 
   Click() {
-    this.gitlab.GetData('https://gitlab.com/api/v4/users/927908/projects').subscribe();
-
+    this._userData.GetMainInfoUser(name);
   }
 }
