@@ -12,7 +12,7 @@ export class HttpRequestService {
   constructor(
     private _http: HttpClient
   ) {
-    const token: string = "glpat-zNCQ49yJYkx_Lm-yefv4";
+    const token: string = "";
     this._headers.append("Authorization", `Bearer ${token}`);
   }
 

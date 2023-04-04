@@ -13,7 +13,7 @@ export class UserService {
     private _http: HttpRequestService,
   ) { }
 
-  getUser(field: string, searchById: boolean = false): Observable<User | null> {
+  getUser(field: string, searchById: boolean = false): Observable<User> {
     let params: HttpParams = new HttpParams();
     let uri: string = 'users'
 
@@ -24,7 +24,7 @@ export class UserService {
 
     return this._http.getData<User>(uri, params)
       .pipe(
-        map(resp => resp.body)
+        map(resp => resp.body as User)
       )
   }
 }
