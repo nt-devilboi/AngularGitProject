@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {HttpClient, HttpClientModule, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 
 @Injectable({
@@ -7,13 +7,20 @@ import {Observable, of} from "rxjs";
 })
 export class HttpRequestService {
 
+  private _headers: HttpHeaders = new HttpHeaders();
+
   constructor(
     private _http: HttpClient) {
+    const token: string = "glpat-zNCQ49yJYkx_Lm-yefv4";
+    this._headers.append("Authorization", `Bearer ${token}`);
   }
 
   //TODO написать хендлер
-  GetData<TGet>(url: string): Observable<TGet> {
-    return this._http.get<TGet>("https://gitlab.com/api/v4/users/927908/projects")
+  GetData<TGet>(uri: string, params: HttpParams): Observable<TGet> {
+    return this._http.get<TGet>("https://gitlab.com/api/v4/" + uri, {
+      params,
+      headers: this._headers
+    })
   }
 
   // TODO написать норм все
@@ -22,10 +29,6 @@ export class HttpRequestService {
 
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      // this.log(`${operation} failed: ${error.message}`);
-
 
       return of(result as T);
     }

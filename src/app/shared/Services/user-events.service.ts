@@ -2,6 +2,8 @@ import {Injectable} from "@angular/core";
 import {HttpRequestService} from "./http-request.service";
 import {Commit} from "../interfaces/Commit";
 import {ApprovedEvent} from "../interfaces/Events/Approved";
+import {MainInfoUser} from "../interfaces/MainInfoUser";
+import {HttpParams} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +14,9 @@ export class UserEventsService {
 
   // может написат обший метод GetData
   /** писать либо id либо имя*/
+
   GetCountApproves(userId: string): number {
-    let resp = this.EvetsRequest<ApprovedEvent[]>(userId, "Approved")
+    let resp = this.EventsRequest<ApprovedEvent[]>(userId, "Approved")
     let count = 0;
     //логика
 
@@ -21,13 +24,15 @@ export class UserEventsService {
   }
 
   GetCountCommits(userId: string): number {
-    let resp = this.EvetsRequest<Commit[] >(userId, "Commits")
+    let resp = this.EventsRequest<Commit[] >(userId, "Commits")
     let count = 0;
-    //логика
+    // логика
     return count;
   }
 
-  private EvetsRequest<TGet>(userId: string, action: string) {
-    return this._api.GetData<TGet>(`https://gitlab.com/api/v4/users/${userId}}/events?action=${action}`)
+  private EventsRequest<TGet>(userId: string, action: string) {
+    let params: HttpParams = new HttpParams();
+    params.append("action", action);
+    return this._api.GetData<TGet>(`${userId}}/events`, params)
   }
 }
