@@ -1,23 +1,18 @@
-import {Commit} from "./Commit";
-import {Project} from "./Project";
-import {RepositoryCommit} from "./RepositoryCommit";
+import {Actions} from "./Actions";
 
-export interface User {
-  id: number,
+export type User = {
+  id: string,
   username: string,
   name: string,
   avatar_url: string,
   web_url: string
 }
 
-// как идея. в итоге у этого интерфеса будут все данные
-export interface UserAllData {
-  id: number,
+export type UserMainData = {
+  id: string,
   username: string,
   name: string,
   avatar_url: string,
-  web_url: string
-  commits: Commit[]
-  projects: Project[]
-  RepositoryCommits: RepositoryCommit[]
+  web_url: string,
+  actions: Actions
 }

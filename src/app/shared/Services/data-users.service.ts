@@ -2,7 +2,9 @@ import {Injectable} from "@angular/core";
 import {UserEventsService} from "./user-events.service";
 import {MainInfoUser} from "../interfaces/MainInfoUser";
 import {User} from "../interfaces/User";
-import {HttpRequestService} from "./http-request.service";
+import {UserService} from "./user.service";
+import {map, mergeMap, Observable, zip} from "rxjs";
+import {Actions} from "../interfaces/Actions";
 
 @Injectable({
   providedIn:  'root'
@@ -10,19 +12,34 @@ import {HttpRequestService} from "./http-request.service";
 export class DataUsersService {
 
   constructor(
-    private _event: UserEventsService,
-    private _httpReqService: HttpRequestService
+    private _eventsService: UserEventsService,
+    private _userService: UserService
     ) {
   }
 
-  GetUserId(id: string): User {
-    this._httpReqService.GetData<>
+  public GetMainInfoUser(field: string, searchByName: boolean = false): Observable<MainInfoUser> {
+    return this._userService.getUser(field, searchByName)
+      .pipe(
+        mergeMap(user => this.getActions(user).pipe(
+          map(actions => ({
+            ...user,
+            actions
+          }))
+        ))
+      )
   }
 
-  public GetMainInfoUser(user: string, searchByName: boolean = false): MainInfoUser {
-    this._event.GetCountApproves(user);
-    this._event.GetCountCommits(user);
-
-    return {} as MainInfoUser;
+  private getActions(user: User): Observable<Actions> {
+    return zip(
+      this._eventsService.getCountAction<Event>(user.id, 'pushed'),
+      this._eventsService.getCountAction<Event>(user.id, 'approved')
+    ).pipe(
+      map(events =>
+        events.reduce((acc, cur) => {
+          acc[cur.action] = cur.count
+          return acc
+        }, {} as Actions)
+      )
+    )
   }
 }
