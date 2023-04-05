@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {DataUsersService} from "./shared/Services/data-Users.service";
+import {DataUsers, DataUsersService} from "./shared/Services/data-Users.service";
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,6 @@ import {DataUsersService} from "./shared/Services/data-Users.service";
 export class AppComponent {
   title = 'ProjectArtsofte';
   data = []
-  user:
   constructor(private _userData: DataUsersService) {
   }
 

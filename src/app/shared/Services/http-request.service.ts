@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {HttpClient, HttpClientModule, HttpParams} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 
 @Injectable({
@@ -7,13 +7,22 @@ import {Observable, of} from "rxjs";
 })
 export class HttpRequestService {
 
+  private _headers: HttpHeaders = new HttpHeaders();
+
   constructor(
-    private _http: HttpClient) {
+    private _http: HttpClient
+  ) {
+    const token: string = "";
+    this._headers.append("Authorization", `Bearer ${token}`);
   }
 
   //TODO написать хендлер
-  GetData<TGet>(url: string): Observable<TGet> {
-    return this._http.get<TGet>(url);
+  getData<TGet>(uri: string, params: HttpParams): Observable<HttpResponse<TGet>> {
+    return this._http.get<TGet>("https://gitlab.com/api/v4/" + uri, {
+      params,
+      headers: this._headers,
+      observe: 'response'
+    })
   }
 
   // TODO написать норм все

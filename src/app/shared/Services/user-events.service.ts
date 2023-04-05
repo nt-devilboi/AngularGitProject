@@ -1,32 +1,56 @@
 import {Injectable} from "@angular/core";
 import {HttpRequestService} from "./http-request.service";
-import {Commit} from "../interfaces/Commit";
-import {ApprovedEvent} from "../interfaces/Events/Approved";
+import {HttpParams, HttpResponse} from "@angular/common/http";
+import {map, Observable, zip} from "rxjs";
+import {Action, ActionCount} from "../interfaces/Actions";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserEventsService {
-  constructor(private _api: HttpRequestService) {
+  constructor(private _http: HttpRequestService) {
   }
 
   /** писать либо id либо имя*/
-  GetCountApproves(userId: string): number {
-    let resp = this.EvetsRequest<ApprovedEvent[]>(userId, "Approved")
-    let count = 0;
-    //логика
 
-    return count
+  // getCountApproves(userId: string, userName: string): Observable<number> {
+  //   return this.eventsRequest<Event[]>(userId, "approved")
+  //     .pipe(
+  //       map(arr => arr.length)
+  //     )
+  // }
+
+  // getCountCommits(userId: string): number {
+  //   let resp = this.eventsRequest<Commit[] >(userId, "pushed")
+  //   let count = 0;
+  //   // логика
+  //   return count;
+  // }
+
+  getCountAction<AType>(userId: string, action: Action): Observable<ActionCount> {
+    return this.eventsRequest<AType>(userId, action)
+      .pipe(
+        map(resp => ({
+          count: resp.body?.length ?? 0,
+          action
+        }))
+      )
   }
 
-  GetCountCommits(userId: string): number {
-    let resp = this.EvetsRequest<Commit[] >(userId, "Commits")
-    let count = 0;
-    //логика
-    return count;
+  private eventsRequest<TGet>(userId: string, action: string): Observable<HttpResponse<TGet[]>> {
+    let params: HttpParams = new HttpParams();
+    params.append("action", action);
+
+    return this._http.getData<TGet[]>(`${userId}}/events`, params)
   }
 
-  private EvetsRequest<TGet>(userId: string, action: string) {
-    return this._api.GetData<TGet>(`https://gitlab.com/api/v4/users/${userId}}/events?action=${action}`)
+  //TODO доделать логику с хэдерами, чтобы вычленять оттуда пагинацию и подогнать под эти типы getCountAction
+  private eventsRequest2<TGet>(userId: string, action: string): Observable<TGet[]> {
+    let params: HttpParams = new HttpParams();
+    params.append("action", action);
+
+    return zip(this._http.getData<TGet[]>(`${userId}}/events`, params)).pipe(
+      map(events => events.map(e => e.body as TGet))
+    )
   }
 }
