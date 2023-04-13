@@ -1,3 +1,3 @@
-export interface PushData {
+export type PushData = {
   commit_count: number;
 }
