@@ -1,9 +1,8 @@
 import {Injectable} from "@angular/core";
 import {UserEventsService} from "./user-events.service";
 import {MainInfoUser} from "../interfaces/MainInfoUser";
-import {User} from "../interfaces/User";
 import {UserService} from "./user.service";
-import {forkJoin, map, mergeMap, Observable, tap, zip} from "rxjs";
+import {forkJoin, map, mergeMap, Observable} from "rxjs";
 import {Actions} from "../interfaces/Actions";
 
 @Injectable()
@@ -14,7 +13,8 @@ export class GitLabService {
     private _userService: UserService
   ) {
     console.log("запущен Datauser")
-    this.getActionsNik("2390023").subscribe(x => console.log(x))
+    // this.getActionsNik("2390023").subscribe(x => console.log(x))
+    this.getActions('2390023').subscribe()
   }
 
   public GetMainInfoUser(field: string, searchByName: boolean = false): Observable<MainInfoUser> {
@@ -29,31 +29,25 @@ export class GitLabService {
       )
   }
 
-
-  private getActions(user: User): Observable<Actions> {
-    return zip(
-      this._eventsService.getCountAction<Event>(user.id, 'pushed'),
-      this._eventsService.getCountAction<Event>(user.id, 'approved')
-    ).pipe(
-      map(events =>
-        events.reduce((acc, cur) => {
-          acc[cur.action] = cur.count
-          return acc
-        }, {} as Actions)
-      )
-    )
-  }
+  // private getActions(user: User): Observable<Actions> {
+  //   return zip(
+  //     this._eventsService.getCountAction<Event>(user.id, 'pushed'),
+  //     this._eventsService.getCountAction<Event>(user.id, 'approved')
+  //   ).pipe(
+  //     map(events =>
+  //       events.reduce((acc, cur) => {
+  //         acc[cur.action] = cur.count
+  //         return acc
+  //       }, {} as Actions)
+  //     )
+  //   )
+  // }
 
   // эсперемент Warning
-  private getActionsNik(username: string): Observable<{ commits: number, approved: number }> {
-    const x = zip(
-      this._eventsService.getCommits(username),
-      this._eventsService.getCountApproves(username)
-    );
-
+  private getActions(userIdentification: string): Observable<Actions> {
     return forkJoin({
-      commits: this._eventsService.getCommits(username),
-      approved: this._eventsService.getCountApproves(username)
+      pushed: this._eventsService.getCommits(userIdentification),
+      approved: this._eventsService.getCountApproves(userIdentification),
     })
   }
 }
