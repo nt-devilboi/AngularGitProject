@@ -9,4 +9,8 @@ import {HttpRequestService} from "./http-request.service";
 class ProjectService {
   constructor(private _api: HttpRequestService) {
   }
+
+  getLanguage(userId: string, projectId: string){
+
+  }
 }
