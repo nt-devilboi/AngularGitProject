@@ -20,7 +20,7 @@ export class GitLabService {
   public GetMainInfoUser(field: string, searchByName: boolean = false): Observable<MainInfoUser> {
     return this._userService.getUser(field, searchByName)
       .pipe(
-        mergeMap(user => this.getActions(user).pipe(
+        mergeMap(user => this.getActions(user.id).pipe(
           map(actions => ({
             ...user,
             actions
