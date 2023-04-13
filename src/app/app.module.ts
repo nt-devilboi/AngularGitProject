@@ -7,9 +7,10 @@ import {IGitUser} from "./shared/interfaces/IGitUser";
 import {GitLabService} from "./shared/Services/git-lab.service";
 
 export const IGitApi = new InjectionToken<IGitUser>("Api")
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
