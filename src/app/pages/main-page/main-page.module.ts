@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {HeaderComponent} from "./components/header/header.component";
-import { MainComponent } from './components/main/main.component';
-import { CardComponent } from './components/card/card.component';
-
+import {MainComponent} from './components/main/main.component';
+import {CardComponent} from './components/card/card.component';
+import {AppRoutingModuleSearch} from "./AppRoutingModuleSearch";
 
 
 @NgModule({
@@ -13,7 +13,10 @@ import { CardComponent } from './components/card/card.component';
     CardComponent
   ],
   imports: [
-    CommonModule
-  ]
+    CommonModule,
+    AppRoutingModuleSearch
+  ],
+  bootstrap: [MainComponent]
 })
-export class MainPageModule { }
+export class MainPageModule {
+}
