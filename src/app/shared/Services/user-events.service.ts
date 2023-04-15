@@ -1,8 +1,23 @@
 import {Injectable} from "@angular/core";
 import {HttpRequestService} from "./http-request.service";
 import {HttpParams, HttpResponse} from "@angular/common/http";
-import {map, Observable, tap, zip} from "rxjs";
+import {
+  AsyncSubject,
+  forkJoin,
+  from,
+  generate,
+  map,
+  mergeWith,
+  Observable,
+  of,
+  range,
+  startWith, Subject,
+  switchMap, takeUntil, takeWhile,
+  tap,
+  zip
+} from "rxjs";
 import {Event} from "../interfaces/Event/Event";
+import {addWarning} from "@angular-devkit/build-angular/src/utils/webpack-diagnostics";
 
 
 @Injectable({
@@ -14,7 +29,7 @@ export class UserEventsService {
   }
 
   getCountApproves(userId: string): Observable<number> {
-    return this.eventsRequest(userId, 'approved')
+    return this.eventsRequest(userId, 'approved', 1, 1)
       .pipe(
         map(resp => {
           return parseInt(resp.headers.get('x-total') ?? '')
@@ -23,14 +38,29 @@ export class UserEventsService {
   }
 
   public getCommits(userId: string): Observable<number> {
-    return this.getCountCommits(userId) // здесь будет типа for
+    var page = 1;
+
+    var per_page = 100;
+    let total = 0;
+    let result = new Subject<number>();
+    console.log("метод запущен")
+    this.getCountCommits(userId, page, per_page)
+
+
+    return result.asObservable();
   }
 
-  private getCountCommits(userId: string): Observable<number> {
-    return this.eventsRequest<Event[]>(userId, "pushed")
+  private getCountCommits(userId: string, page: number, per_page: number): Observable<{
+    commits: number,
+    totalPage: number
+  }> {
+    return this.eventsRequest(userId, "pushed", page, per_page)
       .pipe(map(x => {
+          const total = parseInt(x.headers.get(`X-Total-Pages`) ?? "0");
+          console.log("pages: " + total)
           const data = x.body ?? []
-          return data.map(x => x.push_data.commit_count).reduce((prev, cur) => prev + cur)
+          const commits = data.map(x => x.push_data.commit_count).reduce((prev, cur) => prev + cur);
+          return {commits: commits, totalPage: total}
         }), // чёта надо сделать
         tap(x => console.log(x))) // просто ради провекри
   }
@@ -45,10 +75,12 @@ export class UserEventsService {
   //     )
   // }
 
-  private eventsRequest<TGet>(userId: string, action: string): Observable<HttpResponse<TGet>> {
-    let params: HttpParams = new HttpParams().set("action", action);
+  private eventsRequest(userId: string, action: string, page: number, per_page: number): Observable<HttpResponse<Event[]>> {
+    let params: HttpParams = new HttpParams().set("action", action)
+    params.set("page", page)
+    params.set("per_page", per_page)
 
-    return this._http.getData<TGet>(`users/${userId}/events`, params).pipe()
+    return this._http.getData<Event[]>(`users/${userId}/events`, params)
   }
 
   //TODO доделать логику с хэдерами, чтобы вычленять оттуда пагинацию и подогнать под эти типы getCountAction

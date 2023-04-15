@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import {IGitUser} from "./shared/interfaces/IGitUser";
 import {GitLabService} from "./shared/Services/git-lab.service";
+import {AppRoutingModule} from "./app-routing.module";
 
 export const IGitApi = new InjectionToken<IGitUser>("Api")
 
@@ -14,7 +15,8 @@ export const IGitApi = new InjectionToken<IGitUser>("Api")
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    AppRoutingModule
   ],
   providers: [
     {

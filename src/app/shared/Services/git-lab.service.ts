@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {UserEventsService} from "./user-events.service";
 import {MainInfoUser} from "../interfaces/MainInfoUser";
 import {UserService} from "./user.service";
-import {forkJoin, map, mergeMap, Observable} from "rxjs";
+import {forkJoin, map, mergeMap, Observable, tap} from "rxjs";
 import {Actions} from "../interfaces/Actions";
 
 @Injectable()
@@ -13,9 +13,9 @@ export class GitLabService {
     private _userService: UserService
   ) {
     console.log("запущен Datauser")
-    // this.getActionsNik("2390023").subscribe(x => console.log(x))
-    this.getActions('2390023').subscribe()
+    this.getActions('2390023').subscribe(x => console.log("все данные " + x.approved))
   }
+
 
   public GetMainInfoUser(field: string, searchByName: boolean = false): Observable<MainInfoUser> {
     return this._userService.getUser(field, searchByName)
@@ -44,8 +44,8 @@ export class GitLabService {
   // }
 
   // эсперемент Warning
-  private getActions(userIdentification: string): Observable<Actions> {
-    return forkJoin({
+  private  getActions(userIdentification: string): Observable<Actions> {
+    return  forkJoin({
       pushed: this._eventsService.getCommits(userIdentification),
       approved: this._eventsService.getCountApproves(userIdentification),
     })

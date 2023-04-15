@@ -1,5 +1,6 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, inject} from '@angular/core';
 import {GitLabService} from "./shared/Services/git-lab.service";
+import {IGitUser} from "./shared/interfaces/IGitUser";
 import {IGitApi} from "./app.module";
 
 @Component({
@@ -10,9 +11,7 @@ import {IGitApi} from "./app.module";
 export class AppComponent {
   title = 'ProjectArtsofte';
   data = []
-  constructor(
-    @Inject(IGitApi) private _userData: GitLabService
-  ) {
+  constructor(@Inject(IGitApi) private _userData: GitLabService) {
   }
 
   click() {
