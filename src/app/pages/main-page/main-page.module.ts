@@ -16,7 +16,7 @@ import {AppRoutingGitLabUsersModule} from "./app-routing-git-lab-users.module";
     CommonModule,
     AppRoutingGitLabUsersModule
   ],
-  bootstrap: [MainComponent]  // так же здесь будем провайдить сервис или Akita store в которым будем хранить данные)() либо localstorage если буде лень делать
+  bootstrap: [MainComponent] // так же здесь будем провайдить сервис или Akita store в которым будем хранить данные)() либо localstorage если буде лень делать
 })
 export class MainPageModule {
 }
