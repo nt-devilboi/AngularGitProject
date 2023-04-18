@@ -30,9 +30,10 @@ const routes: Routes = [
     RouterModule.forChild(routes),
   ],
   exports: [
-    RouterModule
+    RouterModule,
+    MainPageComponent
   ],
   // так же здесь будем провайдить сервис или Akita store в которым будем хранить данные)() либо localstorage если буде лень делать
 })
-export class MainPageModule {
+export class PagesModule {
 }

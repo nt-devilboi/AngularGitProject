@@ -5,7 +5,7 @@ import {IGitApi} from "./app.module";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'] // сервис, которые делает отписки.... позже!!! takeuntil nzdestroy // диз система
+  styleUrls: ['./app.component.scss'] // сервис, которые делает отписки.... позже!!! takeuntil nzdestroy // диз система
 })
 export class AppComponent {
   title = 'ProjectArtsofte';

@@ -4,7 +4,7 @@ import {RouterModule, Routes} from "@angular/router";
 
 const routes: Routes = [
   {
-    path: 'gitlab-users', loadChildren: () => import("./pages/main-page/main-page.module").then(m => m.MainPageModule)
+    path: 'gitlab-users', loadChildren: () => import("./pages/pages.module").then(m => m.PagesModule)
   }
 ]
 
