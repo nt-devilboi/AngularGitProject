@@ -1,10 +1,23 @@
 <header class="header">
     <div class="container">
+        <div class="header__wrapper">
+
+
         <div class="header__row">
 
             <div class="header__small">
-                <div class="header__filters">
-                    Фильтры
+                <div class="header__switcher header-switcher">
+                    <div class="header-switcher__wrapper">
+                        <div class="header-switcher__question">
+                            Поиск по
+                        </div>
+                        <div class="header-switcher__switcher">
+                            <div class="header-switcher__var">id</div>
+                            <label class="header-switcher__label" [ngClass]="{active: !searchById}" (click)="switchSearchMethod()">
+                            </label>
+                            <div class="header-switcher__var">нику</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -20,11 +33,12 @@
             </div>
 
             <div class="header__small">
-                <a href="#" class="header__button compare">
+                <a href="#" class="header__button">
                     <span class="compare">Сравнить</span>
                 </a>
             </div>
 
+        </div>
         </div>
     </div>
 </header>
