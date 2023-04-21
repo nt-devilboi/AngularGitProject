@@ -2,14 +2,8 @@ import {Injectable} from "@angular/core";
 import {HttpRequestService} from "./http-request.service";
 import {
   map,
-  mergeWith,
   Observable,
-  of,
-  range,
-  startWith, Subject,
-  switchMap, takeUntil, takeWhile,
   tap,
-  zip
 } from "rxjs";
 import {Event} from "../interfaces/Event/Event";
 import {HttpParams} from "@angular/common/http";
@@ -58,32 +52,4 @@ export class UserEventsService {
         }), // чёта надо сделать
         tap(x => console.log(x))) // просто ради провекри
   }
-
-
-  // TOdo вынести в абстракт класс, ибо это слишком универсальный метод
-
-
-  // TOdo Кирил, если не нужно, надо убарть
-  // getCountAction<AType>(userId: string, action: Action): Observable<ActionCount> {
-  //   return this.eventsRequest<AType>(userId, action)
-  //     .pipe(
-  //       map(resp => ({
-  //         count: resp.headers.['X-Total'],      //resp.body?.Length убрал это вместо 2, хз у меня ругается
-  //         action
-  //       }))
-  //     )
-  // }
-
-  //TODO доделать логику с хэдерами, чтобы вычленять оттуда пагинацию и подогнать под эти типы getCountAction
-  /*private eventsRequest2<TGet>(userId: string, action: string): Observable<TGet[]> {
-    let params: HttpParams = new HttpParams();
-    params.append("action", action);  // так не работает append возращает новый httpP а не в готовый кидает
-
-    return zip(this._http.getData<TGet[]>(`${userId}}/events`, params)).pipe(
-      map(events => events.map(e => e.body as TGet))
-    )
-  }
-}*/
 }
-
-// надо еще будет убрать лишнее
