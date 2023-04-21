@@ -36,7 +36,6 @@ export class UserEventsService {
     console.log("метод запущен")
     this.getCountCommits(userId, page, per_page)
 
-
     return result.asObservable();
   }
 

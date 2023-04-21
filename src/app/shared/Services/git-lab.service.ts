@@ -12,10 +12,8 @@ export class GitLabService {
     private _eventsService: UserEventsService,
     private _userService: UserService
   ) {
-    console.log("запущен Datauser")
     this.getActions('2390023').subscribe(x => console.log("все данные " + x.approved))
   }
-
 
   public GetMainInfoUser(field: string, searchByName: boolean = false): Observable<MainInfoUser> {
     return this._userService.getUser(field, searchByName)
