@@ -7,7 +7,6 @@ import {Component} from '@angular/core';
 })
 export class HeaderComponent{
   protected searchById: boolean = true;
-
   switchSearchMethod() {
     this.searchById = !this.searchById;
   }
