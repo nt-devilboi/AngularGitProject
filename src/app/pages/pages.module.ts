@@ -6,14 +6,28 @@ import {MainPageComponent} from "./main-page/main-page.component";
 import {CardComponent} from "./main-page/components/card/card.component";
 import {BodyComponent} from "./main-page/components/body/body.component";
 import {UserPageComponent} from "./user-page/user-page.component";
+import { ComparePageComponent } from './compare-page/compare-page.component';
+import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
+import { CardsComponent } from './main-page/components/cards/cards.component';
+import { SearchResultComponent } from './main-page/components/search-result/search-result.component';
 
 const routes: Routes = [
   {
-    path: '', component: MainPageComponent,
+    path: '', component: MainPageComponent, children: [
+      {
+        path: '', component: CardsComponent
+      },
+      {
+        path: 'search-result', component: SearchResultComponent
+      }
+    ]
   },
   {
-    path: "user/:id", component: UserPageComponent, pathMatch: "prefix"
-  }
+    path: "user/:id", component: UserPageComponent,
+  },
+  {
+    path: 'compare', component: ComparePageComponent
+  },
 ]
 
 @NgModule({
@@ -23,7 +37,11 @@ const routes: Routes = [
     CardComponent,
     BodyComponent,
     MainPageComponent,
-    UserPageComponent
+    UserPageComponent,
+    ComparePageComponent,
+    NotFoundPageComponent,
+    CardsComponent,
+    SearchResultComponent
   ],
   imports: [
     CommonModule,
