@@ -39,6 +39,7 @@ const routes: Routes = [
     UserPageComponent,
     ComparePageComponent,
     NotFoundPageComponent,
+    CardsComponent,
     SearchResultComponent
   ],
   imports: [

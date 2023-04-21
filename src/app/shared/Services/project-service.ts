@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpRequestService} from "./http-request.service";
+import {HttpRequestService} from "./http/http-request.service";
 
 @Injectable({
   providedIn:  'root'
