@@ -6,10 +6,8 @@ import {
   Observable,
   Subject,
   tap,
-  zip
 } from "rxjs";
 import {Event} from "../interfaces/Event/Event";
-import {addWarning} from "@angular-devkit/build-angular/src/utils/webpack-diagnostics";
 
 
 @Injectable({
@@ -63,15 +61,5 @@ export class UserEventsService {
     params.set("per_page", per_page)
 
     return this._http.getData<Event[]>(`users/${userId}/events`, params)
-  }
-
-  //TODO доделать логику с хэдерами, чтобы вычленять оттуда пагинацию и подогнать под эти типы getCountAction
-  private eventsRequest2<TGet>(userId: string, action: string): Observable<TGet[]> {
-    let params: HttpParams = new HttpParams();
-    params.append("action", action);  // так не работает append возращает новый httpP а не в готовый кидает
-
-    return zip(this._http.getData<TGet[]>(`${userId}}/events`, params)).pipe(
-      map(events => events.map(e => e.body as TGet))
-    )
   }
 }
