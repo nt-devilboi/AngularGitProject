@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpRequestService} from "./http-request.service";
-import {HttpParams, HttpResponse} from "@angular/common/http";
+import {HttpRequestService} from "./http/http-request.service";
 import {
   AsyncSubject,
   forkJoin,
@@ -17,19 +16,25 @@ import {
   zip
 } from "rxjs";
 import {Event} from "../interfaces/Event/Event";
-import {addWarning} from "@angular-devkit/build-angular/src/utils/webpack-diagnostics";
+import {ApiAdapter, Params} from "./http/ApiAdapter";
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserEventsService {
-  constructor(private _http: HttpRequestService) {
-    console.log("запущен EventService")
+export class UserEventsService extends ApiAdapter {
+  private urlEvent = (userId: string) => `users/${userId}/events`;
+
+  constructor(_http: HttpRequestService) {
+    super(_http);
   }
 
   getCountApproves(userId: string): Observable<number> {
-    return this.eventsRequest(userId, 'approved', 1, 1)
+    let params: Params = { // мэйби выглдяит тупо, и костыльно, но мне лень делать что-то более красивое, пока что
+      "action": "pushed",
+    };
+
+    return this.RequestWithParams(`${this.urlEvent(userId)}`, params)
       .pipe(
         map(resp => {
           return parseInt(resp.headers.get('x-total') ?? '')
@@ -37,24 +42,27 @@ export class UserEventsService {
       )
   }
 
+  //TOdo я уверен, мы когда нибудь напишем этот метод!!!!!
   public getCommits(userId: string): Observable<number> {
     var page = 1;
+    var per_page = 20;
+    let result: number;
 
-    var per_page = 100;
-    let total = 0;
-    let result = new Subject<number>();
     console.log("метод запущен")
-    this.getCountCommits(userId, page, per_page)
-
-
-    return result.asObservable();
+    return this.getCountCommits(userId, page, per_page).pipe(map(x => x.commits));
   }
 
   private getCountCommits(userId: string, page: number, per_page: number): Observable<{
     commits: number,
     totalPage: number
   }> {
-    return this.eventsRequest(userId, "pushed", page, per_page)
+    let params: Params = { // мэйби выглдяит тупо, и костыльно, но мне лень делать что-то более красивое, пока что
+      "action": "pushed",
+      "page": page.toString(),
+      "per_page": per_page.toString()
+    };
+
+    return this.RequestWithParams<Event[]>(`${this.urlEvent(userId)}`, params)
       .pipe(map(x => {
           const total = parseInt(x.headers.get(`X-Total-Pages`) ?? "0");
           console.log("pages: " + total)
@@ -65,6 +73,11 @@ export class UserEventsService {
         tap(x => console.log(x))) // просто ради провекри
   }
 
+
+  // TOdo вынести в абстракт класс, ибо это слишком универсальный метод
+
+
+  // TOdo Кирил, если не нужно, надо убарть
   // getCountAction<AType>(userId: string, action: Action): Observable<ActionCount> {
   //   return this.eventsRequest<AType>(userId, action)
   //     .pipe(
@@ -75,16 +88,8 @@ export class UserEventsService {
   //     )
   // }
 
-  private eventsRequest(userId: string, action: string, page: number, per_page: number): Observable<HttpResponse<Event[]>> {
-    let params: HttpParams = new HttpParams().set("action", action)
-    params.set("page", page)
-    params.set("per_page", per_page)
-
-    return this._http.getData<Event[]>(`users/${userId}/events`, params)
-  }
-
   //TODO доделать логику с хэдерами, чтобы вычленять оттуда пагинацию и подогнать под эти типы getCountAction
-  private eventsRequest2<TGet>(userId: string, action: string): Observable<TGet[]> {
+  /*private eventsRequest2<TGet>(userId: string, action: string): Observable<TGet[]> {
     let params: HttpParams = new HttpParams();
     params.append("action", action);  // так не работает append возращает новый httpP а не в готовый кидает
 
@@ -92,4 +97,7 @@ export class UserEventsService {
       map(events => events.map(e => e.body as TGet))
     )
   }
+}*/
 }
+
+// надо еще будет убрать лишнее
