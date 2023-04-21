@@ -35,7 +35,7 @@ export class UserEventsService {
     let params: HttpParams = new HttpParams()
       .set("action", "pushed")
       .set("page", 1)
-      .set("per_page", 20)
+      .set("per_page", 100)
 
     console.log("метод запущен")
     return this.getCountCommits(userId, params).pipe(map(x => x.commits));
