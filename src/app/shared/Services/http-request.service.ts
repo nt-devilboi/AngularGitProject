@@ -25,14 +25,6 @@ export class HttpRequestService {
       observe: 'response'
     })
   }
-  getDataNikta<TGet>(uri: string, params: HttpParams): Observable<HttpResponse<TGet>> {
-    return this._http.get<TGet>("https://gitlab.com/api/v4/" + uri, {
-      params,
-      headers: this._headers,
-      observe: 'response'
-    }).pipe(catchError(this.handleError<TGet>('GetData')))
-  }
-
 
   // TODO написать норм все
   private handleError<T>(operation = 'operation', result?: T) {

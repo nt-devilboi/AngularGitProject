@@ -1,4 +1,4 @@
-export type Action = 'approved' | 'pushed';
+export type Action = 'approved' | 'commit';
 
 export type ActionCount = {
   action: Action,

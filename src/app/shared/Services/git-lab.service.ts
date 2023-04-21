@@ -29,24 +29,9 @@ export class GitLabService {
       )
   }
 
-  // private getActions(user: User): Observable<Actions> {
-  //   return zip(
-  //     this._eventsService.getCountAction<Event>(user.id, 'pushed'),
-  //     this._eventsService.getCountAction<Event>(user.id, 'approved')
-  //   ).pipe(
-  //     map(events =>
-  //       events.reduce((acc, cur) => {
-  //         acc[cur.action] = cur.count
-  //         return acc
-  //       }, {} as Actions)
-  //     )
-  //   )
-  // }
-
-  // эсперемент Warning
   private  getActions(userIdentification: string): Observable<Actions> {
     return  forkJoin({
-      pushed: this._eventsService.getCommits(userIdentification),
+      commit: this._eventsService.getCommits(userIdentification),
       approved: this._eventsService.getCountApproves(userIdentification),
     })
   }

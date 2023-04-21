@@ -2,17 +2,9 @@ import {Injectable} from "@angular/core";
 import {HttpRequestService} from "./http-request.service";
 import {HttpParams, HttpResponse} from "@angular/common/http";
 import {
-  AsyncSubject,
-  forkJoin,
-  from,
-  generate,
   map,
-  mergeWith,
   Observable,
-  of,
-  range,
-  startWith, Subject,
-  switchMap, takeUntil, takeWhile,
+  Subject,
   tap,
   zip
 } from "rxjs";
@@ -64,16 +56,6 @@ export class UserEventsService {
         }), // чёта надо сделать
         tap(x => console.log(x))) // просто ради провекри
   }
-
-  // getCountAction<AType>(userId: string, action: Action): Observable<ActionCount> {
-  //   return this.eventsRequest<AType>(userId, action)
-  //     .pipe(
-  //       map(resp => ({
-  //         count: resp.headers.['X-Total'],      //resp.body?.Length убрал это вместо 2, хз у меня ругается
-  //         action
-  //       }))
-  //     )
-  // }
 
   private eventsRequest(userId: string, action: string, page: number, per_page: number): Observable<HttpResponse<Event[]>> {
     let params: HttpParams = new HttpParams().set("action", action)

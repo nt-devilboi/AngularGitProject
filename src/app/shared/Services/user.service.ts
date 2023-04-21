@@ -25,7 +25,6 @@ export class UserService {
     return this._http.getData<User>(uri, params)
       .pipe(
         map(resp => resp.body as User),
-
       )
   }
 }
