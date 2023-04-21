@@ -16,25 +16,23 @@ import {
   zip
 } from "rxjs";
 import {Event} from "../interfaces/Event/Event";
-import {ApiAdapter, Params} from "./http/ApiAdapter";
+import {HttpParams} from "@angular/common/http";
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserEventsService extends ApiAdapter {
+export class UserEventsService {
   private urlEvent = (userId: string) => `users/${userId}/events`;
 
-  constructor(_http: HttpRequestService) {
-    super(_http);
+  constructor(private _http: HttpRequestService) {
   }
 
-  getCountApproves(userId: string): Observable<number> {
-    let params: Params = { // мэйби выглдяит тупо, и костыльно, но мне лень делать что-то более красивое, пока что
-      "action": "pushed",
-    };
+  public getCountApproves(userId: string): Observable<number> {
+    let params: HttpParams = new HttpParams()
+      .set("action", "pushed");
 
-    return this.RequestWithParams(`${this.urlEvent(userId)}`, params)
+    return this._http.getData<Event[]>(`${this.urlEvent(userId)}`, params)
       .pipe(
         map(resp => {
           return parseInt(resp.headers.get('x-total') ?? '')
@@ -44,25 +42,17 @@ export class UserEventsService extends ApiAdapter {
 
   //TOdo я уверен, мы когда нибудь напишем этот метод!!!!!
   public getCommits(userId: string): Observable<number> {
-    var page = 1;
-    var per_page = 20;
-    let result: number;
+    let params: HttpParams = new HttpParams()
+      .set("action", "pushed")
+      .set("page", 1)
+      .set("per_page", 20)
 
     console.log("метод запущен")
-    return this.getCountCommits(userId, page, per_page).pipe(map(x => x.commits));
+    return this.getCountCommits(userId, params).pipe(map(x => x.commits));
   }
 
-  private getCountCommits(userId: string, page: number, per_page: number): Observable<{
-    commits: number,
-    totalPage: number
-  }> {
-    let params: Params = { // мэйби выглдяит тупо, и костыльно, но мне лень делать что-то более красивое, пока что
-      "action": "pushed",
-      "page": page.toString(),
-      "per_page": per_page.toString()
-    };
-
-    return this.RequestWithParams<Event[]>(`${this.urlEvent(userId)}`, params)
+  private getCountCommits(userId: string, params: HttpParams): Observable<{ commits: number, totalPage: number }> {
+    return this._http.getData<Event[]>(`${this.urlEvent(userId)}`, params)
       .pipe(map(x => {
           const total = parseInt(x.headers.get(`X-Total-Pages`) ?? "0");
           console.log("pages: " + total)
