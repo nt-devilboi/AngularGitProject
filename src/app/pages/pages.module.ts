@@ -8,8 +8,8 @@ import {BodyComponent} from "./main-page/components/body/body.component";
 import {UserPageComponent} from "./user-page/user-page.component";
 import {ComparePageComponent} from './compare-page/compare-page.component';
 import {NotFoundPageComponent} from './not-found-page/not-found-page.component';
-import {CardsComponent} from './main-page/components/cards/cards.component';
 import {SearchResultComponent} from './main-page/components/search-result/search-result.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 const routes: Routes = [
   {
@@ -40,7 +40,6 @@ const routes: Routes = [
     UserPageComponent,
     ComparePageComponent,
     NotFoundPageComponent,
-    CardsComponent,
     SearchResultComponent
   ],
   imports: [
