@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpRequestService} from "./http-request.service";
+import {HttpRequestService} from "./http/http-request.service";
 import {User} from "../interfaces/User";
 import {HttpParams} from "@angular/common/http";
 import {map, Observable} from "rxjs";
@@ -25,7 +25,6 @@ export class UserService {
     return this._http.getData<User>(uri, params)
       .pipe(
         map(resp => resp.body as User),
-
       )
   }
 }

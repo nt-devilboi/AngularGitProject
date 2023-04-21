@@ -44,7 +44,7 @@ export class GitLabService {
   // }
 
   // эсперемент Warning
-  private  getActions(userIdentification: string): Observable<Actions> {
+  private getActions(userIdentification: string): Observable<Actions> {
     return  forkJoin({
       pushed: this._eventsService.getCommits(userIdentification),
       approved: this._eventsService.getCountApproves(userIdentification),
