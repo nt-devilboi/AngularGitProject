@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {ValidatorIsIdUserNotName} from "../../ValidatorIsIdUserNotName";
 
 @Component({
   selector: 'app-header',
