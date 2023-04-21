@@ -16,6 +16,6 @@ export class AppComponent {
   ) {}
 
   click() {
-    this._userData.GetMainInfoUser("tristan");
+    this._userData.GetMainInfoUser("927908");
   }
 }
