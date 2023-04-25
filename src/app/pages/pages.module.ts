@@ -9,7 +9,7 @@ import {UserPageComponent} from "./user-page/user-page.component";
 import {ComparePageComponent} from './compare-page/compare-page.component';
 import {NotFoundPageComponent} from './not-found-page/not-found-page.component';
 import {SearchResultComponent} from './main-page/components/search-result/search-result.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -34,7 +34,6 @@ const routes: Routes = [
   declarations: [
     HeaderComponent,
     MainPageComponent,
-    CardComponent,
     BodyComponent,
     MainPageComponent,
     UserPageComponent,
