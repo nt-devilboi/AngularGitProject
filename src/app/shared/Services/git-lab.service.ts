@@ -4,13 +4,15 @@ import {MainInfoUser} from "../interfaces/MainInfoUser";
 import {UserService} from "./user.service";
 import {forkJoin, map, mergeMap, Observable} from "rxjs";
 import {Actions} from "../interfaces/Actions";
+import {ProjectService} from "./project-service";
 
 @Injectable()
 export class GitLabService {
 
   constructor(
     private _eventsService: UserEventsService,
-    private _userService: UserService
+    private _userService: UserService,
+    private _projectService: ProjectService
   ) {
     this.getActions('2390023').subscribe((x: Actions) => console.log(x.approved, x.commit))
   }
