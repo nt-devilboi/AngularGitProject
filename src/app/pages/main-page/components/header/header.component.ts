@@ -32,5 +32,5 @@ export class HeaderComponent {
 
 export interface IReactiveSearchForm {
   Search: FormControl<string | null>,
-  SearchById: FormControl<boolean | null>
+  Switcher: FormControl<string | null>
 }
