@@ -1,6 +1,6 @@
 <header class="header">
   <div class="container">
-    <div class="header__wrapper">
+    <div [formGroup]="FormSearch" class="header__wrapper">
 
 
       <div class="header__row">
@@ -13,7 +13,7 @@
                 </div>
                 <div class="header-switcher__switcher">
                   <div class="header-switcher__var">id</div>
-                  <label class="header-switcher__label" [ngClass]="{active: !searchById}"
+                  <label [formControl]="FormSearch.controls.SearchById" class="header-switcher__label" [ngClass]="{active: !FormSearch.controls.SearchById.value}"
                          (click)="switchSearchMethod()">
                   </label>
                   <div class="header-switcher__var">нику</div>
@@ -24,15 +24,15 @@
 
           <div class="header__big">
             <div class="header__search header-search">
-              <input type="text" [formControl]="SeacrhControl" class="header-search__input">
+              <input type="text" [formControl]="FormSearch.controls.Search" class="header-search__input">
               <div class="header-search__icon">
                 <div class="icon-wrap">
                   <img src="assets/images/icons/icons8-search.svg" alt="">
                 </div>
               </div>
             </div>
-            <ng-container *ngIf="searchById == true && SeacrhControl.invalid && SeacrhControl.touched">
-              <span [style.color]="'red'">ох госпаде, ты выбрал по id, так ищи по id!!! а еще у нас упала пол хедера вниз, ой</span>
+            <ng-container *ngIf="FormSearch.controls.SearchById.value == true && FormSearch.controls.Search.invalid && FormSearch.controls.Search.touched">
+              <span [style.color]="'red'">поиск идёт по id</span>
             </ng-container>
           </div>
 

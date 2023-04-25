@@ -7,29 +7,30 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  protected searchById: boolean = true;
-  public SeacrhControl: FormControl = new FormControl(''); //Todo спросить про formgroup, или оставить так
-  public SwitchControl: FormControl = new FormControl(false); // не факт, что нужен, хотя для статистики требований можно оставить
+  protected FormSearch: FormGroup<IReactiveSearchForm>;
 
   constructor() {
-    // пока так костыльно, потом че нибудь адекватное сделаем
-    this.SeacrhControl.setValidators(Validators.pattern(/^\d+$/))
+    this.FormSearch = new FormGroup<IReactiveSearchForm>({
+      Search: new FormControl("", Validators.pattern(/^\d+$/)),
+      SearchById: new FormControl({value: true, disabled: false})
+    })
   }
 
   switchSearchMethod() {
-    this.searchById = !this.searchById;
+    this.FormSearch.controls.SearchById.setValue(!this.FormSearch.controls.SearchById.value);
+    this.SwitchValidate();
+  }
 
-    console.log(this.SeacrhControl.value)
-
-    // ваще хз это, норм, я что первое в голову ударило, то и написал.
-    if (this.searchById)
-      this.SeacrhControl.setValidators(Validators.pattern(/^\d+$/))
+  // ваще хз это, норм, я что первое в голову ударило, то и написал.
+  private SwitchValidate() {
+    if (this.FormSearch.controls.SearchById)
+      this.FormSearch.controls.Search.setValidators(Validators.pattern(/^\d+$/))
     else
-      this.SeacrhControl.clearValidators()
+      this.FormSearch.controls.Search.clearValidators()
   }
 }
 
 export interface IReactiveSearchForm {
   Search: FormControl<string | null>,
-  Switcher: FormControl<string | null>
+  SearchById: FormControl<boolean | null>
 }
