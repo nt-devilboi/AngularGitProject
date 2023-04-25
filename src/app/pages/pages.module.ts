@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {HeaderComponent} from "./main-page/components/header/header.component";
 import {MainPageComponent} from "./main-page/main-page.component";
-import {CardComponent} from "./main-page/components/card/card.component";
 import {BodyComponent} from "./main-page/components/body/body.component";
 import {UserPageComponent} from "./user-page/user-page.component";
 import {ComparePageComponent} from './compare-page/compare-page.component';

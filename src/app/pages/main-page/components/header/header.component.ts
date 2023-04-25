@@ -11,26 +11,27 @@ export class HeaderComponent {
 
   constructor() {
     this.FormSearch = new FormGroup<IReactiveSearchForm>({
-      Search: new FormControl("", Validators.pattern(/^\d+$/)),
-      SearchById: new FormControl({value: true, disabled: false})
+      search: new FormControl("", Validators.pattern(/^\d+$/)),
+      switchSearchMethod: new FormControl({value: true, disabled: false})
     })
   }
 
   switchSearchMethod() {
-    this.FormSearch.controls.SearchById.setValue(!this.FormSearch.controls.SearchById.value);
+    this.FormSearch.controls.switchSearchMethod.setValue(!this.FormSearch.controls.switchSearchMethod.value);
     this.SwitchValidate();
   }
 
   // ваще хз это, норм, я что первое в голову ударило, то и написал.
   private SwitchValidate() {
-    if (this.FormSearch.controls.SearchById)
-      this.FormSearch.controls.Search.setValidators(Validators.pattern(/^\d+$/))
+    if (this.FormSearch.controls.switchSearchMethod)
+      this.FormSearch.controls.search.setValidators(Validators.pattern(/^\d+$/))
     else
-      this.FormSearch.controls.Search.clearValidators()
+      this.FormSearch.controls.search.clearValidators()
   }
 }
 
+// TODO А так можно оставлять или лучше вынести
 export interface IReactiveSearchForm {
-  Search: FormControl<string | null>,
-  SearchById: FormControl<boolean | null>
+  search: FormControl<string | null>,
+  switchSearchMethod: FormControl<boolean | null>
 }
