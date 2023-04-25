@@ -8,24 +8,28 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class HeaderComponent {
   protected searchById: boolean = true;
-  public SeacrhControl: FormControl = new FormControl(''); //Todo спросить про formgroup, или оставить так
-  public SwitchControl: FormControl = new FormControl(false); // не факт, что нужен, хотя для статистики требований можно оставить
+  protected searchControl: FormControl = new FormControl(''); //Todo спросить про formgroup, или оставить так
+  protected switchControl: FormControl = new FormControl(false); // не факт, что нужен, хотя для статистики требований можно оставить
 
   constructor() {
     // пока так костыльно, потом че нибудь адекватное сделаем
-    this.SeacrhControl.setValidators(Validators.pattern(/^\d+$/))
+    this.searchControl.setValidators(Validators.pattern(/^\d+$/))
   }
 
   switchSearchMethod() {
     this.searchById = !this.searchById;
 
-    console.log(this.SeacrhControl.value)
+    console.log(this.searchControl.value)
 
     // ваще хз это, норм, я что первое в голову ударило, то и написал.
     if (this.searchById)
-      this.SeacrhControl.setValidators(Validators.pattern(/^\d+$/))
+      this.searchControl.setValidators(Validators.pattern(/^\d+$/))
     else
-      this.SeacrhControl.clearValidators()
+      this.searchControl.clearValidators()
+  }
+
+  ok() {
+    console.log(1)
   }
 }
 

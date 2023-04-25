@@ -26,8 +26,6 @@ export class UserEventsService {
       )
   }
 
-  //TODO я уверен, мы написали этот метод!!!!!
-
   // public getCommits(userId: string): Observable<number> {
   //   let params: HttpParams = new HttpParams()
   //     .set("action", "pushed")
@@ -62,7 +60,7 @@ export class UserEventsService {
       .pipe(
         mergeMap((firstResp: HttpResponse<PushEvent[]>) => {
           const pagesCount: number = parseInt(firstResp.headers.get(`X-Total-Pages`) ?? "1");
-          let commitsFirstPage: number = this.getCommitsFromEvents((firstResp.body ?? []))
+          let commitsFirstPage: number = this.getCommitsFromEvents(firstResp.body ?? [])
 
           let pagesCommitsCount: Observable<number>[] = []
 
