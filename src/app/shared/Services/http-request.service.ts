@@ -1,20 +1,17 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpClientModule, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
-import {catchError, Observable, of} from "rxjs";
-import {hasErrors} from "@angular/compiler-cli/ngcc/src/packages/transformer";
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
+import {Observable, of} from "rxjs";
 
 @Injectable({
   providedIn:  'root'
 })
 export class HttpRequestService {
-
-  private _headers: HttpHeaders = new HttpHeaders();
+                                  // временная штука, ибо будем получать токен от пользователя
+  private _headers: HttpHeaders = new HttpHeaders().set("Authorization",`Bearer glpat-jC6u1BmRBS-MLkrps3Va`);
 
   constructor(
     private _http: HttpClient
   ) {
-    const token: string = "";
-    this._headers.append("Authorization", `Bearer ${token}`);
   }
 
   //TODO написать хендлер по логике могут и не быть парамсы
