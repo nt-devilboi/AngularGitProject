@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpRequestService} from "./http-request.service";
 import {User} from "../interfaces/User";
 import {HttpParams} from "@angular/common/http";
-import {map, Observable} from "rxjs";
+import {map, Observable, tap} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -15,23 +15,36 @@ export class UserService {
   ) {
   }
 
-  public getUser(field: string, searchById: boolean = false): Observable<User> {
+  // здесь лютый кринж, но работает. верю, что наши руки дойдут до рефакторинга
+  public getUserNt(userName: string, searchById: boolean = false): Observable<User> {
     let params: HttpParams = new HttpParams();
     let uri: string = 'users'
 
     if (searchById)
-      uri += `/${field}`
-    else
-      params.set('username', field)
+      return this._http.getData<User>(uri +=`/${userName}`, params)
+        .pipe(tap(console.log),
+          map(resp => resp.body),
+        )
+    // отличие в том, что в одном месте мы получаем массив, а вдругом нет
+      return this._http.getData<User>(uri, params.set('username', userName))
+        .pipe(tap(console.log),
+          map(resp => resp.body[0] as User),
+        )
+  }
 
+  public getUser(userName: string, searchById: boolean = false): Observable<User> {
+    let params: HttpParams = new HttpParams();
+    let uri: string = 'users'
+
+    if (searchById)
+      uri += `/${userName}`
+    else
+      params = params.set('username', userName)
+
+    // waring
     return this._http.getData<User>(uri, params)
-      .pipe(
-        map(resp => resp.body as User),
+      .pipe(tap(console.log),
+        map(resp => resp.body[0] as User),
       )
   }
-
-  public GetInfoUser(userId: string): Observable<User> {
-    return this._http.getData<User>(this._urnGetInfoUser(userId)).pipe(map(user => user.body as User));
-  }
-
 }

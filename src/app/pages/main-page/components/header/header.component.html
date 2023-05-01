@@ -13,8 +13,8 @@
                 </div>
                 <div class="header-switcher__switcher">
                   <div class="header-switcher__var">id</div>
-                  <label [formControl]="FormSearch.controls.switchSearchMethod" class="header-switcher__label" [ngClass]="{active: !FormSearch.controls.switchSearchMethod.value}"
-                         (click)="switchSearchMethod()">
+                  <label [formControl]="FormSearch.controls.switchSearch" class="header-switcher__label" [ngClass]="{active: !FormSearch.controls.switchSearch.value}"
+                         (click)="switchSearch()">
                   </label>
                   <div class="header-switcher__var">нику</div>
                 </div>
@@ -31,7 +31,10 @@
                 </div>
               </div>
             </div>
-            <ng-container *ngIf="FormSearch.controls.switchSearchMethod.value == true && FormSearch.controls.search.invalid && FormSearch.controls.search.touched">
+            <ng-container>
+              <button (click)="GetUser()">click me</button>
+            </ng-container>
+            <ng-container *ngIf="FormSearch.controls.switchSearch.value == true && FormSearch.controls.search.invalid && FormSearch.controls.search.touched">
               <span [style.color]="'red'">поиск идёт по id</span>
             </ng-container>
           </div>
@@ -41,7 +44,6 @@
               <span class="compare">Сравнить</span>
             </a>
           </div>
-
       </div>
     </div>
   </div>
