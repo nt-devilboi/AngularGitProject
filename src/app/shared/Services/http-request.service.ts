@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpClientModule, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
-import {catchError, Observable, of} from "rxjs";
-import {hasErrors} from "@angular/compiler-cli/ngcc/src/packages/transformer";
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
+import {Observable, of} from "rxjs";
 
 @Injectable({
   providedIn:  'root'

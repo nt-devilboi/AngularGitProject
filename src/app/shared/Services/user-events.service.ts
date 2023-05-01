@@ -26,30 +26,6 @@ export class UserEventsService {
       )
   }
 
-  //TODO я уверен, мы написали этот метод!!!!!
-
-  // public getCommits(userId: string): Observable<number> {
-  //   let params: HttpParams = new HttpParams()
-  //     .set("action", "pushed")
-  //     .set("page", 1)
-  //     .set("per_page", 100)
-  //
-  //   console.log("метод запущен")
-  //   return this.getCountCommits(userId, params).pipe(map(x => x.commits));
-  // }
-  //
-  // private getCountCommits(userId: string, params: HttpParams): Observable<{ commits: number, totalPage: number }> {
-  //   return this._http.getData<PushEvent[]>(`${this.urlEvent(userId)}`, params)
-  //     .pipe(map(x => {
-  //         const total = parseInt(x.headers.get(`X-Total-Pages`) ?? "0");
-  //         console.log("pages: " + total)
-  //         const data = x.body ?? []
-  //         const commits = data.map(x => x.push_data.commit_count).reduce((prev, cur) => prev + cur);
-  //         return {commits: commits, totalPage: total}
-  //       }), // чёта надо сделать
-  //       tap(x => console.log(x))) // просто ради провекри
-  // }
-
   public getCommits(userId: string): Observable<number> {
     const params: HttpParams = new HttpParams()
       .set("action", "pushed")
@@ -98,3 +74,26 @@ export class UserEventsService {
     return events.reduce((prev, cur) => prev + cur.push_data.commit_count, 0)
   }
 }
+
+
+// public getCommits(userId: string): Observable<number> {
+//   let params: HttpParams = new HttpParams()
+//     .set("action", "pushed")
+//     .set("page", 1)
+//     .set("per_page", 100)
+//
+//   console.log("метод запущен")
+//   return this.getCountCommits(userId, params).pipe(map(x => x.commits));
+// }
+//
+// private getCountCommits(userId: string, params: HttpParams): Observable<{ commits: number, totalPage: number }> {
+//   return this._http.getData<PushEvent[]>(`${this.urlEvent(userId)}`, params)
+//     .pipe(map(x => {
+//         const total = parseInt(x.headers.get(`X-Total-Pages`) ?? "0");
+//         console.log("pages: " + total)
+//         const data = x.body ?? []
+//         const commits = data.map(x => x.push_data.commit_count).reduce((prev, cur) => prev + cur);
+//         return {commits: commits, totalPage: total}
+//       }), // чёта надо сделать
+//       tap(x => console.log(x))) // просто ради провекри
+// }

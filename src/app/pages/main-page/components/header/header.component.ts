@@ -27,11 +27,10 @@ export class HeaderComponent {
 
   // TODO выкидывать, ошибку, что строка пустка, если нажать поиск
   GetUser() {
-    console.log(`Я работаю ${this.FormSearch.controls.search.value}`)
-    if (this.FormSearch.controls.search.value != ""){
-      console.log("я внутри получения")
-      this._userData.GetMainInfoUser(this.FormSearch.controls.search.value, this.FormSearch.controls.switchSearch.value)
-        .pipe(tap(x => console.log(x.name)))
+    if (this.FormSearch.controls.search.value != "") {
+      throw new Error("строка пусткая") // пока пусть будет так, я позже придумаю норм идею
+    } else {
+      return this._userData.GetMainInfoUser(this.FormSearch.controls.search.value, this.FormSearch.controls.switchSearch.value)
         .subscribe(user => this.User = user);
     }
   }
