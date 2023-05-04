@@ -3,7 +3,6 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {IGitApi} from "../../../../app.module";
 import {GitLabService} from "../../../../shared/Services/git-lab.service";
 import {MainInfoUser} from "../../../../shared/interfaces/MainInfoUser";
-import {tap} from "rxjs";
 
 @Component({
   selector: 'app-header',
