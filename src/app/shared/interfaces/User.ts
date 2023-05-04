@@ -1,4 +1,4 @@
-import {Actions} from "./Actions";
+import {Actions} from "./Event/Actions";
 
 export type User = {
   id: string,

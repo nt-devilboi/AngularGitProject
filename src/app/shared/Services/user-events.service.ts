@@ -9,6 +9,8 @@ import {HttpParams, HttpResponse} from "@angular/common/http";
   providedIn: 'root'
 })
 export class UserEventsService {
+
+  // как я выяснил такое - это кринж, лучше не делать!!)( а менять лень, чтож поделать
   private urlEvent = (userId: string) => `users/${userId}/events`;
 
   constructor(private _http: HttpRequestService) {
