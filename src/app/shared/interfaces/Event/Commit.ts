@@ -1,4 +1,4 @@
-import {Stats} from "./Stats";
+import {Stats} from "../Projects/Stats";
 
 export type Commit = {
   id: string,

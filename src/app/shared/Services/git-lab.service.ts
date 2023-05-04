@@ -3,7 +3,7 @@ import {UserEventsService} from "./user-events.service";
 import {MainInfoUser} from "../interfaces/MainInfoUser";
 import {UserService} from "./user.service";
 import {forkJoin, map, mergeMap, Observable, tap} from "rxjs";
-import {Actions} from "../interfaces/Actions";
+import {Actions} from "../interfaces/Event/Actions";
 import {ProjectService} from "./project-service";
 
 @Injectable()
