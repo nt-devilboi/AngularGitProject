@@ -33,7 +33,6 @@ const routes: Routes = [
   declarations: [
     HeaderComponent,
     MainPageComponent,
-    CardComponent,
     BodyComponent,
     MainPageComponent,
     UserPageComponent,
