@@ -1,1 +1,13 @@
-fdsafdsa
+<section class="login">
+    <div class="login__wrapper">
+        <h1 class="login__title">
+            Введите токен для доступа приложения к API GitLab
+        </h1>
+        <form action="" class="login__form login-form" [formGroup]="_loginForm" (ngSubmit)="submit()">
+            <div class="login-form__field">
+                <input type="text" class="login-form__input" placeholder="Введите токен" formControlName="token">
+            </div>
+            <input type="submit" class="submit">
+        </form>
+    </div>
+</section>
