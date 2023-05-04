@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {Observable} from 'rxjs';
+import {Observable, tap} from 'rxjs';
 import {TokenService} from "../Services/token.service";
 
 @Injectable({
@@ -17,5 +17,11 @@ export class AuthGuard{
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this._token.isValidToken()
+      .pipe(
+        tap(v => {
+          if (!v)
+            this._router.navigate(['login'])
+        })
+      )
   }
 }

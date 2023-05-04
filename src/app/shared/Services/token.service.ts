@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpRequestService} from "./http-request.service";
-import {map, Observable} from "rxjs";
+import {catchError, map, Observable, of, throwError} from "rxjs";
 import {HttpHeaders, HttpParams} from "@angular/common/http";
 import {Router} from "@angular/router";
 
@@ -24,12 +24,12 @@ export class TokenService {
       .pipe(
         map(r => {
           const body: response = r.body as response
-          if (isResponseError(body))
-            return false
 
           this.setTimeOutExpiration(new Date(body.expires_at))
           return true
-        })
+        }),
+        catchError(() =>  of(false)
+        ),
       )
   }
 
@@ -47,17 +47,6 @@ export class TokenService {
   }
 }
 
-
-type responseError = {
-  error: string
-}
-
-type responseSuccess = {
+type response = {
   'expires_at': Date
-}
-
-type response = responseError | responseSuccess
-
-function isResponseError(r: response): r is responseError {
-  return (r as responseError).error !== undefined
 }

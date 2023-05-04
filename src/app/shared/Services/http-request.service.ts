@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
-import {Observable, of} from "rxjs";
+import {catchError, Observable, of, throwError} from "rxjs";
 
 @Injectable({
   providedIn:  'root'
@@ -23,6 +23,9 @@ export class HttpRequestService {
       headers,
       observe: 'response'
     })
+      .pipe(
+        catchError((err) => throwError(err))
+      )
   }
 
   // TODO написать норм все
