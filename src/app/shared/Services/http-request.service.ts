@@ -6,19 +6,21 @@ import {Observable, of} from "rxjs";
   providedIn:  'root'
 })
 export class HttpRequestService {
-                                  // временная штука, ибо будем получать токен от пользователя
-  private _headers: HttpHeaders = new HttpHeaders().set("Authorization",`Bearer glpat-jC6u1BmRBS-MLkrps3Va`);
 
   constructor(
-    private _http: HttpClient
+    private _httpClient: HttpClient,
   ) {
   }
 
   //TODO написать хендлер по логике могут и не быть парамсы
-  public getData<TGet>(uri: string, params?: HttpParams): Observable<HttpResponse<TGet>> {
-    return this._http.get<TGet>("https://gitlab.com/api/v4/" + uri, {
+  public getData<TGet>(
+    uri: string,
+    params?: HttpParams,
+    headers: HttpHeaders = new HttpHeaders().append('Authorization', `Bearer ${localStorage.getItem('token')}`))
+    : Observable<HttpResponse<TGet>> {
+    return this._httpClient.get<TGet>("https://gitlab.com/api/v4/" + uri, {
       params,
-      headers: this._headers,
+      headers,
       observe: 'response'
     })
   }

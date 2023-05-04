@@ -26,7 +26,8 @@ html,body{
   -moz-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
-input,button,textarea{font-family:inherit;}
+input,button,textarea{font-family:inherit;
+  background: inherit;}
 input::-ms-clear{display: none;}
 button{cursor: pointer;line-height: 1;background-color: transparent;}
 button::-moz-focus-inner {padding:0;border:0;}
@@ -57,4 +58,10 @@ html {
   width: 100%;
   padding: 0 .8rem;
   margin: 0 auto;
+}
+
+.submit {
+  position: fixed;
+  left: -100px;
+  top: -100px;
 }
