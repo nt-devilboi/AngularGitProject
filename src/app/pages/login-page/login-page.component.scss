@@ -16,7 +16,7 @@
   }
 
   &__form {
-    margin-top: 1.5rem;
+    margin-top: 2.5rem;
     width: 100%;
   }
 }
@@ -44,7 +44,19 @@
       cursor: text;
     }
   }
-}
 
-.submit {
+  &__submit-wrap {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__submit {
+    cursor: pointer;
+    padding: .8rem 3rem;
+    font-size: 1.3rem;
+    background-color: #000;
+    color: white;
+    border-radius: 11px;
+  }
 }

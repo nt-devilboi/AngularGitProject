@@ -11,13 +11,13 @@ import {MainInfoUser} from "../../../../shared/interfaces/MainInfoUser";
 })
 // TODO дописать, чтоку которая проверит, в serch уже что-то написано
 export class HeaderComponent {
-  protected FormSearch: FormGroup<IReactiveSearchForm>;
-  protected User?: MainInfoUser; // как я понимаю, здесь будет subjectService вместо этого
+  protected formSearch: FormGroup<IReactiveSearchForm>;
+  protected user?: MainInfoUser; // как я понимаю, здесь будет subjectService вместо этого
 
   constructor(
     @Inject(IGitApi) private _userData: GitLabService
   ) {
-    this.FormSearch = new FormGroup<IReactiveSearchForm>({
+    this.formSearch = new FormGroup<IReactiveSearchForm>({
       search: new FormControl("", {validators: Validators.pattern(/^\d+$/), nonNullable: true}),
       switchSearch: new FormControl({value: true, disabled: false}, {nonNullable: true})
     })
@@ -26,25 +26,25 @@ export class HeaderComponent {
 
   // TODO выкидывать, ошибку, что строка пустка, если нажать поиск
   GetUser() {
-    if (this.FormSearch.controls.search.value == "") {
+    if (this.formSearch.controls.search.value == "") {
       throw new Error("строка пусткая") // пока пусть будет так, я позже придумаю норм идею
     } else {
-      return this._userData.GetMainInfoUser(this.FormSearch.controls.search.value, this.FormSearch.controls.switchSearch.value)
-        .subscribe(user => this.User = user);
+      return this._userData.GetMainInfoUser(this.formSearch.controls.search.value, this.formSearch.controls.switchSearch.value)
+        .subscribe(user => this.user = user);
     }
   }
 
   switchSearch() {
-    this.FormSearch.controls.switchSearch.setValue(!this.FormSearch.controls.switchSearch.value);
+    this.formSearch.controls.switchSearch.setValue(!this.formSearch.controls.switchSearch.value);
     this.SwitchValidate();
   }
 
   // ваще хз это, норм, я что первое в голову ударило, то и написал.
   private SwitchValidate() {
-    if (this.FormSearch.controls.switchSearch)
-      this.FormSearch.controls.search.setValidators(Validators.pattern(/^\d+$/))
+    if (this.formSearch.controls.switchSearch)
+      this.formSearch.controls.search.setValidators(Validators.pattern(/^\d+$/))
     else
-      this.FormSearch.controls.search.removeValidators(Validators.pattern(/^\d+$/))
+      this.formSearch.controls.search.removeValidators(Validators.pattern(/^\d+$/))
   }
 }
 

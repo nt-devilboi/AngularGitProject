@@ -13,7 +13,7 @@
                 </div>
                 <div class="header-switcher__switcher">
                   <div class="header-switcher__var">id</div>
-                  <label [formControl]="FormSearch.controls.switchSearch" class="header-switcher__label" [ngClass]="{active: !FormSearch.controls.switchSearch.value}"
+                  <label [formControl]="formSearch.controls.switchSearch" class="header-switcher__label" [ngClass]="{active: !formSearch.controls.switchSearch.value}"
                          (click)="switchSearch()">
                   </label>
                   <div class="header-switcher__var">нику</div>
@@ -24,7 +24,7 @@
 
           <div class="header__big">
             <div class="header__search header-search">
-              <input type="text" [formControl]="FormSearch.controls.search" class="header-search__input">
+              <input type="text" [formControl]="formSearch.controls.search" class="header-search__input">
               <div class="header-search__icon">
                 <div class="icon-wrap">
                   <img src="assets/images/icons/icons8-search.svg" alt="">
@@ -34,14 +34,14 @@
             <ng-container>
               <button (click)="GetUser()">click me</button>
             </ng-container>
-            <ng-container *ngIf="FormSearch.controls.switchSearch.value == true && FormSearch.controls.search.invalid && FormSearch.controls.search.touched">
+            <ng-container *ngIf="formSearch.controls.switchSearch.value == true && formSearch.controls.search.invalid && formSearch.controls.search.touched">
               <span [style.color]="'red'">поиск идёт по id</span>
             </ng-container>
           </div>
 
           <div class="header__small">
-            <a href="#" class="header__button" routerLink="compare">
-              <span class="compare">Сравнить</span>
+            <a href="#" class="button" routerLink="compare">
+              <span class="button__text">Сравнить</span>
             </a>
           </div>
       </div>
