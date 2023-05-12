@@ -9,6 +9,7 @@ import {MainInfoUser} from "../../../../shared/interfaces/MainInfoUser";
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
+
 // TODO дописать, чтоку которая проверит, в serch уже что-то написано
 export class HeaderComponent {
   protected formSearch: FormGroup<IReactiveSearchForm>;
@@ -18,11 +19,19 @@ export class HeaderComponent {
     @Inject(IGitApi) private _userData: GitLabService
   ) {
     this.formSearch = new FormGroup<IReactiveSearchForm>({
-      search: new FormControl("", {validators: Validators.pattern(/^\d+$/), nonNullable: true}),
-      switchSearch: new FormControl({value: true, disabled: false}, {nonNullable: true})
+      search: new FormControl("", {
+        validators: Validators.pattern(/^\d+$/),
+        nonNullable: true
+      }),
+      switchSearch: new FormControl({
+          value: true,
+          disabled: false
+        },
+        {
+          nonNullable: true
+        })
     })
   }
-
 
   // TODO выкидывать, ошибку, что строка пустка, если нажать поиск
   GetUser() {

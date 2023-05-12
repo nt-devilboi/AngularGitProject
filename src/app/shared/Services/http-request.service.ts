@@ -16,8 +16,8 @@ export class HttpRequestService {
   public getData<TGet>(
     uri: string,
     params?: HttpParams,
-    headers: HttpHeaders = new HttpHeaders().append('Authorization', `Bearer ${localStorage.getItem('token')}`))
-    : Observable<HttpResponse<TGet>> {
+    headers: HttpHeaders = new HttpHeaders().append('Authorization', `Bearer ${localStorage.getItem('token')}`)
+  ): Observable<HttpResponse<TGet>> {
     return this._httpClient.get<TGet>("https://gitlab.com/api/v4/" + uri, {
       params,
       headers,
