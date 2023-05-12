@@ -6,7 +6,7 @@
     gap: 2rem;
   }
 
-  &__wrapper {
+  &__form {
     width: 80%;
     margin: 0 auto;
   }
@@ -17,6 +17,7 @@
 
   &__big {
     flex-grow: 1;
+    position: relative;
   }
 
   &__search {
@@ -49,7 +50,13 @@
     right: 0;
     top: 50%;
     transform: translate(0, -50%);
-    pointer-events: none;
+    //pointer-events: none;
+    cursor: pointer;
+    background-color: #f3f3f3;
+    border: 1px solid black;
+    border-left: none;
+    border-top-right-radius: 11px;
+    border-bottom-right-radius: 11px;
   }
 }
 
@@ -66,7 +73,14 @@
     object-fit: contain;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1, 1);
+    transition: all ease .2s;
+  }
+
+  &:hover {
+    & img {
+      transform: translate(-50%, -50%) scale(-1, 1);
+    }
   }
 }
 
@@ -133,4 +147,16 @@
 
   &__circle {
   }
+}
+
+.form-invalid {
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  font-size: 1rem;
+  padding: .5rem 1rem;
+  background-color: #c40202;
+  color: white;
+  transform: translate(-50%, 90%);
+  border-radius: 11px;
 }

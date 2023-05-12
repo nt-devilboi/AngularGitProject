@@ -7,6 +7,7 @@ import {IGitUser} from "./shared/interfaces/IGitUser";
 import {GitLabService} from "./shared/Services/git-lab.service";
 import {AppRoutingModule} from "./app-routing.module";
 import {PagesModule} from "./pages/pages.module";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 export const IGitApi = new InjectionToken<IGitUser>("Api")
 
@@ -18,7 +19,8 @@ export const IGitApi = new InjectionToken<IGitUser>("Api")
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    PagesModule
+    PagesModule,
+    BrowserAnimationsModule
   ],
   exports: [
   ],

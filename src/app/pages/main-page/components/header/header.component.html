@@ -1,7 +1,6 @@
 <header class="header">
   <div class="container">
-    <div class="header__wrapper">
-
+    <form action="" [formGroup]="formSearch" (ngSubmit)="GetUser()" class="header__form">
 
       <div class="header__row">
 
@@ -25,17 +24,21 @@
           <div class="header__big">
             <div class="header__search header-search">
               <input type="text" [formControl]="formSearch.controls.search" class="header-search__input">
-              <div class="header-search__icon">
+              <div class="header-search__icon" (click)="GetUser()">
                 <div class="icon-wrap">
                   <img src="assets/images/icons/icons8-search.svg" alt="">
                 </div>
               </div>
             </div>
-            <ng-container>
-              <button (click)="GetUser()">click me</button>
+            <ng-container
+                    *ngIf="
+                    formSearch.controls.switchSearch.value == true
+                    && formSearch.controls.search.invalid"
+            >
+              <span class="form-invalid" @invalid>id может состоять только из цифр</span>
             </ng-container>
-            <ng-container *ngIf="formSearch.controls.switchSearch.value == true && formSearch.controls.search.invalid && formSearch.controls.search.touched">
-              <span [style.color]="'red'">поиск идёт по id</span>
+            <ng-container *ngIf="isEmpty">
+              <span class="form-invalid" @invalid>запрос не может быть пустым</span>
             </ng-container>
           </div>
 
@@ -45,6 +48,6 @@
             </a>
           </div>
       </div>
-    </div>
+    </form>
   </div>
 </header>
