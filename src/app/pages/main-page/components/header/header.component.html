@@ -12,7 +12,7 @@
                 </div>
                 <div class="header-switcher__switcher">
                   <div class="header-switcher__var">id</div>
-                  <label [formControl]="formSearch.controls.switchSearch" class="header-switcher__label" [ngClass]="{active: !formSearch.controls.switchSearch.value}"
+                  <label ngDefaultControl [formControl]="formSearch.controls.switchSearch" class="header-switcher__label" [ngClass]="{active: !formSearch.controls.switchSearch.value}"
                          (click)="switchSearch()">
                   </label>
                   <div class="header-switcher__var">нику</div>

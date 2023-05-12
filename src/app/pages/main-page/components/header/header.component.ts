@@ -5,6 +5,7 @@ import {GitLabService} from "../../../../shared/Services/git-lab.service";
 import {MainInfoUser} from "../../../../shared/interfaces/MainInfoUser";
 import {transition, trigger, useAnimation} from "@angular/animations";
 import {transformOpacity} from "../../../../shared/animations/transform-opacity";
+import {IReactiveSearchForm} from "../../../../shared/interfaces/IReactiveSearchForm";
 
 @Component({
   selector: 'app-header',
@@ -50,10 +51,7 @@ export class HeaderComponent {
         validators: Validators.pattern(/^\d+$/),
         nonNullable: true
       }),
-      switchSearch: new FormControl({
-          value: true,
-          disabled: false
-        },
+      switchSearch: new FormControl(true,
         {
           nonNullable: true
         })
@@ -65,10 +63,9 @@ export class HeaderComponent {
     })
   }
 
-  // TODO выкидывать, ошибку, что строка пустка, если нажать поиск
   GetUser(): any {
     if (this.formSearch.controls.search.value == "") {
-      this.isEmpty = true // пока пусть будет так, я позже придумаю норм идею
+      this.isEmpty = true
     } else {
       return this._userData.GetMainInfoUser(this.formSearch.controls.search.value, this.formSearch.controls.switchSearch.value)
         .subscribe(user => this.user = user);
@@ -80,17 +77,10 @@ export class HeaderComponent {
     this.SwitchValidate();
   }
 
-  // ваще хз это, норм, я что первое в голову ударило, то и написал.
   private SwitchValidate() {
     if (this.formSearch.controls.switchSearch)
       this.formSearch.controls.search.setValidators(Validators.pattern(/^\d+$/))
     else
       this.formSearch.controls.search.removeValidators(Validators.pattern(/^\d+$/))
   }
-}
-
-// TODO А так можно оставлять или лучше вынести
-export interface IReactiveSearchForm {
-  search: FormControl<string>,
-  switchSearch: FormControl<boolean>
 }
