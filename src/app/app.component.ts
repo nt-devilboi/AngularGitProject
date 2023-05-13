@@ -1,6 +1,4 @@
-import {Component, Inject} from '@angular/core';
-import {GitLabService} from "./shared/Services/git-lab.service";
-import {IGitApi} from "./app.module";
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,14 +6,6 @@ import {IGitApi} from "./app.module";
   styleUrls: ['./app.component.scss'] // сервис, которые делает отписки.... позже!!! takeuntil nzdestroy // диз система
 })
 export class AppComponent {
-  title = 'ProjectArtsofte';
-  data = []
 
-  constructor(
-    @Inject(IGitApi) private _userData: GitLabService
-  ) {}
-
-  click() {
-    this._userData.GetMainInfoUser("927908");
-  }
+  constructor() {}
 }

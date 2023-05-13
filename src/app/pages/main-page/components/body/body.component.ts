@@ -1,20 +1,30 @@
-import {Component, Inject} from '@angular/core';
-import {IGitApi} from "../../../../app.module";
-import {GitLabService} from "../../../../shared/Services/git-lab.service";
+import {AfterViewInit, Component, ViewChild, ViewContainerRef} from '@angular/core';
+import {UserNoCompareCard} from "../../../../shared/interfaces/Staff/UserNoCompareCard";
+import {CardComponent} from "../../../../shared/components/card/card.component";
 
 @Component({
   selector: 'app-body',
   templateUrl: './body.component.html',
   styleUrls: ['./body.component.scss']
 })
-export class BodyComponent {
-  title = 'ProjectArtsofte';
+export class BodyComponent implements AfterViewInit{
+  @ViewChild('users', {read: ViewContainerRef}) usersContainer!: ViewContainerRef
 
   constructor(
-    @Inject(IGitApi) private _userData: GitLabService
   ) {}
 
-  GetUser() {
+  protected addUser(userType?: UserNoCompareCard): void {
+    let userComponentRef = this.usersContainer.createComponent(CardComponent)
+
+    userComponentRef.instance.userType = {
+      id: 1,
+      isCompare: false
+    }
 
   }
+
+  ngAfterViewInit(): void {
+    console.log(this.usersContainer)
+  }
+
 }

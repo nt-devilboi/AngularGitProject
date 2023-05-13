@@ -1,10 +1,6 @@
 import {Actions} from "./Event/Actions";
+import {User} from "./User";
 
-export type MainInfoUser = {
-  id: string,
-  username: string,
-  name: string,
-  avatar_url: string,
-  web_url: string,
+export type MainInfoUser = User & {
   actions: Actions
 }

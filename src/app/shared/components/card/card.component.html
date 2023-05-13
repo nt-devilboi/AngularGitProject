@@ -1,1 +1,7 @@
-<p>card works!</p>
+<ng-container *ngIf="user; else loader">
+    {{ user.username }}
+</ng-container>
+
+<ng-template #loader>
+    loading
+</ng-template>

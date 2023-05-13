@@ -16,7 +16,7 @@ export class GitLabService {
   ) {
   }
 
-  public GetMainInfoUser(userIdent: string, searchByName: boolean = false): Observable<MainInfoUser> {
+  public GetMainInfoUser(userIdent: string | number, searchByName: boolean = false): Observable<MainInfoUser> {
     return this._userService.getUser(userIdent, searchByName)
       .pipe(
         mergeMap(user => this.getActions(user.username).pipe(

@@ -1,5 +1,5 @@
-import {User} from "./User";
-import {MainInfoUser} from "./MainInfoUser";
+import {User} from "../User";
+import {MainInfoUser} from "../MainInfoUser";
 
 export interface IGitUser {
   GetUserByName() : User

@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import {HttpClientModule} from "@angular/common/http";
-import {IGitUser} from "./shared/interfaces/IGitUser";
+import {IGitUser} from "./shared/interfaces/Staff/IGitUser";
 import {GitLabService} from "./shared/Services/git-lab.service";
 import {AppRoutingModule} from "./app-routing.module";
 import {PagesModule} from "./pages/pages.module";

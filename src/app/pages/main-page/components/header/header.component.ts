@@ -5,7 +5,7 @@ import {GitLabService} from "../../../../shared/Services/git-lab.service";
 import {MainInfoUser} from "../../../../shared/interfaces/MainInfoUser";
 import {transition, trigger, useAnimation} from "@angular/animations";
 import {transformOpacity} from "../../../../shared/animations/transform-opacity";
-import {IReactiveSearchForm} from "../../../../shared/interfaces/IReactiveSearchForm";
+import {IReactiveSearchForm} from "../../../../shared/interfaces/Staff/IReactiveSearchForm";
 
 @Component({
   selector: 'app-header',

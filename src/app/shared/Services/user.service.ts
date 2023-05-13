@@ -14,7 +14,7 @@ export class UserService {
   ) {
   }
 
-  public getUser(userName: string, searchById: boolean = false): Observable<User> {
+  public getUser(userName: string | number, searchById: boolean = false): Observable<User> {
     let params: HttpParams = new HttpParams();
     let uri: string = 'users'
 
