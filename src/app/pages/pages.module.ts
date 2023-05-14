@@ -10,6 +10,7 @@ import {NotFoundPageComponent} from './not-found-page/not-found-page.component';
 import {SearchResultComponent} from './main-page/components/search-result/search-result.component';
 import {FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {LoginPageComponent} from "./login-page/login-page.component";
+import {CardComponent} from "../shared/components/card/card.component";
 
 const routes: Routes = [
   {
@@ -47,6 +48,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     FormsModule,
     RouterModule.forChild(routes),
+    CardComponent,
   ],
   exports: [
     RouterModule,

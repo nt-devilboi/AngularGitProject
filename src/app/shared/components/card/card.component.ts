@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnInit} from '@angular/core';
 import {UserCardComponent} from "../../interfaces/Staff/UserCardComponent";
 import {UserNoCompareCard, UserNoCompareId} from "../../interfaces/Staff/UserNoCompareCard";
 import {DestroyService} from "../../Services/destroy.service";
@@ -22,8 +22,10 @@ import {MainInfoUser} from "../../interfaces/MainInfoUser";
 })
 export class CardComponent implements OnInit {
 
-  public userType!: UserCardComponent;
+  // public userType!: UserCardComponent;
   protected user!: MainInfoUser;
+
+  @Input('user') userType!: UserCardComponent | MainInfoUser
 
   constructor(
     @Inject(IGitApi) private _userData: GitLabService,
@@ -33,13 +35,16 @@ export class CardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.isUserNoCompare(this.userType)) {
-      console.log(this.userType)
-      if (this.isSearchById(this.userType))
-        this.getUser(this.userType.id, true)
-      else
-        this.getUser(this.userType.name)
+    if (this.isUserMainPage(this.userType)) {
+      this.user = this.userType
+      return
     }
+    // if (this.isUserNoCompare(this.userType)) {
+    //   if (this.isSearchById(this.userType))
+    //     this.getUser(this.userType.id, true)
+    //   else
+    //     this.getUser(this.userType.name)
+    // }
   }
 
   private getUser(param: string | number, searchById: boolean = false): void {
@@ -47,7 +52,7 @@ export class CardComponent implements OnInit {
       .pipe(this._destroy.TakeUntilDestroy)
       .subscribe(user => {
         this.user = user
-        this.cd.detectChanges()
+        this.cd.markForCheck()
       })
   }
 
@@ -60,4 +65,7 @@ export class CardComponent implements OnInit {
     return (user as UserNoCompareId).id !== undefined
   }
 
+  private isUserMainPage(user: UserCardComponent | MainInfoUser): user is MainInfoUser {
+    return (user as UserCardComponent).isCompare === undefined
+  }
 }

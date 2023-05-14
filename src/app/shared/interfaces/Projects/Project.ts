@@ -1,7 +1,9 @@
-import {Stats} from "./Stats";
+import {StatsLines} from "./StatsLines";
+import {Language1} from "./Language";
 
 export type Project = {
   id: number,
   created_at: Date,
-  stats: Stats
+  statsLines: StatsLines
+  languages: Partial<Language1>
 }

@@ -3,7 +3,7 @@ export type UserNoCompareName = {
 }
 
 export type UserNoCompareId = {
-  id: number,
+  id: string,
 }
 
 export type UserNoCompareCard = (UserNoCompareName | UserNoCompareId) & {

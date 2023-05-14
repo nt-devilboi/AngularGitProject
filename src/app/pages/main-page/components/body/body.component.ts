@@ -1,30 +1,49 @@
-import {AfterViewInit, Component, ViewChild, ViewContainerRef} from '@angular/core';
-import {UserNoCompareCard} from "../../../../shared/interfaces/Staff/UserNoCompareCard";
-import {CardComponent} from "../../../../shared/components/card/card.component";
+import {
+  Component,
+  OnInit,
+  Renderer2,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import {UserStorageService} from "../../../../shared/Services/user-storage.service";
+import {DestroyService} from "../../../../shared/Services/destroy.service";
 
 @Component({
   selector: 'app-body',
+  providers: [
+    DestroyService
+  ],
   templateUrl: './body.component.html',
   styleUrls: ['./body.component.scss']
 })
-export class BodyComponent implements AfterViewInit{
+export class BodyComponent implements OnInit {
   @ViewChild('users', {read: ViewContainerRef}) usersContainer!: ViewContainerRef
+  @ViewChild('user', {read: TemplateRef}) userTemplate!: TemplateRef<any>
 
   constructor(
+    private _userStorage: UserStorageService,
+    private _destroy: DestroyService,
   ) {}
 
-  protected addUser(userType?: UserNoCompareCard): void {
-    let userComponentRef = this.usersContainer.createComponent(CardComponent)
-
-    userComponentRef.instance.userType = {
-      id: 1,
-      isCompare: false
-    }
-
+  ngOnInit(): void {
+    console.log('ngOnInit')
+    this._userStorage.nextUser$
+      .pipe(this._destroy.TakeUntilDestroy)
+      .subscribe(user => {
+        this.usersContainer.createEmbeddedView(this.userTemplate, {user}, {index: 0})
+      })
   }
 
   ngAfterViewInit(): void {
-    console.log(this.usersContainer)
+    console.log('ngAfterViewInit')
+    for (let i = 0; i < 1; i++) {
+      this.usersContainer.createEmbeddedView(this.userTemplate, {
+        user: {
+          id: 927908,
+          isCompare: false
+        }
+      }, {index: 0})
+    }
   }
-
 }

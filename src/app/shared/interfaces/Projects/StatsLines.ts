@@ -1,4 +1,4 @@
-export type Stats = {
+export type StatsLines = {
   additions: number,
   deletions: number,
   total: number

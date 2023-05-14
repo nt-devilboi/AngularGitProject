@@ -1,2 +1,14 @@
-<div class="user-container" #users> </div>
-<button (click)="addUser()">fdsafsafdsafdasfds</button>
+<section class="users">
+    <div class="container container_big">
+        <ul class="users__list">
+            <ng-container #users></ng-container>
+        </ul>
+    </div>
+</section>
+
+
+<ng-template #user let-user='user'>
+    <li class="users__item">
+        <app-card [user]="user"></app-card>
+    </li>
+</ng-template>

@@ -1,0 +1,112 @@
+
+.card {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.2);
+  border: 2px solid black;
+  border-radius: 20px;
+  position: relative;
+
+  &__wrapper {
+    padding: 1.5rem;
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.user {
+  &__info {
+  }
+
+  &__header {
+  }
+
+  &__photo {
+  }
+
+  &__name {
+  }
+
+  &__username {
+  }
+
+  &__id {
+  }
+
+  &__main {
+  }
+
+  &__commits {
+  }
+
+  &__review {
+  }
+
+  &__grow {
+  }
+
+  &__link-wrap {
+  }
+
+  &__link {
+  }
+
+  &__compare {
+  }
+
+  &__delete {
+    position: absolute;
+    right: -10px;
+    top: 10px;
+  }
+}
+
+.compare {
+  &__button {
+  }
+}
+
+.delete {
+  &__wrap {
+    width: 20px;
+    height: 30px;
+    position: relative;
+
+    & img {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.loader {
+  position: absolute;
+  opacity: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #e1e8ff;
+  animation: load 1.5s ease infinite;
+  border-radius: 20px;
+}
+
+@keyframes load {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}

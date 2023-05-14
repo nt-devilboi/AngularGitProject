@@ -1,6 +1,6 @@
 <header class="header">
   <div class="container">
-    <form action="" [formGroup]="formSearch" (ngSubmit)="GetUser()" class="header__form">
+    <form action="" [formGroup]="formSearch" (ngSubmit)="getUser()" class="header__form">
 
       <div class="header__row">
 
@@ -24,7 +24,7 @@
           <div class="header__big">
             <div class="header__search header-search">
               <input type="text" [formControl]="formSearch.controls.search" class="header-search__input">
-              <div class="header-search__icon" (click)="GetUser()">
+              <div class="header-search__icon" (click)="getUser()">
                 <div class="icon-wrap">
                   <img src="assets/images/icons/icons8-search.svg" alt="">
                 </div>

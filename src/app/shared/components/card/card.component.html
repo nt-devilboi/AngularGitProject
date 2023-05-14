@@ -1,7 +1,55 @@
-<ng-container *ngIf="user; else loader">
-    {{ user.username }}
-</ng-container>
+<div class="card">
+    <div class="card__wrapper">
+        <ng-container *ngIf="user; else loader">
+            <div class="user__delete delete">
+                <div class="delete__wrap">
+                    <img src="assets/images/icons/delete.png" alt="">
+                </div>
+            </div>
+            <header class="user__header">
+                <div class="user__photo">
+                    <img [src]="user.avatar_url">
+                </div>
+                <div class="user__info">
+                    <div class="user__name">
+                        {{ user.name }}
+                    </div>
+                    <div class="user__username">
+                        Ник: {{ user.username }}
+                    </div>
+                    <div class="user__id">
+                        ID: {{ user.id }}
+                    </div>
+                </div>
+            </header>
 
-<ng-template #loader>
-    loading
-</ng-template>
+            <div class="user__main">
+                <div class="user__commits">
+                    Коммиты: {{ user.actions.commit }}
+                </div>
+
+                <div class="user__review">
+                    Код-ревью: {{ user.actions.approved }}
+                </div>
+
+                <div class="user__grow"></div>
+                <div class="user__link-wrap">
+                    <a [href]="user.web_url" class="user__link" target="_blank">
+                        Ссылка на GitHub
+                    </a>
+                </div>
+                <div class="user__compare">
+                    <button class="compare__button">
+                        Добавить в сравнение
+                    </button>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-template #loader>
+            <div class="loader"></div>
+        </ng-template>
+    </div>
+</div>
+
+

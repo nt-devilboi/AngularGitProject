@@ -56,8 +56,12 @@ html {
 .container {
   max-width: 1200px;
   width: 100%;
-  padding: 0 .8rem;
+  padding: 0 1.5rem;
   margin: 0 auto;
+
+  &_big {
+    max-width: 1800px;
+  }
 }
 
 .submit {

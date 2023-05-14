@@ -1,0 +1,15 @@
+.users {
+  margin-top: 3rem;
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -1.5rem;
+  }
+
+  &__item {
+    flex: 0 0 25%;
+    padding: 1.5rem;
+    height: auto;
+    min-height: 500px;
+  }
+}

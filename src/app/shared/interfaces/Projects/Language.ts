@@ -1,5 +1,4 @@
 // предлагаю такую концепцию - здесь будут все языки, которые могут быть, а уже там мы будем чекать, если ли они через null
-import {Action} from "../Event/Actions";
 
 export type Language = {
   Java?: number
@@ -11,3 +10,24 @@ export type Language = {
   Ruby: number
 }
 
+// мб лучше так
+
+export type Languages = 'Java' | 'HTML' | 'Shell' | 'JavaScript' | 'Kotlin' | 'Csharp' | 'Ruby'
+
+export type Language1 = {
+  [name in Partial<Languages>]: number
+}
+
+let a: Partial<Language1> = {
+  Java: 4
+}
+
+type l = {
+  a: Partial<Language1>
+}
+
+let b: l = {
+  a: {
+    'Java': 4
+  }
+}

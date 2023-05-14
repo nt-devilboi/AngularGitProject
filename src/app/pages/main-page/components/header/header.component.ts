@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {IGitApi} from "../../../../app.module";
 import {GitLabService} from "../../../../shared/Services/git-lab.service";
@@ -6,11 +6,18 @@ import {MainInfoUser} from "../../../../shared/interfaces/MainInfoUser";
 import {transition, trigger, useAnimation} from "@angular/animations";
 import {transformOpacity} from "../../../../shared/animations/transform-opacity";
 import {IReactiveSearchForm} from "../../../../shared/interfaces/Staff/IReactiveSearchForm";
+import {DestroyService} from "../../../../shared/Services/destroy.service";
+import {UserStorageService} from "../../../../shared/Services/user-storage.service";
+import {UserNoCompareCard,} from "../../../../shared/interfaces/Staff/UserNoCompareCard";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    DestroyService
+  ],
   animations: [
     trigger('invalid', [
       transition('void => *',
@@ -40,11 +47,14 @@ import {IReactiveSearchForm} from "../../../../shared/interfaces/Staff/IReactive
 // TODO дописать, чтоку которая проверит, в serch уже что-то написано
 export class HeaderComponent {
   protected formSearch: FormGroup<IReactiveSearchForm>;
-  protected user?: MainInfoUser; // как я понимаю, здесь будет subjectService вместо этого
+  protected user?: MainInfoUser;
   protected isEmpty: boolean = false
 
   constructor(
-    @Inject(IGitApi) private _userData: GitLabService
+    @Inject(IGitApi) private _userData: GitLabService,
+    private _destroy: DestroyService,
+    private _userStorage: UserStorageService,
+    private cd: ChangeDetectorRef
   ) {
     this.formSearch = new FormGroup<IReactiveSearchForm>({
       search: new FormControl("", {
@@ -57,27 +67,47 @@ export class HeaderComponent {
         })
     })
 
-    this.formSearch.controls.search.valueChanges.subscribe(value => {
+    this.formSearch.controls.search.valueChanges
+      .pipe(this._destroy.TakeUntilDestroy)
+      .subscribe(value => {
       if (value)
         this.isEmpty = false
     })
   }
 
-  GetUser(): any {
+  getUser(): void {
     if (this.formSearch.controls.search.value == "") {
       this.isEmpty = true
-    } else {
-      return this._userData.GetMainInfoUser(this.formSearch.controls.search.value, this.formSearch.controls.switchSearch.value)
-        .subscribe(user => this.user = user);
+
+      setTimeout(() => {
+        this.isEmpty = false
+        this.cd.markForCheck()
+      }, 3000)
+    }
+    else {
+      let user!: UserNoCompareCard
+
+      if (this.formSearch.controls.switchSearch.value)
+        user = {
+          id: this.formSearch.controls.search.value,
+          isCompare: false
+        } as UserNoCompareCard
+      else
+        user = {
+          name: this.formSearch.controls.search.value,
+          isCompare: false
+        } as UserNoCompareCard
+
+      this._userStorage.getNext(user)
     }
   }
 
   switchSearch() {
     this.formSearch.controls.switchSearch.setValue(!this.formSearch.controls.switchSearch.value);
-    this.SwitchValidate();
+    this.switchValidate();
   }
 
-  private SwitchValidate() {
+  private switchValidate() {
     if (this.formSearch.controls.switchSearch)
       this.formSearch.controls.search.setValidators(Validators.pattern(/^\d+$/))
     else
