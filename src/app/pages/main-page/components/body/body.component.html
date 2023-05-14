@@ -9,6 +9,6 @@
 
 <ng-template #user let-user='user'>
     <li class="users__item">
-        <app-card [user]="user"></app-card>
+        <app-card (deleteEvent)="deleteUser($event)" [user]="user"></app-card>
     </li>
 </ng-template>

@@ -7,71 +7,48 @@
   border: 2px solid black;
   border-radius: 20px;
   position: relative;
+  font-size: 1.3rem;
+  transition: all ease .3s;
+
+  &:hover {
+    box-shadow: 0 0 14px rgba(0, 0, 0, 0.4);
+  }
 
   &__wrapper {
-    padding: 1.5rem;
+    padding: 2.5rem;
     position: relative;
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 }
 
 .user {
   &__info {
+    flex-grow: 1;
+    padding-left: 2.5rem;
+    font-size: 1.3rem;
   }
 
   &__header {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover {
+      .user__photo img {
+        transform: scale(1);
+      }
+    }
   }
 
   &__photo {
-  }
-
-  &__name {
-  }
-
-  &__username {
-  }
-
-  &__id {
-  }
-
-  &__main {
-  }
-
-  &__commits {
-  }
-
-  &__review {
-  }
-
-  &__grow {
-  }
-
-  &__link-wrap {
-  }
-
-  &__link {
-  }
-
-  &__compare {
-  }
-
-  &__delete {
-    position: absolute;
-    right: -10px;
-    top: 10px;
-  }
-}
-
-.compare {
-  &__button {
-  }
-}
-
-.delete {
-  &__wrap {
-    width: 20px;
-    height: 30px;
+    flex: 0 0 40%;
+    aspect-ratio: 1;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid black;
     position: relative;
 
     & img {
@@ -81,6 +58,154 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transform: scale(1.04);
+      transition: all ease .3s;
+    }
+  }
+
+  &__name {
+    line-height: 1.2em;
+  }
+
+  &__username {
+    margin-top: .5rem;
+  }
+
+  &__id {
+    margin-top: .5rem;
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  &__commits {
+    margin-top: 2rem;
+  }
+
+  &__review {
+    margin-top: .5rem;
+  }
+
+  &__grow {
+    flex-grow: 1;
+  }
+
+  &__link-wrap {
+    margin-top: 1.5rem;
+  }
+
+  &__link {
+    display: inline-block;
+    position: relative;
+    color: black;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -3px;
+      width: 0;
+      height: 2px;
+      background-color: #000;
+      transition: all ease .4s;
+      transform: translate(-50%, 0);
+    }
+
+    &:hover {
+      &:after {
+        width: 98%;
+      }
+    }
+  }
+
+  &__buttons {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+  }
+
+  &__compare {
+    flex-grow: 1;
+  }
+
+  &__delete {
+    
+  }
+
+  &__show {
+    &:before {
+      transition: all ease .4s;
+    }
+  }
+}
+
+.compare {
+  &__button {
+    width: 100%;
+    //height: 30px;
+    padding: .8rem 2rem;
+    background-color: #fff;
+    border: 1px solid black;
+    border-radius: 11px;
+    font-size: 1.3rem;
+    transition: all ease .3s;
+
+    &:hover {
+      background-color: black;
+      color: white;
+    }
+
+    &.incompare {
+      background-color: black;
+      color: white;
+
+      //&:hover {
+      //  background-color: #fff;
+      //  color: black;
+      //}
+    }
+  }
+}
+
+.delete {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__wrap {
+
+    &:hover {
+      img:nth-child(2) {
+        transform: rotate(15deg) translateY(-2px);
+      }
+    }
+
+    width: 20px;
+    height: 30px;
+    position: relative;
+    cursor: pointer;
+
+    & img {
+      position: absolute;
+      left: 0;
+      width: 100%;
+
+      &:first-child {
+        height: 22px;
+        bottom: 0;
+      }
+
+      &:nth-child(2) {
+        top: 0;
+        height: 7px;
+        transition: all ease .2s;
+      }
+
+      object-fit: fill;
     }
   }
 }

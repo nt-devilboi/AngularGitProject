@@ -1,71 +1,100 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
 import {UserCardComponent} from "../../interfaces/Staff/UserCardComponent";
-import {UserNoCompareCard, UserNoCompareId} from "../../interfaces/Staff/UserNoCompareCard";
 import {DestroyService} from "../../Services/destroy.service";
-import {NgIf} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 import {IGitApi} from "../../../app.module";
 import {GitLabService} from "../../Services/git-lab.service";
 import {MainInfoUser} from "../../interfaces/MainInfoUser";
+import {UserStorageService} from "../../Services/user-storage.service";
+import {RouterLink} from "@angular/router";
+import {User} from "../../interfaces/User";
+import {isUserNoCompare} from "../../typeGuards/isUserNoCompare";
+import {isSearchById} from "../../typeGuards/isSearchById";
+import {isUserMainPage} from "../../typeGuards/isUserMainPage";
 
 @Component({
   standalone: true,
   selector: 'app-card',
   providers: [
-    DestroyService
+    DestroyService,
+    UserStorageService
   ],
   templateUrl: './card.component.html',
   imports: [
-    NgIf
+    NgIf,
+    RouterLink,
+    NgClass
   ],
   styleUrls: ['./card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardComponent implements OnInit {
 
-  // public userType!: UserCardComponent;
   protected user!: MainInfoUser;
-
+  protected toCompare!: boolean
   @Input('user') userType!: UserCardComponent | MainInfoUser
+  @Output() deleteEvent = new EventEmitter<User>
 
   constructor(
     @Inject(IGitApi) private _userData: GitLabService,
     private _destroy: DestroyService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private _userStorage: UserStorageService
   ) {
   }
 
   ngOnInit(): void {
-    if (this.isUserMainPage(this.userType)) {
+    if (isUserMainPage(this.userType)) {
       this.user = this.userType
+      this.isCompare(this.userType)
+      this.cd.markForCheck()
       return
     }
-    // if (this.isUserNoCompare(this.userType)) {
-    //   if (this.isSearchById(this.userType))
-    //     this.getUser(this.userType.id, true)
-    //   else
-    //     this.getUser(this.userType.name)
-    // }
+    if (isUserNoCompare(this.userType)) {
+      if (isSearchById(this.userType))
+        this.getUser(this.userType.id, true)
+      else
+        this.getUser(this.userType.name)
+    }
+
+    this._userStorage.compare$
+      .pipe(this._destroy.TakeUntilDestroy)
+      .subscribe(user => {
+        if (user.id === this.user.id)
+          this.toCompare = !this.toCompare
+      })
   }
 
-  private getUser(param: string | number, searchById: boolean = false): void {
+  private isCompare(user: User): void {
+    this.toCompare = !!this._userStorage.toCompareUsers.find(e => e.id === user.id)
+  }
+
+  private getUser(param: string, searchById: boolean = false): void {
     this._userData.GetMainInfoUser(param, searchById)
       .pipe(this._destroy.TakeUntilDestroy)
       .subscribe(user => {
         this.user = user
+        this.isCompare(user)
+        this._userStorage.storeNext(user)
         this.cd.markForCheck()
       })
   }
 
-  private isUserNoCompare(user: UserCardComponent): user is UserNoCompareCard {
-    return !user.isCompare
+  protected toggleCompare() {
+    this._userStorage.toggleCompare(this.user)
   }
 
-  // @ts-ignore
-  private isSearchById(user: UserNoCompareCard): user is UserNoCompareId {
-    return (user as UserNoCompareId).id !== undefined
-  }
-
-  private isUserMainPage(user: UserCardComponent | MainInfoUser): user is MainInfoUser {
-    return (user as UserCardComponent).isCompare === undefined
+  protected deleteUser() {
+    this._userStorage.deleteUser(this.user)
+    this.deleteEvent.emit(this.user)
   }
 }

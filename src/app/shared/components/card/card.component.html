@@ -1,12 +1,8 @@
 <div class="card">
     <div class="card__wrapper">
         <ng-container *ngIf="user; else loader">
-            <div class="user__delete delete">
-                <div class="delete__wrap">
-                    <img src="assets/images/icons/delete.png" alt="">
-                </div>
-            </div>
-            <header class="user__header">
+            <a [href]="user.web_url" style="display: block" target="_blank">
+            <header class="user__header" >
                 <div class="user__photo">
                     <img [src]="user.avatar_url">
                 </div>
@@ -22,6 +18,7 @@
                     </div>
                 </div>
             </header>
+            </a>
 
             <div class="user__main">
                 <div class="user__commits">
@@ -32,16 +29,32 @@
                     Код-ревью: {{ user.actions.approved }}
                 </div>
 
-                <div class="user__grow"></div>
                 <div class="user__link-wrap">
                     <a [href]="user.web_url" class="user__link" target="_blank">
-                        Ссылка на GitHub
+                        Ссылка на GitLab
                     </a>
                 </div>
-                <div class="user__compare">
-                    <button class="compare__button">
-                        Добавить в сравнение
-                    </button>
+                <div class="user__grow"></div>
+                <a href="#" id="info" class="button user__show" target="_blank" [routerLink]="'/user/' + user.id">
+                    <span class="button__text">Подробнее</span>
+                </a>
+                <div class="user__buttons">
+                    <div class="user__compare">
+                        <button class="compare__button" (click)="toggleCompare()" [ngClass]="{incompare: toCompare}">
+                            <ng-container *ngIf="!toCompare; else inCompare">
+                                В сравнение
+                            </ng-container>
+                            <ng-template #inCompare>
+                                Добавлено
+                            </ng-template>
+                        </button>
+                    </div>
+                    <div class="user__delete delete">
+                        <div class="delete__wrap" (click)="deleteUser()">
+                            <img src="assets/images/icons/rubbish.png" alt="">
+                            <img src="assets/images/icons/rubbish-top.png" alt="">
+                        </div>
+                    </div>
                 </div>
             </div>
         </ng-container>

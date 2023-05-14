@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {UserEventsService} from "./user-events.service";
 import {MainInfoUser} from "../interfaces/MainInfoUser";
 import {UserService} from "./user.service";
-import {forkJoin, map, mergeMap, Observable, tap} from "rxjs";
+import {forkJoin, map, mergeMap, Observable} from "rxjs";
 import {Actions} from "../interfaces/Event/Actions";
 import {ProjectService} from "./project-service";
 
@@ -16,7 +16,7 @@ export class GitLabService {
   ) {
   }
 
-  public GetMainInfoUser(userIdent: string | number, searchByName: boolean = false): Observable<MainInfoUser> {
+  public GetMainInfoUser(userIdent: string, searchByName: boolean = false): Observable<MainInfoUser> {
     return this._userService.getUser(userIdent, searchByName)
       .pipe(
         mergeMap(user => this.getActions(user.username).pipe(
@@ -25,7 +25,7 @@ export class GitLabService {
               actions
           }))
         ))
-      ,tap(user => console.log(`Данные usera получены вот id ${user.id} коммиты ${user.actions.commit} ревью ${user.actions.approved} username ${user.username}`))
+      // ,tap(user => console.log(`Данные usera получены вот id ${user.id} коммиты ${user.actions.commit} ревью ${user.actions.approved} username ${user.username}`))
     )
   }
 
