@@ -9,9 +9,7 @@ import {HttpParams, HttpResponse} from "@angular/common/http";
   providedIn: 'root'
 })
 export class UserEventsService {
-
-  // как я выяснил такое - это кринж, лучше не делать!!)( а менять лень, чтож поделать
-  private urlEvent = (userId: string) => `users/${userId}/events`;
+  private urlEvent = (userId: string) => `users/${userId}/events`;  // как я выяснил такое - кринж, лучше не делать!!)( а менять лень, чтож поделать
 
   constructor(private _http: HttpRequestService) {
   }
@@ -78,24 +76,3 @@ export class UserEventsService {
 }
 
 
-// public getCommits(userId: string): Observable<number> {
-//   let params: HttpParams = new HttpParams()
-//     .set("action", "pushed")
-//     .set("page", 1)
-//     .set("per_page", 100)
-//
-//   console.log("метод запущен")
-//   return this.getCountCommits(userId, params).pipe(map(x => x.commits));
-// }
-//
-// private getCountCommits(userId: string, params: HttpParams): Observable<{ commits: number, totalPage: number }> {
-//   return this._http.getData<PushEvent[]>(`${this.urlEvent(userId)}`, params)
-//     .pipe(map(x => {
-//         const total = parseInt(x.headers.get(`X-Total-Pages`) ?? "0");
-//         console.log("pages: " + total)
-//         const data = x.body ?? []
-//         const commits = data.map(x => x.push_data.commit_count).reduce((prev, cur) => prev + cur);
-//         return {commits: commits, totalPage: total}
-//       }), // чёта надо сделать
-//       tap(x => console.log(x))) // просто ради провекри
-// }
