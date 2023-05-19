@@ -26,7 +26,6 @@ import {isUserMainInfo} from "../../typeGuards/isUserMainInfo";
   selector: 'app-card',
   providers: [
     DestroyService,
-    UserStorageService
   ],
   templateUrl: './card.component.html',
   imports: [
@@ -42,7 +41,7 @@ export class CardComponent implements OnInit {
   protected user!: MainInfoUser;
   protected toCompare!: boolean
   @Input('user') userType!: UserCardComponent | MainInfoUser
-  @Output() deleteEvent = new EventEmitter<User>
+  @Output() deleteEvent = new EventEmitter<[string, boolean]>
 
   constructor(
     @Inject(IGitApi) private _userData: GitLabService,
@@ -79,22 +78,29 @@ export class CardComponent implements OnInit {
   }
 
   private getUser(param: string, searchById: boolean = false): void {
-    this._userData.GetMainInfoUser(param, searchById)
+    this._userData.getMainInfoUser(param, searchById)
       .pipe(this._destroy.TakeUntilDestroy)
-      .subscribe(user => {
-        this.user = user
-        this.isCompare(user)
-        this._userStorage.storeNext(user)
-        this.cd.markForCheck()
-      })
+      .subscribe({
+          next: user => {
+            this.user = user
+            this.isCompare(user)
+            this._userStorage.storeNext(user)
+            this.cd.markForCheck()
+          },
+          error: () => this.deleteUser([param, searchById])
+        })
   }
 
   protected toggleCompare() {
     this._userStorage.toggleCompare(this.user)
   }
 
-  protected deleteUser() {
-    this._userStorage.deleteUser(this.user)
-    this.deleteEvent.emit(this.user)
+  protected deleteUser(ident?: [string, boolean]) {
+    this.deleteEvent.emit(ident !== undefined ? ident : isUserMainInfo(this.userType)
+      ? [this.user.id, true]
+      : isSearchById(this.userType)
+        ? [this.user.id, true]
+        : [this.user.username, false]
+    )
   }
 }

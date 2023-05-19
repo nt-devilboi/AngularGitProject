@@ -11,7 +11,6 @@ export class UserStorageService {
 
   public nextUser$: Subject<UserNoCompareCard | MainInfoUser> = new Subject<UserNoCompareCard | MainInfoUser>()
   public usersMainPage: MainInfoUser[] = []
-  public userDelete$: Subject<User> = new Subject<User>()
   public toCompareUsers: User[] = []
   public compare$: Subject<User> = new Subject<User>()
 
@@ -21,10 +20,13 @@ export class UserStorageService {
     this.nextUser$.next(user)
   }
 
-  public deleteUser(user: User) {
-    this.usersMainPage = this.usersMainPage.filter(e => e.id !== user.id)
-    this.toCompareUsers = this.toCompareUsers.filter(e => e.id !== user.id)
-    this.userDelete$.next(user)
+  public getUser(ident: string, searchById: boolean): User | undefined {
+    return this.usersMainPage.find(e => searchById ? e.id == ident : e.username == ident)
+  }
+
+  public deleteUser(ident: [string, boolean]) {
+    this.usersMainPage = this.usersMainPage.filter(e => ident[1] ? e.id != ident[0] : e.username != ident[0])
+    this.toCompareUsers = this.toCompareUsers.filter(e => ident[1] ? e.id != ident[0] : e.username != ident[0])
   }
 
   public storeNext(user: MainInfoUser): void {

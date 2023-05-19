@@ -23,7 +23,7 @@ export class UserService {
     else
       params = params.set('username', userName)
 
-    return this._http.getData<User | User[]>(uri, params)
+    return this._http.getResponse<User | User[]>(uri, params)
       .pipe(
         map(resp =>
           searchById

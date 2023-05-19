@@ -9,6 +9,7 @@ import {IReactiveSearchForm} from "../../../../shared/interfaces/Staff/IReactive
 import {DestroyService} from "../../../../shared/Services/destroy.service";
 import {UserStorageService} from "../../../../shared/Services/user-storage.service";
 import {UserNoCompareCard,} from "../../../../shared/interfaces/Staff/UserNoCompareCard";
+import {opacity} from "../../../../shared/animations/opacity";
 
 @Component({
   selector: 'app-header',
@@ -40,6 +41,15 @@ import {UserNoCompareCard,} from "../../../../shared/interfaces/Staff/UserNoComp
           }
         })
       )
+    ]),
+    trigger('appear', [
+      transition(':enter',
+        useAnimation(opacity), {
+          params: {
+            oStart: 0,
+            oEnd: 1,
+          }
+        })
     ])
   ]
 })
@@ -51,7 +61,7 @@ export class HeaderComponent {
   protected isEmpty: boolean = false
 
   constructor(
-    @Inject(IGitApi) private _userData: GitLabService,
+    @Inject(IGitApi) private _userGitService: GitLabService,
     private _destroy: DestroyService,
     private _userStorage: UserStorageService,
     private cd: ChangeDetectorRef

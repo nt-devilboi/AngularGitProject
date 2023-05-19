@@ -20,6 +20,8 @@ import {CommitResponse} from "../interfaces/Projects/CommitResponse";
 import {StatsLines} from "../interfaces/Projects/StatsLines";
 import {ProjectInfoNotParsed} from "../interfaces/Projects/ProjectInfoNotParsed";
 import {ProjectInfoParsed} from "../interfaces/Projects/ProjectInfoParsed";
+import {AllInfoUser} from "../interfaces/AllInfoUser";
+import {MainInfoUser} from "../interfaces/MainInfoUser";
 
 
 type dict = { [key in string]: number; };
@@ -41,8 +43,27 @@ export class ProjectService {
     // this.getStatisticLanguage(927908).subscribe()
   }
 
-  public getAllInfoUser(user: User): Observable<any> {
-    return this._http.getData('')
+  public getAllInfoUser(user: MainInfoUser): Observable<AllInfoUser> {
+    if (user.actions.commit === 0)
+      return of<AllInfoUser>({
+        ...user,
+        activeDay: -1,
+        activeTime: -1,
+        languages: [],
+        statsLines: {
+          additions: 0,
+          deletions: 0,
+          total: 0
+        }
+      })
+
+    return this.getProjectsInfo(user.id)
+      .pipe(
+        map(projectsInfo => ({
+          ...user,
+          ...projectsInfo
+        }))
+      )
   }
 
   private getProjectsInfo(userId: string) : Observable<ProjectsStats> {
@@ -50,7 +71,7 @@ export class ProjectService {
       .set('page', 1)
       .set('per_page', 100)
 
-    return this._http.getData<Project[]>(`users/${userId}/projects`, params)
+    return this._http.getResponse<Project[]>(`users/${userId}/projects`, params)
       .pipe(
         mergeMap((firstResp: HttpResponse<Project[]>) => {
           let projectsFirstPage = firstResp.body as Project[]
@@ -160,7 +181,7 @@ export class ProjectService {
       .set('page', pageNum)
       .set('per_page', 100)
 
-    return this._http.getData<Project[]>(`users/${userId}/projects`, params)
+    return this._http.getResponse<Project[]>(`users/${userId}/projects`, params)
       .pipe(
         mergeMap(r => {
           let projects = r.body as Project[]
@@ -182,7 +203,7 @@ export class ProjectService {
   }
 
   private getProjectLanguages(projectId: number): Observable<Partial<LanguagesStats>> {
-    return this._http.getData<Partial<LanguagesStats>>(`projects/${projectId}/languages`)
+    return this._http.getResponse<Partial<LanguagesStats>>(`projects/${projectId}/languages`)
       .pipe(
         map(r => r.body as Partial<LanguagesStats>)
       )
@@ -193,7 +214,7 @@ export class ProjectService {
       .set('page', 1)
       .set('per_page', 100)
 
-    return this._http.getData<{ id: string }>(`projects/${projectId}/repository/commits`, params)
+    return this._http.getResponse<{ id: string }>(`projects/${projectId}/repository/commits`, params)
       .pipe(
         mergeMap(r => {
           let commitsFirstPage: { id: string }[] = (r.body ?? []) as {id: string}[]
@@ -226,7 +247,7 @@ export class ProjectService {
       .set('page', pageNum)
       .set('per_page', 100)
 
-    return this._http.getData<{ id: string }[]>(`projects/${projectId}/repository/commits`, params)
+    return this._http.getResponse<{ id: string }[]>(`projects/${projectId}/repository/commits`, params)
       .pipe(
         mergeMap(r => {
           let commits: { id: string }[] = r.body as {id: string}[]
@@ -244,7 +265,7 @@ export class ProjectService {
   }
 
   private getProjectCommit(projectId: number, commitId: string): Observable<CommitResponse> {
-    return this._http.getData<CommitResponse>(`projects/${projectId}/repository/commits/${commitId}`)
+    return this._http.getResponse<CommitResponse>(`projects/${projectId}/repository/commits/${commitId}`)
       .pipe(
         map(r => r.body as CommitResponse)
       )
@@ -295,7 +316,7 @@ export class ProjectService {
 
   // есть ли смысл создавать, отдельный тип под обычный дикт? и учитывая, что языко хуеву куча, есть ли смысл создавать тип ? или что-то типо этого
   private getLanguageProject(projectId: number): Observable<dict> {
-    return this._http.getData<{ [key in string]: number; }>(`projects/${projectId}/languages`)
+    return this._http.getResponse<{ [key in string]: number; }>(`projects/${projectId}/languages`)
       .pipe(map(x => x.body as Language))
   }
 
@@ -307,7 +328,7 @@ export class ProjectService {
       .set("page", 1)
       .set("per_page", perPage);
 
-    return this._http.getData<Project[]>(uri, params)
+    return this._http.getResponse<Project[]>(uri, params)
       .pipe(mergeMap(firstResp => {
         const pagesCount: number = parseInt(firstResp.headers.get(`X-Total-Pages`) ?? "1");
         let projectFirstPage : Observable<Project[]> = of(firstResp.body ?? []);
@@ -338,7 +359,7 @@ export class ProjectService {
       .set("page", page)
       .set("per_page", perPage);
 
-    return this._http.getData<Project[]>(uri, params)
+    return this._http.getResponse<Project[]>(uri, params)
       .pipe(
         map(r => {
           return r.body ?? []

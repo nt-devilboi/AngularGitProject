@@ -17,7 +17,7 @@ export class UserEventsService {
     let params: HttpParams = new HttpParams()
       .set("action", "pushed");
 
-    return this._http.getData<Event[]>(`users/${userId}/events`, params)
+    return this._http.getResponse<Event[]>(`users/${userId}/events`, params)
       .pipe(
         map(resp => {
           return parseInt(resp.headers.get('x-total') ?? '')
@@ -33,7 +33,7 @@ export class UserEventsService {
 
     const uri: string = `users/${userId}/events`
 
-    return this._http.getData<PushEvent[]>(uri, params)
+    return this._http.getResponse<PushEvent[]>(uri, params)
       .pipe(
         mergeMap((firstResp: HttpResponse<PushEvent[]>) => {
           const pagesCount: number = parseInt(firstResp.headers.get(`X-Total-Pages`) ?? "1");
@@ -59,7 +59,7 @@ export class UserEventsService {
       .set("page", pageNum)
       .set("per_page", 100);
 
-    return this._http.getData<PushEvent[]>(uri, params)
+    return this._http.getResponse<PushEvent[]>(uri, params)
       .pipe(
         map((r: HttpResponse<PushEvent[]>) => {
           const data: PushEvent[] = r.body ?? []

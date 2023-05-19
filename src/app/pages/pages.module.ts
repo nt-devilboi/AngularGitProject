@@ -43,6 +43,9 @@ const routes: Routes = [
     SearchResultComponent,
     LoginPageComponent
   ],
+  providers: [
+
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

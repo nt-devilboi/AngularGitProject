@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card__wrapper">
         <ng-container *ngIf="user; else loader">
-            <a [href]="user.web_url" style="display: block" target="_blank">
+            <a href="#" [routerLink]="'/user/' + user.id" style="display: block">
             <header class="user__header" >
                 <div class="user__photo">
                     <img [src]="user.avatar_url">
@@ -35,7 +35,7 @@
                     </a>
                 </div>
                 <div class="user__grow"></div>
-                <a href="#" id="info" class="button user__show" target="_blank" [routerLink]="'/user/' + user.id">
+                <a href="#" id="info" class="button user__show" [routerLink]="'/user/' + user.id">
                     <span class="button__text">Подробнее</span>
                 </a>
                 <div class="user__buttons">

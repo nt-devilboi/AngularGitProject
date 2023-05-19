@@ -13,7 +13,7 @@ export class HttpRequestService {
   }
 
   //TODO написать хендлер по логике могут и не быть парамсы
-  public getData<TGet>(
+  public getResponse<TGet>(
     uri: string,
     params?: HttpParams,
     headers: HttpHeaders = new HttpHeaders().append('Authorization', `Bearer ${localStorage.getItem('token')}`)

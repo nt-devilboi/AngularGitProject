@@ -43,36 +43,9 @@ export class BodyComponent implements OnInit, AfterViewInit {
         this.addView(user)
         this.cd.markForCheck()
       })
-
-    //TODO я просто хз почему не работает хотя блин должно
-
-    // this._userStorage.userDelete$.subscribe(e => console.log(true))
-    //
-    // this._userStorage.userDelete$
-    //   .pipe(this._destroy.TakeUntilDestroy)
-    //   .subscribe(user => {
-    //     let i = this._users.findIndex(e => e.identificator === user.id || e.identificator === user.username)
-    //
-    //     if (i === -1)
-    //       return
-    //
-    //     this._users[i].template.destroy()
-    //     this._users.splice(i, 1)
-    //     this.cd.markForCheck()
-    //   })
   }
 
   ngAfterViewInit(): void {
-    // for (let i = 0; i < 2; i++) {
-    //   // @ts-ignore
-    //   let user = {
-    //     id: 1,
-    //     isCompare: false
-    //   } as UserNoCompareCard
-    //
-    //   this.addView(user)
-    // }
-
     for (let user of this._userStorage.usersMainPage)
       this.addView(user)
 
@@ -80,27 +53,38 @@ export class BodyComponent implements OnInit, AfterViewInit {
   }
 
   private addView(user: MainInfoUser | UserNoCompareCard): void {
-    let view = this.usersContainer.createEmbeddedView(this.userTemplate, {user}, {index: 0})
-
-    if (isUserMainInfo(user) || isSearchById(user))
-      this._users.push({
-        identificator: user.id,
-        template: view
-      })
-    else
-      this._users.push({
-        identificator: user.name,
-        template: view
-      })
+    if (isUserMainInfo(user) || isSearchById(user)) {
+      this._addView(user.id, true, user)
+    }
+    else {
+      this._addView(user.name, false, user)
+    }
   }
 
-  deleteUser(user: User) {
-    let i = this._users.findIndex(e => e.identificator == user.id || e.identificator == user.username)
+  private _addView(ident: string, searchById: boolean, user: MainInfoUser | UserNoCompareCard): void {
+    if (!!this._users.find(e => e.searchById == searchById ? e.identificator == ident : false))
+      return
+
+    let stored = this._userStorage.getUser(ident, searchById)
+
+    if (!stored && isUserMainInfo(user))
+      this._userStorage.storeNext(user)
+
+    this._users.push({
+      identificator: ident,
+      searchById: searchById,
+      template: this.usersContainer.createEmbeddedView(this.userTemplate, {user}, {index: 0})
+    })
+  }
+
+  deleteUser(ident: [string, boolean]) {
+    let i = this._users.findIndex(e => (ident[1] == e.searchById) ? ident[0] == e.identificator : false)
     if (i === -1)
       return
 
     this._users[i].template.destroy()
     this._users.splice(i, 1)
+    this._userStorage.deleteUser(ident)
     this.cd.markForCheck()
   }
 }

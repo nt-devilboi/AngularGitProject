@@ -20,7 +20,7 @@ export class TokenService {
   public isValidToken(): Observable<boolean> {
     const headers: HttpHeaders = new HttpHeaders().set('PRIVATE-TOKEN', localStorage.getItem('token') ?? '')
 
-    return this._http.getData<response>('personal_access_tokens/self', new HttpParams(), headers)
+    return this._http.getResponse<response>('personal_access_tokens/self', new HttpParams(), headers)
       .pipe(
         map(r => {
           const body: response = r.body as response
