@@ -19,7 +19,7 @@ import {RouterLink} from "@angular/router";
 import {User} from "../../interfaces/User";
 import {isUserNoCompare} from "../../typeGuards/isUserNoCompare";
 import {isSearchById} from "../../typeGuards/isSearchById";
-import {isUserMainPage} from "../../typeGuards/isUserMainPage";
+import {isUserMainInfo} from "../../typeGuards/isUserMainInfo";
 
 @Component({
   standalone: true,
@@ -53,7 +53,7 @@ export class CardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (isUserMainPage(this.userType)) {
+    if (isUserMainInfo(this.userType)) {
       this.user = this.userType
       this.isCompare(this.userType)
       this.cd.markForCheck()

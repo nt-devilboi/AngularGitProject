@@ -9,7 +9,6 @@ import {HttpParams, HttpResponse} from "@angular/common/http";
   providedIn: 'root'
 })
 export class UserEventsService {
-  private urlEvent = (userId: string) => `users/${userId}/events`;  // как я выяснил такое - кринж, лучше не делать!!)( а менять лень, чтож поделать
 
   constructor(private _http: HttpRequestService) {
   }
@@ -18,7 +17,7 @@ export class UserEventsService {
     let params: HttpParams = new HttpParams()
       .set("action", "pushed");
 
-    return this._http.getData<Event[]>(`${this.urlEvent(userId)}`, params)
+    return this._http.getData<Event[]>(`users/${userId}/events`, params)
       .pipe(
         map(resp => {
           return parseInt(resp.headers.get('x-total') ?? '')
@@ -32,7 +31,7 @@ export class UserEventsService {
       .set("page", 1)
       .set("per_page", 100);
 
-    const uri: string = `${this.urlEvent(userId)}`
+    const uri: string = `users/${userId}/events`
 
     return this._http.getData<PushEvent[]>(uri, params)
       .pipe(

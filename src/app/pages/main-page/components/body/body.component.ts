@@ -12,7 +12,7 @@ import {DestroyService} from "../../../../shared/Services/destroy.service";
 import {UserNoCompareCard} from "../../../../shared/interfaces/Staff/UserNoCompareCard";
 import {UserToTemplate} from "../../../../shared/interfaces/Staff/UserToTemplate";
 import {MainInfoUser} from "../../../../shared/interfaces/MainInfoUser";
-import {isUserMainPage} from "../../../../shared/typeGuards/isUserMainPage";
+import {isUserMainInfo} from "../../../../shared/typeGuards/isUserMainInfo";
 import {isSearchById} from "../../../../shared/typeGuards/isSearchById";
 import {User} from "../../../../shared/interfaces/User";
 
@@ -82,7 +82,7 @@ export class BodyComponent implements OnInit, AfterViewInit {
   private addView(user: MainInfoUser | UserNoCompareCard): void {
     let view = this.usersContainer.createEmbeddedView(this.userTemplate, {user}, {index: 0})
 
-    if (isUserMainPage(user) || isSearchById(user))
+    if (isUserMainInfo(user) || isSearchById(user))
       this._users.push({
         identificator: user.id,
         template: view

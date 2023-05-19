@@ -14,19 +14,4 @@ export type Language = {
 
 export type Languages = 'Java' | 'HTML' | 'Shell' | 'JavaScript' | 'Kotlin' | 'Csharp' | 'Ruby'
 
-export type Language1 = Record<Languages, number>
-
-
-let a: Partial<Language1> = {
-  Java: 4
-}
-
-type l = {
-  a: Partial<Language1>,
-}
-
-let b: l = {
-  a: {
-    'Java': 4
-  }
-}
+export type LanguagesStats = Record<Languages, number>
