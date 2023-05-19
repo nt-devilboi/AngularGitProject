@@ -14,7 +14,6 @@ import {UserToTemplate} from "../../../../shared/interfaces/Staff/UserToTemplate
 import {MainInfoUser} from "../../../../shared/interfaces/MainInfoUser";
 import {isUserMainInfo} from "../../../../shared/typeGuards/isUserMainInfo";
 import {isSearchById} from "../../../../shared/typeGuards/isSearchById";
-import {User} from "../../../../shared/interfaces/User";
 
 @Component({
   selector: 'app-body',

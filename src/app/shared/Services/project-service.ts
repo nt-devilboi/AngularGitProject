@@ -14,7 +14,6 @@ import {
 import {Project} from "../interfaces/Projects/Project";
 import {Language, Languages, LanguagesStats} from "../interfaces/Projects/Language";
 import {HttpParams, HttpResponse} from "@angular/common/http";
-import {User} from "../interfaces/User";
 import {ProjectsStats} from "../interfaces/Projects/ProjectsStats";
 import {CommitResponse} from "../interfaces/Projects/CommitResponse";
 import {StatsLines} from "../interfaces/Projects/StatsLines";

@@ -1,4 +1,3 @@
-import {User} from "../User";
 import {MainInfoUser} from "../MainInfoUser";
 import {AllInfoUser} from "../AllInfoUser";
 import {Observable} from "rxjs";
