@@ -85,6 +85,8 @@ export class HeaderComponent {
       }, 3000)
     }
     else {
+      if (!this.formSearch.valid) return
+
       let user!: UserNoCompareCard
 
       if (this.formSearch.controls.switchSearch.value)
