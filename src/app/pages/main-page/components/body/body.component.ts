@@ -14,6 +14,8 @@ import {UserToTemplate} from "../../../../shared/interfaces/Staff/UserToTemplate
 import {MainInfoUser} from "../../../../shared/interfaces/MainInfoUser";
 import {isUserMainInfo} from "../../../../shared/typeGuards/isUserMainInfo";
 import {isSearchById} from "../../../../shared/typeGuards/isSearchById";
+import {transition, trigger, useAnimation} from "@angular/animations";
+import {opacity} from "../../../../shared/animations/opacity";
 
 @Component({
   selector: 'app-body',
@@ -23,6 +25,24 @@ import {isSearchById} from "../../../../shared/typeGuards/isSearchById";
   templateUrl: './body.component.html',
   styleUrls: ['./body.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('appear', [
+      transition(':enter',
+        useAnimation(opacity), {
+          params: {
+            oStart: 0,
+            oEnd: 1,
+          }
+        }),
+      transition(':leave',
+        useAnimation(opacity), {
+          params: {
+            oStart: 1,
+            oEnd: 0,
+          }
+        })
+    ])
+  ]
 })
 export class BodyComponent implements OnInit, AfterViewInit {
   @ViewChild('users', {read: ViewContainerRef}) usersContainer!: ViewContainerRef

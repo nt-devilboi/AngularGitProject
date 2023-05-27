@@ -20,7 +20,7 @@ export const IGitApi = new InjectionToken<IGitUser>("Api")
     HttpClientModule,
     AppRoutingModule,
     PagesModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   exports: [
   ],

@@ -20,6 +20,7 @@ import {User} from "../../interfaces/User";
 import {isUserNoCompare} from "../../typeGuards/isUserNoCompare";
 import {isSearchById} from "../../typeGuards/isSearchById";
 import {isUserMainInfo} from "../../typeGuards/isUserMainInfo";
+import {PrivateProfileDirective} from "../../directives/private-profile.directive";
 
 @Component({
   standalone: true,
@@ -31,7 +32,8 @@ import {isUserMainInfo} from "../../typeGuards/isUserMainInfo";
   imports: [
     NgIf,
     RouterLink,
-    NgClass
+    NgClass,
+    PrivateProfileDirective,
   ],
   styleUrls: ['./card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

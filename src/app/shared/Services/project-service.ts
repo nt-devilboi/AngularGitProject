@@ -32,13 +32,13 @@ export class ProjectService {
   constructor(
     private _http: HttpRequestService
   ) {
-    console.log("Запуск")
-    this.getProjectsInfo('4380634') // 4380634 2786064 4472283 - айдишники рабочие, второй не очень рабочий, но это можно отлавливать
-      .subscribe({
-        error: (e) => console.log(e),
-        next: (e) => console.log(e)
-      })
-
+    // console.log("Запуск")
+    // this.getProjectsInfo('4380634') // 4380634 2786064 4472283 - айдишники рабочие, второй не очень рабочий, но это можно отлавливать
+    //   .subscribe({
+    //     error: (e) => console.log(e),
+    //     next: (e) => console.log(e)
+    //   })
+    //
     // this.getStatisticLanguage(927908).subscribe()
   }
 

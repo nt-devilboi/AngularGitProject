@@ -21,13 +21,22 @@
             </a>
 
             <div class="user__main">
-                <div class="user__commits">
-                    Коммиты: {{ user.actions.commit }}
-                </div>
+                <ng-container *appPrivateProfile="user.actions.commit === 0; else privateProfile">
+                    <div class="user__commits">
+                        Коммиты: {{ user.actions.commit }}
+                    </div>
 
-                <div class="user__review">
-                    Код-ревью: {{ user.actions.approved }}
-                </div>
+                    <div class="user__review">
+                        Код-ревью: {{ user.actions.approved }}
+                    </div>
+                </ng-container>
+
+                <ng-template #privateProfile>
+                    <div class="user__commits" style="color: red">
+                        У пользователя приватный или неактивный профиль
+                    </div>
+                </ng-template>
+
 
                 <div class="user__link-wrap">
                     <a [href]="user.web_url" class="user__link" target="_blank">
