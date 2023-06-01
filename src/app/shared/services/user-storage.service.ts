@@ -3,6 +3,8 @@ import {Subject} from "rxjs";
 import {UserNoCompareCard} from "../interfaces/Staff/UserNoCompareCard";
 import {MainInfoUser} from "../interfaces/MainInfoUser";
 import {User} from "../interfaces/User";
+import {AllInfoUser} from "../interfaces/AllInfoUser";
+import {isAllInfoUser} from "../typeGuards/isAllInfoUser";
 
 @Injectable({
   providedIn: 'root'
@@ -14,14 +16,20 @@ export class UserStorageService {
   public toCompareUsers: User[] = []
   public compare$: Subject<User> = new Subject<User>()
 
+  private usersAllInfo: AllInfoUser[] = []
+
   constructor() { }
 
   public getNext(user: UserNoCompareCard | MainInfoUser) {
     this.nextUser$.next(user)
   }
 
-  public getUser(ident: string, searchById: boolean): User | undefined {
+  public getUser(ident: string, searchById: boolean): MainInfoUser | undefined {
     return this.usersMainPage.find(e => searchById ? e.id == ident : e.username == ident)
+  }
+
+  public getUserAllInfo(id: string): AllInfoUser | undefined {
+    return this.usersAllInfo.find(e => e.id == id)
   }
 
   public deleteUser(ident: [string, boolean]) {
@@ -30,6 +38,9 @@ export class UserStorageService {
   }
 
   public storeNext(user: MainInfoUser): void {
+    if (isAllInfoUser(user))
+      this.usersAllInfo.push(user)
+
     this.usersMainPage.push(user)
   }
 
@@ -38,7 +49,5 @@ export class UserStorageService {
       this.toCompareUsers = this.toCompareUsers.filter(e => e.id !== user.id)
     else
       this.toCompareUsers.push(user)
-
-    this.compare$.next(user)
   }
 }

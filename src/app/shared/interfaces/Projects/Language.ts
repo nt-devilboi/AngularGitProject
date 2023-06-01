@@ -12,6 +12,6 @@ export type Language = {
 
 // мб лучше так
 
-export type Languages = 'Java' | 'HTML' | 'Shell' | 'JavaScript' | 'Kotlin' | 'Csharp' | 'Ruby'
+export type Languages = 'Java' | 'HTML' | 'Shell' | 'JavaScript' | 'Kotlin' | 'Csharp' | 'Ruby' | 'CSS'
 
 export type LanguagesStats = Record<Languages, number>

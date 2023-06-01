@@ -1,14 +1,14 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy, ChangeDetectorRef,
-  Component,
+  Component, Inject,
   OnInit,
   TemplateRef,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import {UserStorageService} from "../../../../shared/Services/user-storage.service";
-import {DestroyService} from "../../../../shared/Services/destroy.service";
+
+import {DestroyService} from "../../../../shared/services/destroy.service";
 import {UserNoCompareCard} from "../../../../shared/interfaces/Staff/UserNoCompareCard";
 import {UserToTemplate} from "../../../../shared/interfaces/Staff/UserToTemplate";
 import {MainInfoUser} from "../../../../shared/interfaces/MainInfoUser";
@@ -16,6 +16,8 @@ import {isUserMainInfo} from "../../../../shared/typeGuards/isUserMainInfo";
 import {isSearchById} from "../../../../shared/typeGuards/isSearchById";
 import {transition, trigger, useAnimation} from "@angular/animations";
 import {opacity} from "../../../../shared/animations/opacity";
+import {UserStorageService} from "../../../../shared/services/user-storage.service";
+import {userStore} from "../../../../app.module";
 
 @Component({
   selector: 'app-body',
@@ -45,12 +47,12 @@ import {opacity} from "../../../../shared/animations/opacity";
   ]
 })
 export class BodyComponent implements OnInit, AfterViewInit {
-  @ViewChild('users', {read: ViewContainerRef}) usersContainer!: ViewContainerRef
-  @ViewChild('user', {read: TemplateRef}) userTemplate!: TemplateRef<any>
+  @ViewChild('users', {read: ViewContainerRef}) private _usersContainer!: ViewContainerRef
+  @ViewChild('user', {read: TemplateRef}) private _userTemplate!: TemplateRef<any>
   private _users: UserToTemplate[] = []
 
   constructor(
-    private _userStorage: UserStorageService,
+    @Inject(userStore) private _userStorage: UserStorageService,
     private _destroy: DestroyService,
     private cd: ChangeDetectorRef
   ) {}
@@ -73,7 +75,7 @@ export class BodyComponent implements OnInit, AfterViewInit {
 
   private addView(user: MainInfoUser | UserNoCompareCard): void {
     if (isUserMainInfo(user) || isSearchById(user)) {
-      this._addView(user.id, true, user)
+      this._addView(user.id.toString(), true, user)
     }
     else {
       this._addView(user.name, false, user)
@@ -92,7 +94,7 @@ export class BodyComponent implements OnInit, AfterViewInit {
     this._users.push({
       identificator: ident,
       searchById: searchById,
-      template: this.usersContainer.createEmbeddedView(this.userTemplate, {user}, {index: 0})
+      template: this._usersContainer.createEmbeddedView(this._userTemplate, {user}, {index: 0})
     })
   }
 

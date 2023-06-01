@@ -1,13 +1,13 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {IGitApi} from "../../../../app.module";
-import {GitLabService} from "../../../../shared/Services/git-lab.service";
+import {IGitApi, userStore} from "../../../../app.module";
+import {GitLabService} from "../../../../shared/services/git-lab.service";
 import {MainInfoUser} from "../../../../shared/interfaces/MainInfoUser";
 import {transition, trigger, useAnimation} from "@angular/animations";
 import {transformOpacity} from "../../../../shared/animations/transform-opacity";
 import {IReactiveSearchForm} from "../../../../shared/interfaces/Staff/IReactiveSearchForm";
-import {DestroyService} from "../../../../shared/Services/destroy.service";
-import {UserStorageService} from "../../../../shared/Services/user-storage.service";
+import {DestroyService} from "../../../../shared/services/destroy.service";
+import {UserStorageService} from "../../../../shared/services/user-storage.service";
 import {UserNoCompareCard,} from "../../../../shared/interfaces/Staff/UserNoCompareCard";
 import {opacity} from "../../../../shared/animations/opacity";
 
@@ -63,7 +63,7 @@ export class HeaderComponent {
   constructor(
     @Inject(IGitApi) private _userGitService: GitLabService,
     private _destroy: DestroyService,
-    private _userStorage: UserStorageService,
+    @Inject(userStore) private _userStorage: UserStorageService,
     private cd: ChangeDetectorRef
   ) {
     this.formSearch = new FormGroup<IReactiveSearchForm>({

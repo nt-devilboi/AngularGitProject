@@ -16,7 +16,7 @@ export class PrivateProfileDirective implements OnInit{
 
   constructor() { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     if (!this.appPrivateProfile) {
       this.viewContainerRef.createEmbeddedView(this.templateRef)
     } else {

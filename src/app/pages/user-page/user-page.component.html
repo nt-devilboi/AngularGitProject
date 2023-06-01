@@ -1,1 +1,102 @@
-user page
+<section class="user" @enter @leave>
+
+    <app-back></app-back>
+
+    <ng-container *ngIf="user; else loader">
+        <div class="user__wrapper" @enter @leave>
+
+            <header class="user__header">
+
+                <div class="user__photo">
+                    <div class="user__photo-wrap">
+                        <img [src]="user.avatar_url" alt="">
+                    </div>
+                </div>
+
+                <div class="user__info">
+
+                    <div class="user__name">
+                        {{ user.name }}
+                    </div>
+
+                    <div class="user__username">
+                        Ник: {{ user.username }}
+                    </div>
+
+                    <div class="user__id">
+                        ID: {{ user.id }}
+                    </div>
+
+                </div>
+
+            </header>
+
+            <div class="user__body">
+
+                <div class="user__commits">
+                    Коммиты: {{ user.actions.commit }}
+                </div>
+
+                <div class="user__approved">
+                    Код-ревью: {{ user.actions.approved }}
+                </div>
+
+                <div class="user__day">
+                    Самый активный день: {{ user.activeDay }}
+                </div>
+
+                <div class="user__time">
+                    Самое активное время: {{ user.activeTime }}
+                </div>
+
+                <div class="user__stats user-stats">
+                    Статистика по коммитам:
+                    <div class="user-stats__stat">
+                        1) Строк добавлено: {{ user.statsLines.additions }}
+                    </div>
+                    <div class="user-stats__stat">
+                        2) Строк удалено: {{ user.statsLines.deletions }}
+                    </div>
+                    <div class="user-stats__stat">
+                        3) Всего: {{ user.statsLines.total }}
+                    </div>
+                </div>
+
+                <div class="user__langs user-langs">
+                    Любимые языки программирования:
+                    <ng-container *ngFor="let lang of user.languages; let i = index">
+                        <div class="user-langs__lang">
+                            {{i + 1}}) {{lang}}
+                        </div>
+                    </ng-container>
+                </div>
+
+                <div class="user__link-wrap">
+                    <a [href]="user.web_url" class="user__link" target="_blank">
+                        Ссылка на GitLab
+                    </a>
+                </div>
+
+                <div class="user__compare">
+                    <button class="compare__button" (click)="toggleCompare()" [ngClass]="{incompare: toCompare}">
+                        <ng-container *ngIf="!toCompare; else inCompare">
+                            В сравнение
+                        </ng-container>
+                        <ng-template #inCompare>
+                            Добавлено
+                        </ng-template>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </ng-container>
+
+    <ng-template #loader>
+        <div class="loader" @enter @leave>
+            <img src="assets/images/icons/loader-black.svg" alt="">
+        </div>
+    </ng-template>
+
+</section>

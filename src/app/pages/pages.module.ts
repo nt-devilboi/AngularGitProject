@@ -11,6 +11,7 @@ import {SearchResultComponent} from './main-page/components/search-result/search
 import {FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {LoginPageComponent} from "./login-page/login-page.component";
 import {CardComponent} from "../shared/components/card/card.component";
+import {SharedModule} from "../shared/shared.module";
 
 const routes: Routes = [
   {
@@ -41,7 +42,7 @@ const routes: Routes = [
     ComparePageComponent,
     NotFoundPageComponent,
     SearchResultComponent,
-    LoginPageComponent
+    LoginPageComponent,
   ],
   providers: [
 
@@ -52,6 +53,7 @@ const routes: Routes = [
     FormsModule,
     RouterModule.forChild(routes),
     CardComponent,
+    SharedModule
   ],
   exports: [
     RouterModule,

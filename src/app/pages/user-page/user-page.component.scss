@@ -1,0 +1,10 @@
+.user {
+  position: relative;
+}
+
+.loader {
+  position: fixed;
+  left: 50%;
+  top: 30%;
+  transform: translateX(-50%);
+}

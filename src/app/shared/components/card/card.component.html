@@ -1,10 +1,10 @@
 <div class="card">
     <div class="card__wrapper">
-        <ng-container *ngIf="user; else loader">
+        <ng-container *ngIf="user; else elseTemplate">
             <a href="#" [routerLink]="'/user/' + user.id" style="display: block">
             <header class="user__header" >
                 <div class="user__photo">
-                    <img [src]="user.avatar_url">
+                    <img [src]="user.avatar_url" alt="">
                 </div>
                 <div class="user__info">
                     <div class="user__name">
@@ -68,8 +68,15 @@
             </div>
         </ng-container>
 
-        <ng-template #loader>
-            <div class="loader"></div>
+        <ng-template #elseTemplate>
+            <ng-container *ngIf="isErrorFinding; else loader">
+                <div class="error" @enter @leave>
+                    Пользователь не найден
+                </div>
+            </ng-container>
+            <ng-template #loader>
+                <div class="loader" @enter @leave></div>
+            </ng-template>
         </ng-template>
     </div>
 </div>

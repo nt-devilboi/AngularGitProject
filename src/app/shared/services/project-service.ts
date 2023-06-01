@@ -56,7 +56,7 @@ export class ProjectService {
         }
       })
 
-    return this.getProjectsInfo(user.id)
+    return this.getProjectsInfo(user.id.toString())
       .pipe(
         map(projectsInfo => ({
           ...user,

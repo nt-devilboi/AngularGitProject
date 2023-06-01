@@ -222,6 +222,14 @@
   border-radius: 20px;
 }
 
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50%;
+  color: red;
+}
+
 @keyframes load {
   0% {
     opacity: 0;
