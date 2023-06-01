@@ -15,9 +15,9 @@
 
                 <div class="user__info">
 
-                    <div class="user__name">
+                    <h1 class="user__name">
                         {{ user.name }}
-                    </div>
+                    </h1>
 
                     <div class="user__username">
                         Ник: {{ user.username }}
@@ -33,42 +33,58 @@
 
             <div class="user__body">
 
-                <div class="user__commits">
-                    Коммиты: {{ user.actions.commit }}
-                </div>
-
-                <div class="user__approved">
-                    Код-ревью: {{ user.actions.approved }}
-                </div>
-
-                <div class="user__day">
-                    Самый активный день: {{ user.activeDay }}
-                </div>
-
-                <div class="user__time">
-                    Самое активное время: {{ user.activeTime }}
-                </div>
-
-                <div class="user__stats user-stats">
-                    Статистика по коммитам:
-                    <div class="user-stats__stat">
-                        1) Строк добавлено: {{ user.statsLines.additions }}
-                    </div>
-                    <div class="user-stats__stat">
-                        2) Строк удалено: {{ user.statsLines.deletions }}
-                    </div>
-                    <div class="user-stats__stat">
-                        3) Всего: {{ user.statsLines.total }}
-                    </div>
-                </div>
-
-                <div class="user__langs user-langs">
-                    Любимые языки программирования:
-                    <ng-container *ngFor="let lang of user.languages; let i = index">
-                        <div class="user-langs__lang">
-                            {{i + 1}}) {{lang}}
+                <div class="user__flex user-flex">
+                    <div class="user-flex__item">
+                        <div class="user__commits">
+                            Коммиты: {{ user.actions.commit }}
                         </div>
-                    </ng-container>
+
+                        <div class="user__approved">
+                            Код-ревью: {{ user.actions.approved }}
+                        </div>
+                    </div>
+                    <div class="user-flex__item">
+                        <div class="user__day">
+                            Самый активный день: {{ user.activeDay }}
+                        </div>
+
+                        <div class="user__time">
+                            Самое активное время: {{ user.activeTime }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="user__flex user-flex">
+                    <div class="user-flex__item">
+                        <div class="user__langs user-langs">
+                            <div class="user__part">
+                                Любимые языки программирования:
+                            </div>
+                            <div class="user-langs__langs">
+                                <ng-container *ngFor="let lang of user.languages; let i = index">
+                                    <div class="user-langs__lang">
+                                        {{lang}}
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-flex__item">
+                        <div class="user__stats user-stats">
+                            <div class="user__part">
+                                Статистика по коммитам:
+                            </div>
+                            <div class="user-stats__stat">
+                                1) Строк добавлено: {{ user.statsLines.additions }}
+                            </div>
+                            <div class="user-stats__stat">
+                                2) Строк удалено: {{ user.statsLines.deletions }}
+                            </div>
+                            <div class="user-stats__stat">
+                                3) Всего: {{ user.statsLines.total }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="user__link-wrap">
@@ -77,7 +93,7 @@
                     </a>
                 </div>
 
-                <div class="user__compare">
+                <div class="user__compare compare">
                     <button class="compare__button" (click)="toggleCompare()" [ngClass]="{incompare: toCompare}">
                         <ng-container *ngIf="!toCompare; else inCompare">
                             В сравнение

@@ -1,5 +1,202 @@
+
 .user {
   position: relative;
+  padding: 3rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  &__wrapper {
+    border: 2px solid black;
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 5rem;
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+  }
+
+  &__photo {
+    flex: 0 0 50%;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__photo-wrap {
+    width: 20rem;
+    max-width: 100%;
+    aspect-ratio: 1;
+    position: relative;
+    border: 1px solid black;
+    border-radius: 20%;
+    overflow: hidden;
+
+    & img {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__info {
+    flex: 0 0 50%;
+    padding-left: 2rem;
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  &__name {
+    font-size: 2rem;
+  }
+
+  &__username {
+    margin-top: 1.5rem;
+  }
+
+  &__id {
+    margin-top: .8rem;
+  }
+
+  &__body {
+    margin-top: 3rem;
+    font-size: 1.3rem;
+  }
+
+  &__commits {
+  }
+
+  &__approved {
+    margin-top: .6rem;
+  }
+
+  &__day {
+  }
+
+  &__time {
+    margin-top: .6rem;
+  }
+
+  &__langs {
+  }
+
+  &__part {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  &__stats {
+  }
+
+  &__link-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 6rem;
+  }
+
+  &__link {
+    display: inline-block;
+    position: relative;
+    color: black;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -3px;
+      width: 0;
+      height: 2px;
+      background-color: #000;
+      transition: all ease .4s;
+      transform: translate(-50%, 0);
+    }
+
+    &:hover {
+      &:after {
+        width: 98%;
+      }
+    }
+  }
+
+  &__compare {
+  }
+}
+
+.user-flex {
+  display: flex;
+  align-items: center;
+  margin-top: 2rem;
+
+  &__item {
+    flex: 0 0 50%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.3rem;
+  }
+}
+
+.user-stats {
+  &__stat {
+    margin-top: .6rem;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+.user-langs {
+  &__langs {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -.3rem;
+  }
+  &__lang {
+    //padding-left: 1.5rem;
+    flex: 0 0 50%;
+    padding: .3rem;
+    text-align: center;
+  }
+}
+
+.compare {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2rem;
+  &__button {
+    padding: 1rem 2rem;
+    background-color: #fff;
+    border: 1px solid black;
+    border-radius: 11px;
+    font-size: 1.5rem;
+    transition: all ease .3s;
+
+    &:hover {
+      background-color: black;
+      color: white;
+    }
+
+    &.incompare {
+      background-color: black;
+      color: white;
+
+      //&:hover {
+      //  background-color: #fff;
+      //  color: black;
+      //}
+    }
+  }
 }
 
 .loader {
