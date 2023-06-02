@@ -167,6 +167,17 @@
       //  color: black;
       //}
     }
+
+    &.disabled {
+      background-color: #bdbdbd;
+      border: none;
+      color: #707070;
+
+      &:hover {
+        background-color: #bdbdbd;
+        color: #707070;
+      }
+    }
   }
 }
 

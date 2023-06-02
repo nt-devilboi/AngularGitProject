@@ -40,6 +40,7 @@ export class UserPageComponent implements OnInit{
 
   protected user!: AllInfoUser
   protected toCompare = false
+  protected isError: boolean = false
 
   constructor(
     @Inject(userStore) private _userStorage: UserStorageService,
@@ -56,10 +57,15 @@ export class UserPageComponent implements OnInit{
       .pipe(
         take(1)
       )
-      .subscribe(user => {
-        this.user = user
-        this.toCompare = !!this._userStorage.toCompareUsers.find(e => e.id === this.user.id)
-        this._cd.markForCheck()
+      .subscribe({
+        next: (user) => {
+          this.user = user
+          this.toCompare = !!this._userStorage.toCompareUsers.find(e => e.id === this.user.id)
+          this._cd.markForCheck()
+        },
+        error: () => {
+          this.isError = true
+        }
       })
 
   //   setTimeout(() => {
@@ -94,9 +100,13 @@ export class UserPageComponent implements OnInit{
   }
 
   protected toggleCompare() {
+    if (this.user.actions.commit == 0)
+      return
+
     this._userStorage.toggleCompare(this.user)
     this.toCompare = !this.toCompare
     this._cd.markForCheck()
   }
 
+  protected readonly transition = transition;
 }

@@ -12,6 +12,9 @@ import {FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {LoginPageComponent} from "./login-page/login-page.component";
 import {CardComponent} from "../shared/components/card/card.component";
 import {SharedModule} from "../shared/shared.module";
+import {ColorCountDirective} from "../shared/directives/color-count.directive";
+import {PrivateProfileDirective} from "../shared/directives/private-profile.directive";
+import {CompareGuard} from "./compare-page/guards/compare.guard";
 
 const routes: Routes = [
   {
@@ -28,7 +31,7 @@ const routes: Routes = [
     path: "user/:id", component: UserPageComponent,
   },
   {
-    path: 'compare', component: ComparePageComponent
+    path: 'compare', component: ComparePageComponent, canActivate: [CompareGuard]
   },
 ]
 
@@ -53,7 +56,9 @@ const routes: Routes = [
     FormsModule,
     RouterModule.forChild(routes),
     CardComponent,
-    SharedModule
+    SharedModule,
+    ColorCountDirective,
+    PrivateProfileDirective
   ],
   exports: [
     RouterModule,

@@ -23,6 +23,7 @@ import {isUserMainInfo} from "../../typeGuards/isUserMainInfo";
 import {PrivateProfileDirective} from "../../directives/private-profile.directive";
 import {transition, trigger, useAnimation} from "@angular/animations";
 import {opacity} from "../../animations/opacity";
+import {ColorCountDirective} from "../../directives/color-count.directive";
 
 @Component({
   standalone: true,
@@ -35,6 +36,7 @@ import {opacity} from "../../animations/opacity";
     RouterLink,
     NgClass,
     PrivateProfileDirective,
+    ColorCountDirective
   ],
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
@@ -119,6 +121,9 @@ export class CardComponent implements OnInit {
   }
 
   protected toggleCompare() {
+    if (this.user.actions.commit == 0)
+      return
+
     this._userStorage.toggleCompare(this.user)
     this.toCompare = !this.toCompare
   }

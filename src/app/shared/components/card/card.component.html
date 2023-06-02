@@ -22,11 +22,11 @@
 
             <div class="user__main">
                 <ng-container *appPrivateProfile="user.actions.commit === 0; else privateProfile">
-                    <div class="user__commits">
+                    <div class="user__commits" [appColorCount]="user.actions.commit">
                         Коммиты: {{ user.actions.commit }}
                     </div>
 
-                    <div class="user__review">
+                    <div class="user__review" [appColorCount]="user.actions.approved" [approved]="true">
                         Код-ревью: {{ user.actions.approved }}
                     </div>
                 </ng-container>
@@ -49,7 +49,7 @@
                 </a>
                 <div class="user__buttons">
                     <div class="user__compare">
-                        <button class="compare__button" (click)="toggleCompare()" [ngClass]="{incompare: toCompare}">
+                        <button class="compare__button" (click)="toggleCompare()" [ngClass]="{incompare: toCompare, disabled: user.actions.commit == 0}">
                             <ng-container *ngIf="!toCompare; else inCompare">
                                 В сравнение
                             </ng-container>

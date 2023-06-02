@@ -35,7 +35,7 @@ export const userStore = new InjectionToken("store")
     },
     {
       provide: userStore,
-      useClass: UserStorageService
+      useExisting: UserStorageService
     }
   ],
   bootstrap: [AppComponent]

@@ -120,9 +120,11 @@ export class HeaderComponent {
   }
 
   private switchValidate() {
-    if (this.formSearch.controls.switchSearch)
-      this.formSearch.controls.search.setValidators(Validators.pattern(/^\d+$/))
+    if (this.formSearch.controls.switchSearch.value)
+      this.formSearch.controls.search.addValidators(Validators.pattern(/^\d+$/))
     else
-      this.formSearch.controls.search.removeValidators(Validators.pattern(/^\d+$/))
+      this.formSearch.controls.search.clearValidators()
+
+    this.formSearch.controls.search.updateValueAndValidity()
   }
 }

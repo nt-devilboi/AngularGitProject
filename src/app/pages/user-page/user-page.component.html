@@ -33,59 +33,67 @@
 
             <div class="user__body">
 
-                <div class="user__flex user-flex">
-                    <div class="user-flex__item">
-                        <div class="user__commits">
-                            Коммиты: {{ user.actions.commit }}
-                        </div>
+                <ng-container *appPrivateProfile="user.actions.commit === 0; else privateProfile">
 
-                        <div class="user__approved">
-                            Код-ревью: {{ user.actions.approved }}
-                        </div>
-                    </div>
-                    <div class="user-flex__item">
-                        <div class="user__day">
-                            Самый активный день: {{ user.activeDay | day }}
-                        </div>
+                    <div class="user__flex user-flex">
+                        <div class="user-flex__item">
+                            <div class="user__commits" [appColorCount]="user.actions.commit">
+                                Коммиты: {{ user.actions.commit }}
+                            </div>
 
-                        <div class="user__time">
-                            Самое активное время: {{ 23 | time }}
+                            <div class="user__approved" [appColorCount]="user.actions.approved" [approved]="true">
+                                Код-ревью: {{ user.actions.approved }}
+                            </div>
                         </div>
-                    </div>
-                </div>
+                        <div class="user-flex__item">
+                            <div class="user__day">
+                                Самый активный день: {{ user.activeDay | day }}
+                            </div>
 
-                <div class="user__flex user-flex">
-                    <div class="user-flex__item">
-                        <div class="user__langs user-langs">
-                            <div class="user__part">
-                                Любимые языки программирования:
-                            </div>
-                            <div class="user-langs__langs">
-                                <ng-container *ngFor="let lang of user.languages; let i = index">
-                                    <div class="user-langs__lang">
-                                        {{lang}}
-                                    </div>
-                                </ng-container>
+                            <div class="user__time">
+                                Самое активное время: {{ 23 | time }}
                             </div>
                         </div>
                     </div>
-                    <div class="user-flex__item">
-                        <div class="user__stats user-stats">
-                            <div class="user__part">
-                                Статистика по коммитам:
+
+                    <div class="user__flex user-flex">
+                        <div class="user-flex__item">
+                            <div class="user__langs user-langs">
+                                <div class="user__part">
+                                    Любимые языки программирования:
+                                </div>
+                                <div class="user-langs__langs">
+                                    <ng-container *ngFor="let lang of user.languages; let i = index">
+                                        <div class="user-langs__lang">
+                                            {{lang}}
+                                        </div>
+                                    </ng-container>
+                                </div>
                             </div>
-                            <div class="user-stats__stat">
-                                1) Строк добавлено: {{ user.statsLines.additions }}
-                            </div>
-                            <div class="user-stats__stat">
-                                2) Строк удалено: {{ user.statsLines.deletions }}
-                            </div>
-                            <div class="user-stats__stat">
-                                3) Всего: {{ user.statsLines.total }}
+                        </div>
+                        <div class="user-flex__item">
+                            <div class="user__stats user-stats">
+                                <div class="user__part">
+                                    Статистика по коммитам:
+                                </div>
+                                <div class="user-stats__stat">
+                                    1) Строк добавлено: {{ user.statsLines.additions }}
+                                </div>
+                                <div class="user-stats__stat">
+                                    2) Строк удалено: {{ user.statsLines.deletions }}
+                                </div>
+                                <div class="user-stats__stat">
+                                    3) Всего: {{ user.statsLines.total }}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </ng-container>
+                <ng-template #privateProfile>
+                    <div class="user__private" style="color: red">
+                        У пользователя приватный или неактивный профиль
+                    </div>
+                </ng-template>
 
                 <div class="user__link-wrap">
                     <a [href]="user.web_url" class="user__link" target="_blank">
@@ -94,7 +102,7 @@
                 </div>
 
                 <div class="user__compare compare">
-                    <button class="compare__button" (click)="toggleCompare()" [ngClass]="{incompare: toCompare}">
+                    <button class="compare__button" (click)="toggleCompare()" [ngClass]="{incompare: toCompare, disabled: user.actions.commit == 0}">
                         <ng-container *ngIf="!toCompare; else inCompare">
                             В сравнение
                         </ng-container>
@@ -110,9 +118,18 @@
     </ng-container>
 
     <ng-template #loader>
-        <div class="loader" @enter @leave>
-            <img src="assets/images/icons/loader-black.svg" alt="">
-        </div>
+        <ng-container *ngIf="!isError; else error">
+            <div class="loader" @enter @leave>
+                <img src="assets/images/icons/loader-black.svg" alt="">
+            </div>
+        </ng-container>
+
+        <ng-template #error>
+            <div class="user__error" @enter @leave>
+                Ошибка запроса. Такое может происходить, если слишком много коммитов и проектов
+            </div>
+        </ng-template>
+
     </ng-template>
 
 </section>
