@@ -5,8 +5,6 @@ import {RouterLink} from "@angular/router";
 import { DayPipe } from './pipes/day.pipe';
 import { TimePipe } from './pipes/time.pipe';
 
-
-
 @NgModule({
   declarations: [
     BackComponent,
