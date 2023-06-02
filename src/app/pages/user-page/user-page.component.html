@@ -51,7 +51,7 @@
                             </div>
 
                             <div class="user__time">
-                                Самое активное время: {{ 23 | time }}
+                                Самое активное время: {{ user.activeTime | time }}
                             </div>
                         </div>
                     </div>
@@ -60,12 +60,12 @@
                         <div class="user-flex__item">
                             <div class="user__langs user-langs">
                                 <div class="user__part">
-                                    Любимые языки программирования:
+                                    Языки программирования:
                                 </div>
                                 <div class="user-langs__langs">
                                     <ng-container *ngFor="let lang of user.languages; let i = index">
                                         <div class="user-langs__lang">
-                                            {{lang}}
+                                            {{ lang }}
                                         </div>
                                     </ng-container>
                                 </div>
@@ -77,13 +77,13 @@
                                     Статистика по коммитам:
                                 </div>
                                 <div class="user-stats__stat">
-                                    1) Строк добавлено: {{ user.statsLines.additions }}
+                                    Строк добавлено: {{ user.statsLines.additions }}
                                 </div>
                                 <div class="user-stats__stat">
-                                    2) Строк удалено: {{ user.statsLines.deletions }}
+                                    Строк удалено: {{ user.statsLines.deletions }}
                                 </div>
                                 <div class="user-stats__stat">
-                                    3) Всего: {{ user.statsLines.total }}
+                                    Всего: {{ user.statsLines.total }}
                                 </div>
                             </div>
                         </div>

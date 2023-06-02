@@ -14,9 +14,7 @@ export class UserStorageService {
   public nextUser$: Subject<UserNoCompareCard | MainInfoUser> = new Subject<UserNoCompareCard | MainInfoUser>()
   public usersMainPage: MainInfoUser[] = []
   public toCompareUsers: User[] = []
-  public compare$: Subject<User> = new Subject<User>()
-
-  private usersAllInfo: AllInfoUser[] = []
+  public usersAllInfo: AllInfoUser[] = []
 
   constructor() { }
 

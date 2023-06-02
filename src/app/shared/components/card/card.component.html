@@ -37,34 +37,70 @@
                     </div>
                 </ng-template>
 
-
-                <div class="user__link-wrap">
-                    <a [href]="user.web_url" class="user__link" target="_blank">
-                        Ссылка на GitLab
-                    </a>
-                </div>
-                <div class="user__grow"></div>
-                <a href="#" id="info" class="button user__show" [routerLink]="'/user/' + user.id">
-                    <span class="button__text">Подробнее</span>
-                </a>
-                <div class="user__buttons">
-                    <div class="user__compare">
-                        <button class="compare__button" (click)="toggleCompare()" [ngClass]="{incompare: toCompare, disabled: user.actions.commit == 0}">
-                            <ng-container *ngIf="!toCompare; else inCompare">
-                                В сравнение
-                            </ng-container>
-                            <ng-template #inCompare>
-                                Добавлено
-                            </ng-template>
-                        </button>
+                <ng-template #allInfo>
+                    <div class="user__langs">
+                        <div class="user__part">
+                            Языки программирования:
+                        </div>
+                        <ng-container *ngFor="let lang of allInfoUser.languages">
+                            <div class="user__lang">
+                                {{ lang }}
+                            </div>
+                        </ng-container>
                     </div>
-                    <div class="user__delete delete">
-                        <div class="delete__wrap" (click)="deleteUser()">
-                            <img src="assets/images/icons/rubbish.png" alt="">
-                            <img src="assets/images/icons/rubbish-top.png" alt="">
+
+                    <div class="user__stats">
+                        <div class="user__part">
+                            Статистика по коммитам:
+                        </div>
+                        <div class="user__stat">
+                            Строк добавлено: {{ allInfoUser.statsLines.additions }}
+                        </div>
+                        <div class="user__stat">
+                            Строк удалено: {{ allInfoUser.statsLines.deletions }}
+                        </div>
+                        <div class="user__stat">
+                            Всего: {{ allInfoUser.statsLines.total }}
                         </div>
                     </div>
-                </div>
+                    <div class="user__grow"></div>
+                    <div class="user__link-wrap">
+                        <a [href]="user.web_url" class="user__link" target="_blank">
+                            Ссылка на GitLab
+                        </a>
+                    </div>
+                </ng-template>
+
+
+                <ng-container *ngIf="!isCompareCard; else allInfo">
+                    <div class="user__link-wrap">
+                        <a [href]="user.web_url" class="user__link" target="_blank">
+                            Ссылка на GitLab
+                        </a>
+                    </div>
+                    <div class="user__grow"></div>
+                    <a href="#" id="info" class="button user__show" [routerLink]="'/user/' + user.id">
+                        <span class="button__text">Подробнее</span>
+                    </a>
+                    <div class="user__buttons">
+                        <div class="user__compare">
+                            <button class="compare__button" (click)="toggleCompare()" [ngClass]="{incompare: toCompare, disabled: user.actions.commit == 0}">
+                                <ng-container *ngIf="!toCompare; else inCompare">
+                                    В сравнение
+                                </ng-container>
+                                <ng-template #inCompare>
+                                    Добавлено
+                                </ng-template>
+                            </button>
+                        </div>
+                        <div class="user__delete delete">
+                            <div class="delete__wrap" (click)="deleteUser()">
+                                <img src="assets/images/icons/rubbish.png" alt="">
+                                <img src="assets/images/icons/rubbish-top.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
             </div>
         </ng-container>
 

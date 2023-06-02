@@ -254,3 +254,40 @@
     opacity: 0;
   }
 }
+
+
+.user {
+  &__langs {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+  }
+
+  &__part {
+    font-size: 1.3rem;
+  }
+
+  &__lang {
+    font-size: 1.1rem;
+    margin-top: .4rem;
+
+    &:first-child {
+      margin-top: .7rem;
+    }
+  }
+
+  &__stats {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+  }
+
+  &__stat {
+    font-size: 1.1rem;
+    margin-top: .4rem;
+
+    &:first-child {
+      margin-top: .7rem;
+    }
+  }
+}

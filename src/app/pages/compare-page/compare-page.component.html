@@ -1,1 +1,68 @@
-<p>compare-page works!</p>
+<section class="compare">
+    <ng-container *ngIf="compareResult; else loader">
+        <div class="compare__wrap" @enter @leave>
+            <h1 class="compare__title">
+                Результаты сравнения
+            </h1>
+            <div class="compare__results">
+                <div class="compare__result">
+                    <div class="compare__part">
+                        Больше всего коммитов:
+                    </div>
+                    <app-card class="compare__user" [user]="compareResult.commit" [compare]="true"></app-card>
+                </div>
+                <div class="compare__result">
+                    <div class="compare__part">
+                        Больше всего код-ревью:
+                    </div>
+                    <app-card class="compare__user" [user]="compareResult.approved" [compare]="true"></app-card>
+                </div>
+                <div class="compare__result">
+                    <div class="compare__part">
+                        Больше всего языков:
+                    </div>
+                    <app-card class="compare__user" [user]="compareResult.langs" [compare]="true"></app-card>
+                </div>
+                <div class="compare__result">
+                    <div class="compare__part">
+                        Больше всего добавлено строчек:
+                    </div>
+                    <app-card class="compare__user" [user]="compareResult.add" [compare]="true"></app-card>
+                </div>
+                <div class="compare__result">
+                    <div class="compare__part">
+                        Больше всего удалено строчек:
+                    </div>
+                    <app-card class="compare__user" [user]="compareResult.delete" [compare]="true"></app-card>
+                </div>
+                <div class="compare__result">
+                    <div class="compare__part">
+                        Больше всего по строчкам:
+                    </div>
+                    <app-card class="compare__user" [user]="compareResult.total" [compare]="true"></app-card>
+                </div>
+                <div class="compare__result">
+                    <div class="compare__part">
+                        Самый длинный ник)
+                    </div>
+                    <app-card class="compare__user" [user]="compareResult.username" [compare]="true"></app-card>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-template #loader>
+        <ng-container *ngIf="!isError; else error">
+            <div class="loader" @enter @leave>
+                <img src="assets/images/icons/loader-black.svg" alt="">
+            </div>
+        </ng-container>
+
+        <ng-template #error>
+            <div class="error" @enter @leave>
+                Ошибка запроса. Такое может происходить, если слишком много коммитов и проектов
+            </div>
+        </ng-template>
+
+    </ng-template>
+</section>

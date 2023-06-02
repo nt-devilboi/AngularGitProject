@@ -78,7 +78,7 @@ export class HeaderComponent {
     })
 
     this.formSearch.controls.search.valueChanges
-      .pipe(this._destroy.TakeUntilDestroy)
+      .pipe(this._destroy.takeUntilDestroy)
       .subscribe(value => {
       if (value)
         this.isEmpty = false

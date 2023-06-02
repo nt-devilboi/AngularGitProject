@@ -7,7 +7,6 @@ import {AllInfoUser} from "../../shared/interfaces/AllInfoUser";
 import {transition, trigger, useAnimation} from "@angular/animations";
 import {opacity} from "../../shared/animations/opacity";
 import {DestroyService} from "../../shared/services/destroy.service";
-import {take} from "rxjs";
 
 @Component({
   selector: 'app-user-page',
@@ -55,7 +54,7 @@ export class UserPageComponent implements OnInit{
 
     this._userData.getAllInfoUser(id)
       .pipe(
-        take(1)
+        this._destroy.takeUntilDestroy
       )
       .subscribe({
         next: (user) => {
@@ -65,6 +64,7 @@ export class UserPageComponent implements OnInit{
         },
         error: () => {
           this.isError = true
+          this._cd.markForCheck()
         }
       })
 

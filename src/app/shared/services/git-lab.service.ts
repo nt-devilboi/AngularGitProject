@@ -2,12 +2,13 @@ import {Inject, Injectable} from "@angular/core";
 import {UserEventsService} from "./user-events.service";
 import {MainInfoUser} from "../interfaces/MainInfoUser";
 import {UserService} from "./user.service";
-import {forkJoin, map, mergeMap, Observable, of, tap} from "rxjs";
-import {Actions} from "../interfaces/Event/Actions";
+import {catchError, forkJoin, map, mergeMap, Observable, of, tap, throwError} from "rxjs";
 import {UserStorageService} from "./user-storage.service";
 import {IGitUser} from "../interfaces/Staff/IGitUser";
 import {AllInfoUser} from "../interfaces/AllInfoUser";
 import {userStore} from "../../app.module";
+import {CompareResult} from "../interfaces/CompareResult";
+import {compare} from "../functions/compare";
 
 @Injectable()
 export class GitLabService implements IGitUser {
@@ -22,20 +23,13 @@ export class GitLabService implements IGitUser {
   public getMainInfoUser(userIdent: string, searchById: boolean = false): Observable<MainInfoUser> {
     return this._userService.getUser(userIdent, searchById)
       .pipe(
-        mergeMap(user => this.getActions(user.username).pipe(
+        mergeMap(user => this._eventsService.getActions(user.username).pipe(
           map(actions => ({
             ...user,
               actions
           }))
         ))
     )
-  }
-
-  private getActions(userIdentification: string): Observable<Actions> {
-    return  forkJoin({
-      commit: this._eventsService.getCommits(userIdentification),
-      approved: this._eventsService.getCountApproves(userIdentification),
-    })
   }
 
   public getAllInfoUser(id: string): Observable<AllInfoUser> {
@@ -48,14 +42,86 @@ export class GitLabService implements IGitUser {
 
     if(userMainPage)
       return this._userService.getAllInfoUser(userMainPage)
-        .pipe(tap(user => this._userStorage.storeNext(user)))
+        .pipe(
+          tap(user => this._userStorage.storeNext(user)),
+          catchError((e) => throwError(() => e))
+        )
 
     return this.getMainInfoUser(id, true)
       .pipe(
         mergeMap(user => {
           return this._userService.getAllInfoUser(user)
         }),
-        tap(user => this._userStorage.storeNext(user))
+        tap(user => this._userStorage.storeNext(user)),
+        catchError((e) => {
+          return throwError(() => e)
+        })
+      )
+  }
+
+  public getCompareResult(): Observable<CompareResult> {
+    let needInfoUsers =
+      this._userStorage.toCompareUsers
+        .filter(user => this._userStorage.usersAllInfo
+          .findIndex(e => e.id == user.id) == -1
+        )
+
+    return forkJoin(needInfoUsers.map(e => this.getAllInfoUser(e.id.toString())))
+      .pipe(
+        map(() => {
+          let allUsers = this._userStorage.toCompareUsers
+            .filter(user => this._userStorage.usersAllInfo
+              .findIndex(e => e.id == user.id) !== -1
+            )
+            .map(user => this._userStorage.usersAllInfo.find(e => e.id == user.id) ?? {} as AllInfoUser)
+
+          let result: CompareResult = {
+            commit: compare(allUsers, (user: AllInfoUser, maxValue: number) => {
+              if (user.actions.commit >= maxValue)
+                return [true, user.actions.commit]
+
+              return [false, 0]
+            }),
+            approved: compare(allUsers, (user: AllInfoUser, maxValue: number) => {
+              if (user.actions.approved >= maxValue)
+                return [true, user.actions.approved]
+
+              return [false, 0]
+            }),
+            langs: compare(allUsers, (user: AllInfoUser, maxValue: number) => {
+              if (user.languages.length >= maxValue)
+                return [true, user.languages.length]
+
+              return [false, 0]
+            }),
+            add: compare(allUsers, (user: AllInfoUser, maxValue: number) => {
+              if (user.statsLines.additions >= maxValue)
+                return [true, user.statsLines.additions]
+
+              return [false, 0]
+            }),
+            delete: compare(allUsers, (user: AllInfoUser, maxValue: number) => {
+              if (user.statsLines.deletions >= maxValue)
+                return [true, user.statsLines.deletions]
+
+              return [false, 0]
+            }),
+            total: compare(allUsers, (user: AllInfoUser, maxValue: number) => {
+              if (user.statsLines.total >= maxValue)
+                return [true, user.statsLines.total]
+
+              return [false, 0]
+            }),
+            username: compare(allUsers, (user: AllInfoUser, maxValue: number) => {
+              if (user.username.length >= maxValue)
+                return [true, user.username.length]
+
+              return [false, 0]
+            }),
+          }
+
+          return result
+        })
       )
   }
 }

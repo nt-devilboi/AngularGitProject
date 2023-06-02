@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import {UserCardComponent} from "../../interfaces/Staff/UserCardComponent";
 import {DestroyService} from "../../services/destroy.service";
-import {NgClass, NgIf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {IGitApi, userStore} from "../../../app.module";
 import {GitLabService} from "../../services/git-lab.service";
 import {MainInfoUser} from "../../interfaces/MainInfoUser";
@@ -24,6 +24,7 @@ import {PrivateProfileDirective} from "../../directives/private-profile.directiv
 import {transition, trigger, useAnimation} from "@angular/animations";
 import {opacity} from "../../animations/opacity";
 import {ColorCountDirective} from "../../directives/color-count.directive";
+import {AllInfoUser} from "../../interfaces/AllInfoUser";
 
 @Component({
   standalone: true,
@@ -36,7 +37,8 @@ import {ColorCountDirective} from "../../directives/color-count.directive";
     RouterLink,
     NgClass,
     PrivateProfileDirective,
-    ColorCountDirective
+    ColorCountDirective,
+    NgForOf
   ],
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
@@ -65,9 +67,11 @@ import {ColorCountDirective} from "../../directives/color-count.directive";
 export class CardComponent implements OnInit {
 
   protected user!: MainInfoUser;
+  protected allInfoUser!: AllInfoUser
   protected toCompare!: boolean
-  @Input('user') userType!: UserCardComponent | MainInfoUser
-  @Output() deleteEvent = new EventEmitter<[string, boolean]>
+  @Input('user') public userType!: UserCardComponent | MainInfoUser | AllInfoUser
+  @Input('compare') public isCompareCard: boolean = false
+  @Output() public deleteEvent = new EventEmitter<[string, boolean]>
   protected isErrorFinding = false;
 
   // private _userStorage = inject<UserStorageService>(userStore, {
@@ -86,6 +90,12 @@ export class CardComponent implements OnInit {
     if (isUserMainInfo(this.userType)) {
       this.user = this.userType
       this.isCompare(this.userType)
+
+      if (this.isCompareCard) {
+        // @ts-ignore
+        this.allInfoUser = (this.userType as AllInfoUser)
+      }
+
       this.cd.markForCheck()
       return
     }
@@ -95,6 +105,8 @@ export class CardComponent implements OnInit {
       else
         this.getUser(this.userType.name)
     }
+
+
   }
 
   private isCompare(user: User): void {
@@ -104,7 +116,7 @@ export class CardComponent implements OnInit {
 
   private getUser(param: string, searchById: boolean = false): void {
     this._userData.getMainInfoUser(param, searchById)
-      .pipe(this._destroy.TakeUntilDestroy)
+      .pipe(this._destroy.takeUntilDestroy)
       .subscribe({
           next: user => {
             this.user = user

@@ -59,7 +59,7 @@ export class BodyComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this._userStorage.nextUser$
-      .pipe(this._destroy.TakeUntilDestroy)
+      .pipe(this._destroy.takeUntilDestroy)
       .subscribe(user => {
         this.addView(user)
         this.cd.markForCheck()
