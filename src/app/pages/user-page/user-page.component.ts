@@ -52,45 +52,45 @@ export class UserPageComponent implements OnInit{
   public ngOnInit(): void {
     let id = this._router.url.split('/').at(-1) ?? ''
 
-    // this._userData.getAllInfoUser(id)
-    //   .pipe(
-    //     take(1)
-    //   )
-    //   .subscribe(user => {
-    //     this.user = user
-    //     this.toCompare = !!this._userStorage.toCompareUsers.find(e => e.id === this.user.id)
-    //     this._cd.markForCheck()
-    //   })
+    this._userData.getAllInfoUser(id)
+      .pipe(
+        take(1)
+      )
+      .subscribe(user => {
+        this.user = user
+        this.toCompare = !!this._userStorage.toCompareUsers.find(e => e.id === this.user.id)
+        this._cd.markForCheck()
+      })
 
-    setTimeout(() => {
-      this.user = {
-        id: 4380634,
-        username: 'amateur-dev',
-        name: 'Amateur Dev',
-        avatar_url: 'https://gitlab.com/uploads/-/system/user/avatar/4380634/avatar.png',
-        web_url: 'https://gitlab.com/amateur-dev',
-        actions: {
-          approved: 93,
-          commit: 109
-        },
-        activeTime: 10,
-        activeDay: 3,
-        statsLines: {
-          additions: 368277,
-          deletions: 209050,
-          total: 368277 + 209050,
-        },
-        languages: [
-          'JavaScript',
-          "HTML",
-          'Csharp',
-          'CSS'
-        ]
-      }
-
-      this.toCompare = !!this._userStorage.toCompareUsers.find(e => e.id === this.user.id)
-      this._cd.markForCheck()
-    }, 0)
+  //   setTimeout(() => {
+  //     this.user = {
+  //       id: 4380634,
+  //       username: 'amateur-dev',
+  //       name: 'Amateur Dev',
+  //       avatar_url: 'https://gitlab.com/uploads/-/system/user/avatar/4380634/avatar.png',
+  //       web_url: 'https://gitlab.com/amateur-dev',
+  //       actions: {
+  //         approved: 93,
+  //         commit: 109
+  //       },
+  //       activeTime: 10,
+  //       activeDay: 3,
+  //       statsLines: {
+  //         additions: 368277,
+  //         deletions: 209050,
+  //         total: 368277 + 209050,
+  //       },
+  //       languages: [
+  //         'JavaScript',
+  //         "HTML",
+  //         'Csharp',
+  //         'CSS'
+  //       ]
+  //     }
+  //
+  //     this.toCompare = !!this._userStorage.toCompareUsers.find(e => e.id === this.user.id)
+  //     this._cd.markForCheck()
+  //   }, 0)
   }
 
   protected toggleCompare() {

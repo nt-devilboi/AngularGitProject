@@ -45,11 +45,11 @@
                     </div>
                     <div class="user-flex__item">
                         <div class="user__day">
-                            Самый активный день: {{ user.activeDay }}
+                            Самый активный день: {{ user.activeDay | day }}
                         </div>
 
                         <div class="user__time">
-                            Самое активное время: {{ user.activeTime }}
+                            Самое активное время: {{ 23 | time }}
                         </div>
                     </div>
                 </div>
