@@ -4,7 +4,6 @@ import {MainInfoUser} from "../interfaces/MainInfoUser";
 import {UserService} from "./user.service";
 import {forkJoin, map, mergeMap, Observable, of, tap} from "rxjs";
 import {Actions} from "../interfaces/Event/Actions";
-import {ProjectService} from "./project-service";
 import {UserStorageService} from "./user-storage.service";
 import {IGitUser} from "../interfaces/Staff/IGitUser";
 import {AllInfoUser} from "../interfaces/AllInfoUser";
@@ -16,7 +15,6 @@ export class GitLabService implements IGitUser {
   constructor(
     private _eventsService: UserEventsService,
     private _userService: UserService,
-    private _projectService: ProjectService,
     @Inject(userStore) private _userStorage: UserStorageService
   ) {
   }
@@ -49,13 +47,13 @@ export class GitLabService implements IGitUser {
     let userMainPage = this._userStorage.getUser(id, true)
 
     if(userMainPage)
-      return this._projectService.getAllInfoUser(userMainPage)
+      return this._userService.getAllInfoUser(userMainPage)
         .pipe(tap(user => this._userStorage.storeNext(user)))
 
     return this.getMainInfoUser(id, true)
       .pipe(
         mergeMap(user => {
-          return this._projectService.getAllInfoUser(user)
+          return this._userService.getAllInfoUser(user)
         }),
         tap(user => this._userStorage.storeNext(user))
       )
