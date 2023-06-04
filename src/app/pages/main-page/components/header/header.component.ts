@@ -2,13 +2,13 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject} from '@an
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {IGitApi, userStore} from "../../../../app.module";
 import {GitLabService} from "../../../../shared/services/git-lab.service";
-import {MainInfoUser} from "../../../../shared/interfaces/MainInfoUser";
+import {MainInfoUser} from "../../../../shared/types/User/MainInfoUser";
 import {transition, trigger, useAnimation} from "@angular/animations";
 import {transformOpacity} from "../../../../shared/animations/transform-opacity";
-import {IReactiveSearchForm} from "../../../../shared/interfaces/Staff/IReactiveSearchForm";
+import {IReactiveSearchForm} from "../../../../shared/interfaces/IReactiveSearchForm";
 import {DestroyService} from "../../../../shared/services/destroy.service";
 import {UserStorageService} from "../../../../shared/services/user-storage.service";
-import {UserNoCompareCard,} from "../../../../shared/interfaces/Staff/UserNoCompareCard";
+import {UserNoCompareCard,} from "../../../../shared/types/User/UserNoCompareCard";
 import {opacity} from "../../../../shared/animations/opacity";
 
 @Component({
@@ -85,7 +85,7 @@ export class HeaderComponent {
     })
   }
 
-  getUser(): void {
+  protected getUser(): void {
     if (this.formSearch.controls.search.value == "") {
       this.isEmpty = true
 
@@ -114,7 +114,7 @@ export class HeaderComponent {
     }
   }
 
-  switchSearch() {
+  protected switchSearch() {
     this.formSearch.controls.switchSearch.setValue(!this.formSearch.controls.switchSearch.value);
     this.switchValidate();
   }

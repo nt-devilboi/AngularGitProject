@@ -1,4 +1,4 @@
-import {MainInfoUser} from "../MainInfoUser";
+import {MainInfoUser} from "./MainInfoUser";
 
 
 export type UserCompareCard = MainInfoUser & {

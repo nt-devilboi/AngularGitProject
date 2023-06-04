@@ -8,15 +8,15 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import {UserCardComponent} from "../../interfaces/Staff/UserCardComponent";
+import {UserCardComponent} from "../../types/User/UserCardComponent";
 import {DestroyService} from "../../services/destroy.service";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {IGitApi, userStore} from "../../../app.module";
 import {GitLabService} from "../../services/git-lab.service";
-import {MainInfoUser} from "../../interfaces/MainInfoUser";
+import {MainInfoUser} from "../../types/User/MainInfoUser";
 import {UserStorageService} from "../../services/user-storage.service";
 import {RouterLink} from "@angular/router";
-import {User} from "../../interfaces/User";
+import {User} from "../../types/User/User";
 import {isUserNoCompare} from "../../typeGuards/isUserNoCompare";
 import {isSearchById} from "../../typeGuards/isSearchById";
 import {isUserMainInfo} from "../../typeGuards/isUserMainInfo";
@@ -24,7 +24,7 @@ import {PrivateProfileDirective} from "../../directives/private-profile.directiv
 import {transition, trigger, useAnimation} from "@angular/animations";
 import {opacity} from "../../animations/opacity";
 import {ColorCountDirective} from "../../directives/color-count.directive";
-import {AllInfoUser} from "../../interfaces/AllInfoUser";
+import {AllInfoUser} from "../../types/User/AllInfoUser";
 
 @Component({
   standalone: true,

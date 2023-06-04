@@ -3,7 +3,7 @@ import {UserStorageService} from "../../shared/services/user-storage.service";
 import {IGitApi, userStore} from "../../app.module";
 import {GitLabService} from "../../shared/services/git-lab.service";
 import {Router} from "@angular/router";
-import {AllInfoUser} from "../../shared/interfaces/AllInfoUser";
+import {AllInfoUser} from "../../shared/types/User/AllInfoUser";
 import {transition, trigger, useAnimation} from "@angular/animations";
 import {opacity} from "../../shared/animations/opacity";
 import {DestroyService} from "../../shared/services/destroy.service";

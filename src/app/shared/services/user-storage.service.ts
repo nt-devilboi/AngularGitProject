@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Subject} from "rxjs";
-import {UserNoCompareCard} from "../interfaces/Staff/UserNoCompareCard";
-import {MainInfoUser} from "../interfaces/MainInfoUser";
-import {User} from "../interfaces/User";
-import {AllInfoUser} from "../interfaces/AllInfoUser";
+import {UserNoCompareCard} from "../types/User/UserNoCompareCard";
+import {MainInfoUser} from "../types/User/MainInfoUser";
+import {User} from "../types/User/User";
+import {AllInfoUser} from "../types/User/AllInfoUser";
 import {isAllInfoUser} from "../typeGuards/isAllInfoUser";
 
 @Injectable({

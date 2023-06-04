@@ -3,6 +3,7 @@ import {HttpRequestService} from "./http-request.service";
 import {catchError, map, Observable, of} from "rxjs";
 import {HttpHeaders, HttpParams} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {TokenResp} from "../types/TokenResp";
 
 @Injectable({
   providedIn: 'root'
@@ -14,16 +15,15 @@ export class TokenService {
     private _http: HttpRequestService,
     private _router: Router
   ) {
-    // localStorage.setItem('token', 'glpat-6VqF72X3yWzXGHVFtsgf')
   }
 
   public isValidToken(): Observable<boolean> {
     const headers: HttpHeaders = new HttpHeaders().set('PRIVATE-TOKEN', localStorage.getItem('token') ?? '')
 
-    return this._http.getResponse<response>('personal_access_tokens/self', new HttpParams(), headers)
+    return this._http.getResponse<TokenResp>('personal_access_tokens/self', new HttpParams(), headers)
       .pipe(
         map(r => {
-          const body: response = r.body as response
+          const body: TokenResp = r.body as TokenResp
 
           this.setTimeOutExpiration(new Date(body.expires_at))
           return true
@@ -45,8 +45,4 @@ export class TokenService {
       clearTimeout(this._timeOut)
     }, diff)
   }
-}
-
-type response = {
-  'expires_at': Date
 }

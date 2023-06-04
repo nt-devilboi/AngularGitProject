@@ -1,4 +1,4 @@
-import {AllInfoUser} from "../interfaces/AllInfoUser";
+import {AllInfoUser} from "../types/User/AllInfoUser";
 
 export function compare(users: AllInfoUser[], compareFunc: (user: AllInfoUser, maxValue: number) => [boolean, number]): AllInfoUser {
   let result!: AllInfoUser

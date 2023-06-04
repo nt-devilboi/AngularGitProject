@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
-import {catchError, Observable, of, throwError} from "rxjs";
+import {catchError, Observable, throwError} from "rxjs";
 
 @Injectable({
   providedIn:  'root'
@@ -12,7 +12,6 @@ export class HttpRequestService {
   ) {
   }
 
-  //TODO написать хендлер по логике могут и не быть парамсы
   public getResponse<TGet>(
     uri: string,
     params?: HttpParams,
@@ -27,20 +26,5 @@ export class HttpRequestService {
         catchError((err) => throwError(err))
       )
   }
-
-  // TODO написать норм все
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<HttpResponse<T>> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      // this.log(`${operation} failed: ${error.message}`);
-
-
-      return of(result as HttpResponse<T>);
-    }
-  };
 }
 

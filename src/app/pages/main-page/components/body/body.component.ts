@@ -9,9 +9,9 @@ import {
 } from '@angular/core';
 
 import {DestroyService} from "../../../../shared/services/destroy.service";
-import {UserNoCompareCard} from "../../../../shared/interfaces/Staff/UserNoCompareCard";
-import {UserToTemplate} from "../../../../shared/interfaces/Staff/UserToTemplate";
-import {MainInfoUser} from "../../../../shared/interfaces/MainInfoUser";
+import {UserNoCompareCard} from "../../../../shared/types/User/UserNoCompareCard";
+import {UserToTemplate} from "../../../../shared/types/User/UserToTemplate";
+import {MainInfoUser} from "../../../../shared/types/User/MainInfoUser";
 import {isUserMainInfo} from "../../../../shared/typeGuards/isUserMainInfo";
 import {isSearchById} from "../../../../shared/typeGuards/isSearchById";
 import {transition, trigger, useAnimation} from "@angular/animations";
@@ -57,7 +57,7 @@ export class BodyComponent implements OnInit, AfterViewInit {
     private cd: ChangeDetectorRef
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this._userStorage.nextUser$
       .pipe(this._destroy.takeUntilDestroy)
       .subscribe(user => {
@@ -66,7 +66,7 @@ export class BodyComponent implements OnInit, AfterViewInit {
       })
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     for (let user of this._userStorage.usersMainPage)
       this.addView(user)
 
@@ -98,7 +98,7 @@ export class BodyComponent implements OnInit, AfterViewInit {
     })
   }
 
-  deleteUser(ident: [string, boolean]) {
+  protected deleteUser(ident: [string, boolean]) {
     let i = this._users.findIndex(e => (ident[1] == e.searchById) ? ident[0] == e.identificator : false)
     if (i === -1)
       return

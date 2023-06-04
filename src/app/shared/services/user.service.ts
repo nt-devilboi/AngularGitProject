@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpRequestService} from "./http-request.service";
-import {User} from "../interfaces/User";
+import {User} from "../types/User/User";
 import {HttpParams} from "@angular/common/http";
 import {catchError, map, Observable, of, throwError} from "rxjs";
-import {MainInfoUser} from "../interfaces/MainInfoUser";
-import {AllInfoUser} from "../interfaces/AllInfoUser";
+import {MainInfoUser} from "../types/User/MainInfoUser";
+import {AllInfoUser} from "../types/User/AllInfoUser";
 import {UserEventsService} from "./user-events.service";
 import {UserStorageService} from "./user-storage.service";
 

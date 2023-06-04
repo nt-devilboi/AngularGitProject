@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {IGitApi} from "../../app.module";
 import {GitLabService} from "../../shared/services/git-lab.service";
-import {CompareResult} from "../../shared/interfaces/CompareResult";
+import {CompareResult} from "../../shared/types/CompareResult";
 import {take} from "rxjs";
 import {DestroyService} from "../../shared/services/destroy.service";
 import {transition, trigger, useAnimation} from "@angular/animations";

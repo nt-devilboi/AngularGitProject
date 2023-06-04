@@ -16,7 +16,7 @@ export class ColorCountDirective implements OnInit{
     let color: string
 
     if (!this.isApproved) {
-      if (this.count >= 900)
+      if (this.count >= 600)
         color = 'green'
       else if (this.count >= 300)
         color = 'orange'
@@ -25,7 +25,7 @@ export class ColorCountDirective implements OnInit{
     } else {
       if (this.count >= 300)
         color = 'green'
-      else if (this.count >= 100)
+      else if (this.count >= 50)
         color = 'orange'
       else
         color = 'red'

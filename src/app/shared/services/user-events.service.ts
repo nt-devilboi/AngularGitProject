@@ -10,16 +10,16 @@ import {
   throwError,
   zip
 } from "rxjs";
-import {Event, PushEvent} from "../interfaces/Event/Event";
+import {Event, PushEvent} from "../types/Event/Event";
 import {HttpParams, HttpResponse} from "@angular/common/http";
-import {ProjectsStats} from "../interfaces/Projects/ProjectsStats";
-import {Project} from "../interfaces/Projects/Project";
-import {ProjectInfoNotParsed} from "../interfaces/Projects/ProjectInfoNotParsed";
-import {Languages, LanguagesStats} from "../interfaces/Projects/Language";
-import {StatsLines} from "../interfaces/Projects/StatsLines";
-import {ProjectInfoParsed} from "../interfaces/Projects/ProjectInfoParsed";
-import {CommitResponse} from "../interfaces/Projects/CommitResponse";
-import {Actions} from "../interfaces/Event/Actions";
+import {ProjectsStats} from "../types/Projects/ProjectsStats";
+import {Project} from "../types/Projects/Project";
+import {ProjectInfoNotParsed} from "../types/Projects/ProjectInfoNotParsed";
+import {Languages, LanguagesStats} from "../types/Projects/Language";
+import {StatsLines} from "../types/Projects/StatsLines";
+import {ProjectInfoParsed} from "../types/Projects/ProjectInfoParsed";
+import {CommitResponse} from "../types/Projects/CommitResponse";
+import {Actions} from "../types/Event/Actions";
 
 
 @Injectable({

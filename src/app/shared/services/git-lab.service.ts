@@ -1,13 +1,13 @@
 import {Inject, Injectable} from "@angular/core";
 import {UserEventsService} from "./user-events.service";
-import {MainInfoUser} from "../interfaces/MainInfoUser";
+import {MainInfoUser} from "../types/User/MainInfoUser";
 import {UserService} from "./user.service";
 import {catchError, forkJoin, map, mergeMap, Observable, of, tap, throwError} from "rxjs";
 import {UserStorageService} from "./user-storage.service";
-import {IGitUser} from "../interfaces/Staff/IGitUser";
-import {AllInfoUser} from "../interfaces/AllInfoUser";
+import {IGitUser} from "../interfaces/IGitUser";
+import {AllInfoUser} from "../types/User/AllInfoUser";
 import {userStore} from "../../app.module";
-import {CompareResult} from "../interfaces/CompareResult";
+import {CompareResult} from "../types/CompareResult";
 import {compare} from "../functions/compare";
 
 @Injectable()

@@ -13,7 +13,7 @@ export class AuthGuard{
     private _token: TokenService
   ) {}
 
-  canActivate(
+  public canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this._token.isValidToken()

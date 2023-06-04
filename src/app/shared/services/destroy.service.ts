@@ -8,7 +8,7 @@ export class DestroyService implements OnDestroy {
     origin: Observable<T>
   ): Observable<T> => origin.pipe(takeUntil(this._destroy$))
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this._destroy$.next()
     this._destroy$.complete()
   }

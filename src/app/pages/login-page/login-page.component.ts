@@ -24,12 +24,12 @@ export class LoginPageComponent implements OnInit{
     })
   }
 
-  submit() {
+  protected submit() {
     localStorage.setItem('token', this._loginForm.get('token')?.value)
     this._router.navigate([''])
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     let sub = this._token.isValidToken().subscribe(isValid => {
       if (isValid)
         this._router.navigate([''])

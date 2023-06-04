@@ -1,5 +1,5 @@
-import {MainInfoUser} from "../MainInfoUser";
-import {AllInfoUser} from "../AllInfoUser";
+import {MainInfoUser} from "../types/User/MainInfoUser";
+import {AllInfoUser} from "../types/User/AllInfoUser";
 import {Observable} from "rxjs";
 
 export interface IGitUser {

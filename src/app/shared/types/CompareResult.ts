@@ -1,4 +1,4 @@
-import {AllInfoUser} from "./AllInfoUser";
+import {AllInfoUser} from "./User/AllInfoUser";
 
 export type CompareResult = {
   commit: AllInfoUser,
