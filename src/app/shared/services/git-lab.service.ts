@@ -66,6 +66,15 @@ export class GitLabService implements IGitUser {
           .findIndex(e => e.id == user.id) == -1
         )
 
+    if (needInfoUsers.length == 0) {
+      return of(
+        this.getCompareObject(
+          this._userStorage.toCompareUsers.map(user => this._userStorage.usersAllInfo.find(e => e.id == user.id) ?? {} as AllInfoUser)
+        )
+      )
+    }
+
+
     return forkJoin(needInfoUsers.map(e => this.getAllInfoUser(e.id.toString())))
       .pipe(
         map(() => {
@@ -75,53 +84,68 @@ export class GitLabService implements IGitUser {
             )
             .map(user => this._userStorage.usersAllInfo.find(e => e.id == user.id) ?? {} as AllInfoUser)
 
-          let result: CompareResult = {
-            commit: compare(allUsers, (user: AllInfoUser, maxValue: number) => {
-              if (user.actions.commit >= maxValue)
-                return [true, user.actions.commit]
-
-              return [false, 0]
-            }),
-            approved: compare(allUsers, (user: AllInfoUser, maxValue: number) => {
-              if (user.actions.approved >= maxValue)
-                return [true, user.actions.approved]
-
-              return [false, 0]
-            }),
-            langs: compare(allUsers, (user: AllInfoUser, maxValue: number) => {
-              if (user.languages.length >= maxValue)
-                return [true, user.languages.length]
-
-              return [false, 0]
-            }),
-            add: compare(allUsers, (user: AllInfoUser, maxValue: number) => {
-              if (user.statsLines.additions >= maxValue)
-                return [true, user.statsLines.additions]
-
-              return [false, 0]
-            }),
-            delete: compare(allUsers, (user: AllInfoUser, maxValue: number) => {
-              if (user.statsLines.deletions >= maxValue)
-                return [true, user.statsLines.deletions]
-
-              return [false, 0]
-            }),
-            total: compare(allUsers, (user: AllInfoUser, maxValue: number) => {
-              if (user.statsLines.total >= maxValue)
-                return [true, user.statsLines.total]
-
-              return [false, 0]
-            }),
-            username: compare(allUsers, (user: AllInfoUser, maxValue: number) => {
-              if (user.username.length >= maxValue)
-                return [true, user.username.length]
-
-              return [false, 0]
-            }),
-          }
-
-          return result
+          return this.getCompareObject(allUsers)
         })
       )
+  }
+
+  private getCompareObject(users: AllInfoUser[]) {
+    let result: CompareResult = {
+      commit: compare(users, (user: AllInfoUser, maxValue: number) => {
+        if (user.actions.commit >= maxValue)
+          return [true, user.actions.commit]
+
+        return [false, 0]
+      }),
+      approved: compare(users, (user: AllInfoUser, maxValue: number) => {
+        if (user.actions.approved >= maxValue)
+          return [true, user.actions.approved]
+
+        return [false, 0]
+      }),
+      langs: compare(users, (user: AllInfoUser, maxValue: number) => {
+        if (user.languages.length >= maxValue)
+          return [true, user.languages.length]
+
+        return [false, 0]
+      }),
+      add: compare(users, (user: AllInfoUser, maxValue: number) => {
+        if (user.statsLines.additions >= maxValue)
+          return [true, user.statsLines.additions]
+
+        return [false, 0]
+      }),
+      delete: compare(users, (user: AllInfoUser, maxValue: number) => {
+        if (user.statsLines.deletions >= maxValue)
+          return [true, user.statsLines.deletions]
+
+        return [false, 0]
+      }),
+      total: compare(users, (user: AllInfoUser, maxValue: number) => {
+        if (user.statsLines.total >= maxValue)
+          return [true, user.statsLines.total]
+
+        return [false, 0]
+      }),
+      username: compare(users, (user: AllInfoUser, maxValue: number) => {
+        if (user.username.length >= maxValue)
+          return [true, user.username.length]
+
+        return [false, 0]
+      }),
+      rest: []
+    }
+
+    result.rest = users.filter(e => {
+      return e.id != result.commit.id
+        && e.id != result.approved.id
+        && e.id != result.langs.id
+        && e.id != result.add.id
+        && e.id != result.delete.id
+        && e.id != result.total.id
+        && e.id != result.username.id
+    })
+
+    return result
   }
 }

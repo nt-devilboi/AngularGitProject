@@ -64,6 +64,7 @@ export class UserPageComponent implements OnInit{
         },
         error: () => {
           this.isError = true
+          console.log(true)
           this._cd.markForCheck()
         }
       })

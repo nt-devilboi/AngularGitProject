@@ -1,4 +1,7 @@
 <section class="compare">
+
+    <app-back></app-back>
+
     <ng-container *ngIf="compareResult; else loader">
         <div class="compare__wrap" @enter @leave>
             <h1 class="compare__title">
@@ -48,6 +51,19 @@
                     <app-card class="compare__user" [user]="compareResult.username" [compare]="true"></app-card>
                 </div>
             </div>
+
+            <ng-container *ngIf="compareResult.rest.length > 0">
+                <div class="compare__part compare__part-rest">
+                    Остальные участники:
+                </div>
+                <div class="compare__rest">
+                        <ng-container *ngFor="let restUser of compareResult.rest">
+                            <div class="compare__result">
+                                <app-card class="compare__user" [user]="restUser" [compare]="true"></app-card>
+                            </div>
+                        </ng-container>
+                </div>
+            </ng-container>
         </div>
     </ng-container>
 

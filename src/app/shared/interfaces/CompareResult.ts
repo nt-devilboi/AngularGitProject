@@ -7,5 +7,6 @@ export type CompareResult = {
   add: AllInfoUser,
   delete: AllInfoUser,
   total: AllInfoUser,
-  username: AllInfoUser
+  username: AllInfoUser,
+  rest: AllInfoUser[]
 }

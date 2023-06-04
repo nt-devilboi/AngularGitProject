@@ -1,6 +1,15 @@
 import {Injectable} from "@angular/core";
 import {HttpRequestService} from "./http-request.service";
-import {catchError, forkJoin, map, mergeMap, Observable, of, throwError, zip} from "rxjs";
+import {
+  catchError,
+  forkJoin,
+  map,
+  mergeMap,
+  Observable,
+  of,
+  throwError,
+  zip
+} from "rxjs";
 import {Event, PushEvent} from "../interfaces/Event/Event";
 import {HttpParams, HttpResponse} from "@angular/common/http";
 import {ProjectsStats} from "../interfaces/Projects/ProjectsStats";
@@ -42,10 +51,13 @@ export class UserEventsService {
           let projectsInfoFirstPage: Observable<ProjectInfoNotParsed>[] = []
 
           for (let project of projectsFirstPage)
-            projectsInfoFirstPage.push(this.getProjectInfo(project.id))
+            projectsInfoFirstPage.push(this.getProjectInfo(project.id)
+              .pipe(catchError(e => throwError(() => e)))
+            )
 
           let projectsInfo: Observable<ProjectInfoNotParsed[]>[] = [
             zip(projectsInfoFirstPage)
+              .pipe(catchError(e => throwError(() => e)))
           ]
 
           for (let i = 1; i < pagesCount; i++)
@@ -56,13 +68,14 @@ export class UserEventsService {
               map(a => Array<ProjectInfoNotParsed>().concat(...a))
             )
         }),
-        map(projectsInfo =>  this.parseProjects(projectsInfo))
+        map(projectsInfo =>  this.parseProjects(projectsInfo)),
+        catchError(e => throwError(() => e))
       )
   }
 
   private getCountApproves(userId: string): Observable<number> {
     let params: HttpParams = new HttpParams()
-      .set("action", "pushed");
+      .set("action", "approved");
 
     return this._http.getResponse<Event[]>(`users/${userId}/events`, params)
       .pipe(
@@ -224,13 +237,14 @@ export class UserEventsService {
       languages: this.getProjectLanguages(projectId),
       commits: this.getProjectCommits(projectId)
     })
+      .pipe(catchError(e => throwError(() => e)))
   }
 
   private getProjectLanguages(projectId: number): Observable<Partial<LanguagesStats>> {
     return this._http.getResponse<Partial<LanguagesStats>>(`projects/${projectId}/languages`)
       .pipe(
         map(r => r.body as Partial<LanguagesStats>),
-        catchError(() => of({}))
+        catchError((e) => throwError(() => e))
       )
   }
 
@@ -239,38 +253,50 @@ export class UserEventsService {
       .set('page', 1)
       .set('per_page', 100)
 
-    return this._http.getResponse<{ id: string }>(`projects/${projectId}/repository/commits`, params)
+    return this.checkRepository(projectId)
       .pipe(
-        mergeMap(r => {
-          let commitsFirstPage: { id: string }[] = (r.body ?? []) as {id: string}[]
-          let pagesCount: number = parseInt(r.headers.get(`X-Total-Pages`) ?? "1");
+        mergeMap(() => {
+            return this._http.getResponse<{ id: string }>(`projects/${projectId}/repository/commits`, params)
+              .pipe(
+                mergeMap(r => {
+                  let commitsFirstPage: { id: string }[] = (r.body ?? []) as { id: string }[]
+                  let pagesCount: number = parseInt(r.headers.get(`X-Total-Pages`) ?? "1");
 
-          let commitResponses: Observable<CommitResponse>[] = []
+                  let commitResponses: Observable<CommitResponse>[] = []
 
-          for (let commit of commitsFirstPage)
-            commitResponses.push(this.getProjectCommit(projectId, commit.id)
-              .pipe(catchError((e) => throwError(() => e)))
-            )
+                  for (let commit of commitsFirstPage)
+                    commitResponses.push(this.getProjectCommit(projectId, commit.id)
+                      .pipe(catchError(e => throwError(() => e)))
+                    )
 
-          let allProjectCommits: Observable<CommitResponse[]>[] = [
-            zip(...commitResponses)
-          ]
+                  let allProjectCommits: Observable<CommitResponse[]>[] = [
+                    zip(...commitResponses)
+                      .pipe(catchError(e => throwError(() => e)))
+                  ]
 
-          for (let i = 1; i < pagesCount; i++) {
-            allProjectCommits.push(this.getProjectCommitsPerPage(projectId, i)
-              .pipe(catchError((e) => throwError(() => e)))
-            )
+                  for (let i = 1; i < pagesCount; i++) {
+                    allProjectCommits.push(this.getProjectCommitsPerPage(projectId, i)
+                      .pipe(catchError(e => throwError(() => e)))
+                    )
+                  }
+
+                  return zip(allProjectCommits)
+                    .pipe(
+                      map(a => Array<CommitResponse>().concat(...a))
+                    )
+                })
+              )
           }
-
-          return zip(allProjectCommits)
-            .pipe(
-              map(a => Array<CommitResponse>().concat(...a))
-            )
-        }),
+        ),
         catchError(() => {
           return of([])
         })
       )
+
+  }
+
+  private checkRepository(projectId: number): Observable<any> {
+    return this._http.getResponse<any>(`projects/${projectId}/repository/branches`)
   }
 
   private getProjectCommitsPerPage(projectId: number, pageNum: number): Observable<CommitResponse[]> {
@@ -286,19 +312,23 @@ export class UserEventsService {
 
           for (let commit of commits)
             commitResponses.push(this.getProjectCommit(projectId, commit.id)
-              .pipe(catchError((e) => throwError(e)))
+              .pipe(catchError(e => throwError(() => e)))
             )
 
           return zip(commitResponses)
+
         }),
-        catchError((e) => throwError(e))
+        catchError((e) => throwError(() => e)),
       )
   }
 
   private getProjectCommit(projectId: number, commitId: string): Observable<CommitResponse> {
     return this._http.getResponse<CommitResponse>(`projects/${projectId}/repository/commits/${commitId}`)
       .pipe(
-        map(r => r.body as CommitResponse)
+        map(r => {
+          return r.body as CommitResponse
+        }),
+        catchError(e => throwError(() => e))
       )
   }
 }

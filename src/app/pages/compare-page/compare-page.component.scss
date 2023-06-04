@@ -40,6 +40,18 @@
 
   &__part {
     font-size: 1.5rem;
+    
+    &-rest {
+      text-align: center;
+      margin-top: 3.5rem;
+    }
+  }
+
+  &__rest {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
   }
 }
 
