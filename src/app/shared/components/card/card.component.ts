@@ -25,6 +25,7 @@ import {transition, trigger, useAnimation} from "@angular/animations";
 import {opacity} from "../../animations/opacity";
 import {ColorCountDirective} from "../../directives/color-count.directive";
 import {AllInfoUser} from "../../types/User/AllInfoUser";
+import {ErrorService} from "../../services/error.service";
 
 @Component({
   standalone: true,
@@ -74,15 +75,12 @@ export class CardComponent implements OnInit {
   @Output() public deleteEvent = new EventEmitter<[string, boolean]>
   protected isErrorFinding = false;
 
-  // private _userStorage = inject<UserStorageService>(userStore, {
-  //   skipSelf: true
-  // })
-
   constructor(
     @Inject(IGitApi) private _userData: GitLabService,
     private _destroy: DestroyService,
     private cd: ChangeDetectorRef,
     @Inject(userStore) private _userStorage: UserStorageService,
+    private _error: ErrorService
   ) {
   }
 
@@ -105,8 +103,6 @@ export class CardComponent implements OnInit {
       else
         this.getUser(this.userType.name)
     }
-
-
   }
 
   private isCompare(user: User): void {
@@ -126,6 +122,7 @@ export class CardComponent implements OnInit {
           },
           error: () => {
             this.isErrorFinding = true
+            this._error.createError('Ошибка запроса')
             this.cd.markForCheck()
             setTimeout(() => this.deleteUser([param, searchById]), 2000)
           }

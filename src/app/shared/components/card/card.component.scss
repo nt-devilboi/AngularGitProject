@@ -29,6 +29,11 @@
 }
 
 .user {
+  &__empty {
+    color: red;
+    margin-top: .9rem;
+  }
+
   &__info {
     flex-grow: 1;
     padding-left: 2.5rem;
@@ -312,7 +317,7 @@
     margin-top: .4rem;
 
     &:first-child {
-      margin-top: .7rem;
+      margin-top: .9rem;
     }
   }
 }

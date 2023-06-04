@@ -12,7 +12,7 @@ import {
 } from "rxjs";
 import {Event, PushEvent} from "../types/Event/Event";
 import {HttpParams, HttpResponse} from "@angular/common/http";
-import {ProjectsStats} from "../types/Projects/ProjectsStats";
+import {CommitsStats, ProjectsStats} from "../types/Projects/ProjectsStats";
 import {Project} from "../types/Projects/Project";
 import {ProjectInfoNotParsed} from "../types/Projects/ProjectInfoNotParsed";
 import {Languages, LanguagesStats} from "../types/Projects/Language";
@@ -63,12 +63,14 @@ export class UserEventsService {
           for (let i = 1; i < pagesCount; i++)
             projectsInfo.push(this.getProjectsInfoPerPage(userId, i))
 
-          return zip(projectsInfo)
-            .pipe(
-              map(a => Array<ProjectInfoNotParsed>().concat(...a))
-            )
+          return forkJoin({
+            projects: zip(projectsInfo)
+              .pipe(map(projects => Array<ProjectInfoNotParsed>().concat(...projects)))
+            ,
+            commits: this.getCommitsResponses(userId)
+          })
         }),
-        map(projectsInfo =>  this.parseProjects(projectsInfo)),
+        map(info =>  this.parseProjects(info.projects, info.commits)),
         catchError(e => throwError(() => e))
       )
   }
@@ -131,12 +133,80 @@ export class UserEventsService {
       )
   }
 
+  private getCommitsResponses(userId: string): Observable<CommitResponse[]> {
+    const params: HttpParams = new HttpParams()
+      .set("action", "pushed")
+      .set("page", 1)
+      .set("per_page", 100);
+
+    const uri: string = `users/${userId}/events`
+
+    return this._http.getResponse<PushEvent[]>(uri, params)
+      .pipe(
+        mergeMap(firstResp => {
+          const pagesCount: number = parseInt(firstResp.headers.get(`X-Total-Pages`) ?? "1");
+          const commitsFirstPage = firstResp.body ?? []
+
+          let commitsResponsesFirstPage=
+            commitsFirstPage.map(commit => this.getProjectCommit(commit.project_id, commit.push_data.commit_to))
+
+          let otherPagesResponses: Observable<CommitResponse[]>[] = [
+            zip(commitsResponsesFirstPage)
+          ]
+
+          for (let i = 1; i < pagesCount; i++)
+            otherPagesResponses.push(this.getCommitsResponsesPerPage(userId, i))
+
+          return  zip(otherPagesResponses)
+            .pipe(map(responses => Array<CommitResponse>().concat(...responses)))
+        })
+      )
+  }
+
+  private getCommitsResponsesPerPage(userId: string, pageNum: number): Observable<CommitResponse[]> {
+    const params: HttpParams = new HttpParams()
+      .set("action", "pushed")
+      .set("page", pageNum)
+      .set("per_page", 100);
+
+    const uri: string = `users/${userId}/events`
+
+    return this._http.getResponse<PushEvent[]>(uri, params)
+      .pipe(
+        mergeMap(resp => {
+          const commits = resp.body ?? []
+
+          let commitsResponses =
+            commits.map(commit => this.getProjectCommit(commit.project_id, commit.push_data.commit_to))
+
+          return zip(commitsResponses)
+        })
+      )
+  }
+
   private getCommitsFromEvents(events: PushEvent[]): number {
     return events.reduce((prev, cur) => prev + cur.push_data.commit_count, 0)
   }
 
-  private parseProjects(projects: ProjectInfoNotParsed[]): ProjectsStats {
+  private parseProjects(projects: ProjectInfoNotParsed[], commits: CommitResponse[]): ProjectsStats {
     let languages: Partial<LanguagesStats> = {}
+
+    projects
+      .map(e => this.parseProjectLanguages(e))
+      .forEach(e => {
+        for (let pair of Object.entries(e.languages))
+          languages[pair[0] as Languages] = (languages[pair[0] as Languages] ?? 0) + pair[1]
+      })
+
+    return {
+      ...this.parseCommits(commits),
+      languages: Object.entries(languages)
+        .sort((a, b) => b[1] - a[1])
+        .map(e => e[0]) as Languages[]
+    }
+  }
+
+  private parseCommits(commits: CommitResponse[]): CommitsStats {
     let days: number[] = Array.from(Array(7).keys()).map(() => 0)
     let time: number[] = Array.from(Array(23).keys()).map(() => 0)
     let stats: StatsLines = {
@@ -144,19 +214,16 @@ export class UserEventsService {
       deletions: 0,
       total: 0
     }
-    projects
-      .map(e => this.parseProject(e))
-      .forEach(e => {
-        stats.additions += e.stats.additions
-        stats.deletions += e.stats.deletions
-        stats.total += e.stats.total
 
-        e.days.forEach((day, i) => days[i] += day)
-        e.time.forEach((hour, i) => time[i] += hour)
+    commits.forEach(commit => {
+      stats.additions += commit.stats.additions
+      stats.deletions += commit.stats.deletions
+      stats.total += commit.stats.total
 
-        for (let pair of Object.entries(e.languages))
-          languages[pair[0] as Languages] = (languages[pair[0] as Languages] ?? 0) + pair[1]
-      })
+      let date = new Date(Date.parse(commit.created_at))
+      days[date.getDay()] += 1
+      time[date.getHours()] += 1
+    })
 
     let maxTime = 0;
     let maxInd = 0;
@@ -171,14 +238,11 @@ export class UserEventsService {
     return {
       statsLines: stats,
       activeDay: days.indexOf(Math.max(...days)),
-      activeTime: maxInd,
-      languages: Object.entries(languages)
-        .sort((a, b) => b[1] - a[1])
-        .map(e => e[0]) as Languages[]
+      activeTime: maxInd
     }
   }
 
-  private parseProject(projectInfo: ProjectInfoNotParsed): ProjectInfoParsed {
+  private parseProjectLanguages(projectInfo: ProjectInfoNotParsed): ProjectInfoParsed {
     let languages: Partial<LanguagesStats> = {}
     let i = 1
 
@@ -187,28 +251,7 @@ export class UserEventsService {
       i -= 0.25
     }
 
-    let days: number[] = Array.from(Array(7).keys()).map(() => 0)
-    let time: number[] = Array.from(Array(23).keys()).map(() => 0)
-    let stats: StatsLines = {
-      additions: 0,
-      deletions: 0,
-      total: 0
-    }
-
-    projectInfo.commits.forEach(commit => {
-      stats.additions += commit.stats.additions
-      stats.deletions += commit.stats.deletions
-      stats.total += commit.stats.total
-
-      let date = new Date(Date.parse(commit.created_at))
-      days[date.getDay()] += 1
-      time[date.getHours()] += 1
-    })
-
     return {
-      days,
-      time,
-      stats,
       languages
     } as ProjectInfoParsed
   }
@@ -235,7 +278,6 @@ export class UserEventsService {
   private getProjectInfo(projectId: number): Observable<ProjectInfoNotParsed> {
     return forkJoin({
       languages: this.getProjectLanguages(projectId),
-      commits: this.getProjectCommits(projectId)
     })
       .pipe(catchError(e => throwError(() => e)))
   }
@@ -245,80 +287,6 @@ export class UserEventsService {
       .pipe(
         map(r => r.body as Partial<LanguagesStats>),
         catchError((e) => throwError(() => e))
-      )
-  }
-
-  private getProjectCommits(projectId: number): Observable<CommitResponse[]> {
-    const params: HttpParams = new HttpParams()
-      .set('page', 1)
-      .set('per_page', 100)
-
-    return this.checkRepository(projectId)
-      .pipe(
-        mergeMap(() => {
-            return this._http.getResponse<{ id: string }>(`projects/${projectId}/repository/commits`, params)
-              .pipe(
-                mergeMap(r => {
-                  let commitsFirstPage: { id: string }[] = (r.body ?? []) as { id: string }[]
-                  let pagesCount: number = parseInt(r.headers.get(`X-Total-Pages`) ?? "1");
-
-                  let commitResponses: Observable<CommitResponse>[] = []
-
-                  for (let commit of commitsFirstPage)
-                    commitResponses.push(this.getProjectCommit(projectId, commit.id)
-                      .pipe(catchError(e => throwError(() => e)))
-                    )
-
-                  let allProjectCommits: Observable<CommitResponse[]>[] = [
-                    zip(...commitResponses)
-                      .pipe(catchError(e => throwError(() => e)))
-                  ]
-
-                  for (let i = 1; i < pagesCount; i++) {
-                    allProjectCommits.push(this.getProjectCommitsPerPage(projectId, i)
-                      .pipe(catchError(e => throwError(() => e)))
-                    )
-                  }
-
-                  return zip(allProjectCommits)
-                    .pipe(
-                      map(a => Array<CommitResponse>().concat(...a))
-                    )
-                })
-              )
-          }
-        ),
-        catchError(() => {
-          return of([])
-        })
-      )
-
-  }
-
-  private checkRepository(projectId: number): Observable<any> {
-    return this._http.getResponse<any>(`projects/${projectId}/repository/branches`)
-  }
-
-  private getProjectCommitsPerPage(projectId: number, pageNum: number): Observable<CommitResponse[]> {
-    const params: HttpParams = new HttpParams()
-      .set('page', pageNum)
-      .set('per_page', 100)
-
-    return this._http.getResponse<{ id: string }[]>(`projects/${projectId}/repository/commits`, params)
-      .pipe(
-        mergeMap(r => {
-          let commits: { id: string }[] = r.body as {id: string}[]
-          let commitResponses: Observable<CommitResponse>[] = []
-
-          for (let commit of commits)
-            commitResponses.push(this.getProjectCommit(projectId, commit.id)
-              .pipe(catchError(e => throwError(() => e)))
-            )
-
-          return zip(commitResponses)
-
-        }),
-        catchError((e) => throwError(() => e)),
       )
   }
 

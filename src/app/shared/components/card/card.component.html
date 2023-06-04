@@ -42,11 +42,20 @@
                         <div class="user__part">
                             Языки программирования:
                         </div>
-                        <ng-container *ngFor="let lang of allInfoUser.languages">
-                            <div class="user__lang">
-                                {{ lang }}
-                            </div>
+
+                        <ng-container *ngIf="allInfoUser.languages.length > 0; else noLangs">
+                            <ng-container *ngFor="let lang of allInfoUser.languages">
+                                <div class="user__lang">
+                                    {{ lang }}
+                                </div>
+                            </ng-container>
                         </ng-container>
+
+                        <ng-template #noLangs>
+                            <div class="user__empty">
+                                Нет данных
+                            </div>
+                        </ng-template>
                     </div>
 
                     <div class="user__stats">

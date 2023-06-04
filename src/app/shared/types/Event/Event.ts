@@ -6,5 +6,6 @@ export type Event = {
 }
 
 export type PushEvent = Event & {
+  project_id: number
   push_data: PushData;
 }

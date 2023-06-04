@@ -68,11 +68,18 @@
                                     Языки программирования:
                                 </div>
                                 <div class="user-langs__langs">
-                                    <ng-container *ngFor="let lang of user.languages; let i = index">
-                                        <div class="user-langs__lang">
-                                            {{ lang }}
-                                        </div>
+                                    <ng-container *ngIf="user.languages.length > 0; else noLangs">
+                                        <ng-container *ngFor="let lang of user.languages; let i = index">
+                                            <div class="user-langs__lang">
+                                                {{ lang }}
+                                            </div>
+                                        </ng-container>
                                     </ng-container>
+                                    <ng-template #noLangs>
+                                        <div class="user-langs__empty">
+                                            Нет данных
+                                        </div>
+                                    </ng-template>
                                 </div>
                             </div>
                         </div>

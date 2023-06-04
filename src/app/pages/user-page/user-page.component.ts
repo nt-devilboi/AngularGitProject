@@ -7,6 +7,7 @@ import {AllInfoUser} from "../../shared/types/User/AllInfoUser";
 import {transition, trigger, useAnimation} from "@angular/animations";
 import {opacity} from "../../shared/animations/opacity";
 import {DestroyService} from "../../shared/services/destroy.service";
+import {ErrorService} from "../../shared/services/error.service";
 
 @Component({
   selector: 'app-user-page',
@@ -46,7 +47,8 @@ export class UserPageComponent implements OnInit{
     @Inject(IGitApi) private _userData: GitLabService,
     private _router: Router,
     private _destroy: DestroyService,
-    private _cd: ChangeDetectorRef
+    private _cd: ChangeDetectorRef,
+    private _error: ErrorService
   ) { }
 
   public ngOnInit(): void {
@@ -64,40 +66,10 @@ export class UserPageComponent implements OnInit{
         },
         error: () => {
           this.isError = true
-          console.log(true)
+          this._error.createError('Ошибка запроса')
           this._cd.markForCheck()
         }
       })
-
-  //   setTimeout(() => {
-  //     this.user = {
-  //       id: 4380634,
-  //       username: 'amateur-dev',
-  //       name: 'Amateur Dev',
-  //       avatar_url: 'https://gitlab.com/uploads/-/system/user/avatar/4380634/avatar.png',
-  //       web_url: 'https://gitlab.com/amateur-dev',
-  //       actions: {
-  //         approved: 93,
-  //         commit: 109
-  //       },
-  //       activeTime: 10,
-  //       activeDay: 3,
-  //       statsLines: {
-  //         additions: 368277,
-  //         deletions: 209050,
-  //         total: 368277 + 209050,
-  //       },
-  //       languages: [
-  //         'JavaScript',
-  //         "HTML",
-  //         'Csharp',
-  //         'CSS'
-  //       ]
-  //     }
-  //
-  //     this.toCompare = !!this._userStorage.toCompareUsers.find(e => e.id === this.user.id)
-  //     this._cd.markForCheck()
-  //   }, 0)
   }
 
   protected toggleCompare() {
