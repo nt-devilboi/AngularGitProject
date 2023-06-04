@@ -48,7 +48,11 @@ export class UserEventsService {
           let projectsFirstPage = firstResp.body as Project[]
           const pagesCount: number = parseInt(firstResp.headers.get(`X-Total-Pages`) ?? "1");
 
-          let projectsInfoFirstPage: Observable<ProjectInfoNotParsed>[] = []
+          let projectsInfoFirstPage: Observable<ProjectInfoNotParsed>[] = [
+            of({
+              languages: {}
+            })
+          ]
 
           for (let project of projectsFirstPage)
             projectsInfoFirstPage.push(this.getProjectInfo(project.id)
@@ -148,7 +152,7 @@ export class UserEventsService {
           const commitsFirstPage = firstResp.body ?? []
 
           let commitsResponsesFirstPage=
-            commitsFirstPage.map(commit => this.getProjectCommit(commit.project_id, commit.push_data.commit_to))
+            commitsFirstPage.map(commit => this.getProjectCommit(commit.project_id, commit.push_data.commit_to ?? commit.push_data.commit_from))
 
           let otherPagesResponses: Observable<CommitResponse[]>[] = [
             zip(commitsResponsesFirstPage)
@@ -177,9 +181,13 @@ export class UserEventsService {
           const commits = resp.body ?? []
 
           let commitsResponses =
-            commits.map(commit => this.getProjectCommit(commit.project_id, commit.push_data.commit_to))
+            commits.map(commit => this.getProjectCommit(commit.project_id, commit.push_data.commit_to ?? commit.push_data.commit_from))
 
-          return zip(commitsResponses)
+          return zip(commitsResponses.length > 0 ? commitsResponses : [null])
+            .pipe(map(arr => {
+              // @ts-ignore
+              return arr.filter(e => !!e) as CommitResponse[]
+            }))
         })
       )
   }
