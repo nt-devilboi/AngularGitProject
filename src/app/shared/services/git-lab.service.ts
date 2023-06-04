@@ -128,7 +128,7 @@ export class GitLabService implements IGitUser {
         return [false, 0]
       }),
       username: compare(users, (user: AllInfoUser, maxValue: number) => {
-        if (user.username.length >= maxValue)
+        if (user.username.length > maxValue)
           return [true, user.username.length]
 
         return [false, 0]

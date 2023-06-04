@@ -35,7 +35,7 @@
 
                 <ng-container *appPrivateProfile="user.actions.commit === 0; else privateProfile">
 
-                    <div class="user__flex user-flex">
+                    <div class="user__flex user-flex user-flex-main">
                         <div class="user-flex__item">
                             <div class="user__commits" [appColorCount]="user.actions.commit">
                                 Коммиты: {{ user.actions.commit }}
@@ -50,13 +50,18 @@
                                 Самый активный день: {{ user.activeDay | day }}
                             </div>
 
-                            <div class="user__time">
-                                Самое активное время: {{ user.activeTime | time }}
+                            <div class="user__time user-time">
+                                <div class="user-time__item">
+                                    Самое активное время:
+                                </div>
+                                <div class="user-time__item">
+                                    {{ user.activeTime | time }}
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="user__flex user-flex">
+                    <div class="user__flex user-flex user-flex-all">
                         <div class="user-flex__item">
                             <div class="user__langs user-langs">
                                 <div class="user__part">
