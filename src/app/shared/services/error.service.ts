@@ -16,8 +16,9 @@ export class ErrorService implements ErrorHandler {
   }
 
   public handleError(error: any): void {
-    if (error instanceof HttpErrorResponse)
+    if (error instanceof HttpErrorResponse) {
       return
+    }
 
     this.createError('Неизвестная ошибка')
   }

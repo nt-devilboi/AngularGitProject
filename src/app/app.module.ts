@@ -42,7 +42,7 @@ export const userStore = new InjectionToken("store")
     },
     {
       provide: ErrorHandler,
-      useClass: ErrorService
+      useExisting: ErrorService
     }
   ],
   bootstrap: [AppComponent]

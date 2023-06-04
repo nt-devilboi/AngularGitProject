@@ -54,7 +54,6 @@ import {opacity} from "../../../../shared/animations/opacity";
   ]
 })
 
-// TODO дописать, чтоку которая проверит, в serch уже что-то написано
 export class HeaderComponent {
   protected formSearch: FormGroup<IReactiveSearchForm>;
   protected user?: MainInfoUser;
@@ -75,7 +74,7 @@ export class HeaderComponent {
         {
           nonNullable: true
         })
-    })
+    });
 
     this.formSearch.controls.search.valueChanges
       .pipe(this._destroy.takeUntilDestroy)
