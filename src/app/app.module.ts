@@ -1,4 +1,4 @@
-import {InjectionToken, NgModule} from '@angular/core';
+import {ErrorHandler, InjectionToken, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -10,6 +10,8 @@ import {PagesModule} from "./pages/pages.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {UserStorageService} from "./shared/services/user-storage.service";
 import {CardComponent} from "./shared/components/card/card.component";
+import {ErrorService} from "./shared/services/error.service";
+import {SharedModule} from "./shared/shared.module";
 
 export const IGitApi = new InjectionToken<IGitUser>("Api")
 export const userStore = new InjectionToken("store")
@@ -24,7 +26,8 @@ export const userStore = new InjectionToken("store")
     AppRoutingModule,
     PagesModule,
     BrowserAnimationsModule,
-    CardComponent
+    CardComponent,
+    SharedModule
   ],
   exports: [
   ],
@@ -36,6 +39,10 @@ export const userStore = new InjectionToken("store")
     {
       provide: userStore,
       useExisting: UserStorageService
+    },
+    {
+      provide: ErrorHandler,
+      useClass: ErrorService
     }
   ],
   bootstrap: [AppComponent]
