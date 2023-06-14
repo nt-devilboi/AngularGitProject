@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable, tap} from 'rxjs';
 import {TokenService} from "../services/token.service";
+import {ErrorService} from "../services/error.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class AuthGuard{
 
   constructor(
     private _router: Router,
-    private _token: TokenService
+    private _token: TokenService,
+    private _error: ErrorService
   ) {}
 
   public canActivate(
@@ -19,8 +21,10 @@ export class AuthGuard{
     return this._token.isValidToken()
       .pipe(
         tap(v => {
-          if (!v)
+          if (!v) {
             this._router.navigate(['login'])
+            this._error.createError('Невалидный токен')
+          }
         })
       )
   }
